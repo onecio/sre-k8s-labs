@@ -1298,6 +1298,40 @@ img { max-width: 100%; }
 </section>
 
 <!-- ==================== RECURSOS BÁSICOS ==================== -->
+
+<!-- Quiz: Arquitetura -->
+<div class="quiz-box" id="quiz-arquitetura">
+  <h4><i data-lucide="brain" class="icon-svg lg"></i> Quiz — Arquitetura e Componentes</h4>
+  <div class="quiz-subtitle">Control plane, workers e ciclo de vida dos Pods</div>
+
+  <div class="quiz-question" data-correct="1">
+    <div class="q-text">1. Qual componente do control plane armazena todo o estado do cluster?</div>
+    <label class="quiz-option"><input type="radio" name="q-a1" value="0" onchange="checkQuiz(this)"> kube-scheduler</label>
+    <label class="quiz-option"><input type="radio" name="q-a1" value="1" onchange="checkQuiz(this)"> etcd</label>
+    <label class="quiz-option"><input type="radio" name="q-a1" value="2" onchange="checkQuiz(this)"> kubelet</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="2">
+    <div class="q-text">2. O que o kube-proxy faz?</div>
+    <label class="quiz-option"><input type="radio" name="q-a2" value="0" onchange="checkQuiz(this)"> Executa containers nos nodes</label>
+    <label class="quiz-option"><input type="radio" name="q-a2" value="1" onchange="checkQuiz(this)"> Gerencia o ciclo de vida dos Pods</label>
+    <label class="quiz-option"><input type="radio" name="q-a2" value="2" onchange="checkQuiz(this)"> Cria regras de rede para encaminhar tráfego dos Services aos Pods</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="0">
+    <div class="q-text">3. Quando um Pod fica em CrashLoopBackOff, a primeira ação deve ser:</div>
+    <label class="quiz-option"><input type="radio" name="q-a3" value="0" onchange="checkQuiz(this)"> Verificar os logs com kubectl logs</label>
+    <label class="quiz-option"><input type="radio" name="q-a3" value="1" onchange="checkQuiz(this)"> Deletar o Pod manualmente</label>
+    <label class="quiz-option"><input type="radio" name="q-a3" value="2" onchange="checkQuiz(this)"> Reiniciar o node</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-score" id="score-arquitetura"></div>
+  <button class="quiz-btn" onclick="showScore('arquitetura', 3)">Ver Resultado</button>
+</div>
+
 <section class="section" id="recursos-basicos">
   <h2><span class="sec-icon" style="background:var(--green-subtle);color:var(--green);"><i data-lucide="boxes" class="icon-svg"></i></span> 3. Recursos Básicos</h2>
 
@@ -1571,6 +1605,40 @@ spec:
 </section>
 
 <!-- ==================== KUBE-PROXY & CNI ==================== -->
+
+<!-- Quiz: Services -->
+<div class="quiz-box" id="quiz-services">
+  <h4><i data-lucide="brain" class="icon-svg lg"></i> Quiz — Services e Portas</h4>
+  <div class="quiz-subtitle">Tipos de Service, portas e roteamento</div>
+
+  <div class="quiz-question" data-correct="1">
+    <div class="q-text">1. Qual tipo de Service é acessível apenas dentro do cluster?</div>
+    <label class="quiz-option"><input type="radio" name="q-sv1" value="0" onchange="checkQuiz(this)"> NodePort</label>
+    <label class="quiz-option"><input type="radio" name="q-sv1" value="1" onchange="checkQuiz(this)"> ClusterIP</label>
+    <label class="quiz-option"><input type="radio" name="q-sv1" value="2" onchange="checkQuiz(this)"> LoadBalancer</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="0">
+    <div class="q-text">2. Qual é a diferença entre targetPort e port no Service?</div>
+    <label class="quiz-option"><input type="radio" name="q-sv2" value="0" onchange="checkQuiz(this)"> targetPort é a porta do Pod; port é a porta do Service</label>
+    <label class="quiz-option"><input type="radio" name="q-sv2" value="1" onchange="checkQuiz(this)"> São a mesma coisa com nomes diferentes</label>
+    <label class="quiz-option"><input type="radio" name="q-sv2" value="2" onchange="checkQuiz(this)"> targetPort é externo; port é interno</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="2">
+    <div class="q-text">3. Em ambiente bare metal sem cloud provider, qual opção dá um IP externo para Services?</div>
+    <label class="quiz-option"><input type="radio" name="q-sv3" value="0" onchange="checkQuiz(this)"> HostPort</label>
+    <label class="quiz-option"><input type="radio" name="q-sv3" value="1" onchange="checkQuiz(this)"> NodePort</label>
+    <label class="quiz-option"><input type="radio" name="q-sv3" value="2" onchange="checkQuiz(this)"> LoadBalancer com MetalLB</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-score" id="score-services"></div>
+  <button class="quiz-btn" onclick="showScore('services', 3)">Ver Resultado</button>
+</div>
+
 <section class="section" id="kube-proxy">
   <h2><span class="sec-icon" style="background:var(--orange-subtle);color:var(--orange);"><i data-lucide="link" class="icon-svg"></i></span> kube-proxy e CNI</h2>
 
@@ -1703,6 +1771,40 @@ spec:
 </section>
 
 <!-- ==================== STORAGE ==================== -->
+
+<!-- Quiz: Ingress -->
+<div class="quiz-box" id="quiz-ingress">
+  <h4><i data-lucide="brain" class="icon-svg lg"></i> Quiz — Ingress e Proxies</h4>
+  <div class="quiz-subtitle">Traefik, NGINX, HAProxy e Cloudflare</div>
+
+  <div class="quiz-question" data-correct="1">
+    <div class="q-text">1. O que um Ingress Controller faz que um Ingress resource não faz?</div>
+    <label class="quiz-option"><input type="radio" name="q-i1" value="0" onchange="checkQuiz(this)"> Define regras de roteamento HTTP</label>
+    <label class="quiz-option"><input type="radio" name="q-i1" value="1" onchange="checkQuiz(this)"> Escuta portas e aplica as regras de roteamento na prática</label>
+    <label class="quiz-option"><input type="radio" name="q-i1" value="2" onchange="checkQuiz(this)"> Gerencia certificados TLS</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="2">
+    <div class="q-text">2. No modo Full Strict do Cloudflare, o que é exigido no origin?</div>
+    <label class="quiz-option"><input type="radio" name="q-i2" value="0" onchange="checkQuiz(this)"> HTTP na porta 80</label>
+    <label class="quiz-option"><input type="radio" name="q-i2" value="1" onchange="checkQuiz(this)"> Qualquer certificado SSL</label>
+    <label class="quiz-option"><input type="radio" name="q-i2" value="2" onchange="checkQuiz(this)"> Certificado TLS válido (não expirado e assinado por CA confiável)</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="0">
+    <div class="q-text">3. Qual Ingress Controller vem integrado por padrão no K3s?</div>
+    <label class="quiz-option"><input type="radio" name="q-i3" value="0" onchange="checkQuiz(this)"> Traefik</label>
+    <label class="quiz-option"><input type="radio" name="q-i3" value="1" onchange="checkQuiz(this)"> NGINX Ingress</label>
+    <label class="quiz-option"><input type="radio" name="q-i3" value="2" onchange="checkQuiz(this)"> HAProxy</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-score" id="score-ingress"></div>
+  <button class="quiz-btn" onclick="showScore('ingress', 3)">Ver Resultado</button>
+</div>
+
 <section class="section" id="storage">
   <h2><span class="sec-icon" style="background:var(--green-subtle);color:var(--green);"><i data-lucide="database" class="icon-svg"></i></span> 7. Storage e Volumes</h2>
 
@@ -2159,6 +2261,40 @@ spec:
 </section>
 
 <!-- ==================== SEGURANÇA ==================== -->
+
+<!-- Quiz: Segurança -->
+<div class="quiz-box" id="quiz-seguranca">
+  <h4><i data-lucide="brain" class="icon-svg lg"></i> Quiz — Segurança</h4>
+  <div class="quiz-subtitle">Secrets, Pod Security e NetworkPolicy</div>
+
+  <div class="quiz-question" data-correct="2">
+    <div class="q-text">1. Onde NUNCA se deve armazenar senhas?</div>
+    <label class="quiz-option"><input type="radio" name="q-sec1" value="0" onchange="checkQuiz(this)"> Em Kubernetes Secrets</label>
+    <label class="quiz-option"><input type="radio" name="q-sec1" value="1" onchange="checkQuiz(this)"> No HashiCorp Vault</label>
+    <label class="quiz-option"><input type="radio" name="q-sec1" value="2" onchange="checkQuiz(this)"> Em ConfigMaps, Dockerfiles ou código fonte</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="1">
+    <div class="q-text">2. Qual prática de segurança REDUZ a superfície de ataque de um container?</div>
+    <label class="quiz-option"><input type="radio" name="q-sec2" value="0" onchange="checkQuiz(this)"> Rodar como root com todas as capabilities</label>
+    <label class="quiz-option"><input type="radio" name="q-sec2" value="1" onchange="checkQuiz(this)"> Rodar como não-root, filesystem read-only e drop de capabilities</label>
+    <label class="quiz-option"><input type="radio" name="q-sec2" value="2" onchange="checkQuiz(this)"> Usar imagens com tag latest</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="0">
+    <div class="q-text">3. Uma NetworkPolicy que selecta pods com label app=postgres e define ingress a partir de pods com label app=backend faz o quê?</div>
+    <label class="quiz-option"><input type="radio" name="q-sec3" value="0" onchange="checkQuiz(this)"> Permite tráfego de entrada no postgres apenas do backend</label>
+    <label class="quiz-option"><input type="radio" name="q-sec3" value="1" onchange="checkQuiz(this)"> Bloqueia todo tráfego no postgres</label>
+    <label class="quiz-option"><input type="radio" name="q-sec3" value="2" onchange="checkQuiz(this)"> Permite tráfego de qualquer pod para o postgres</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-score" id="score-seguranca"></div>
+  <button class="quiz-btn" onclick="showScore('seguranca', 3)">Ver Resultado</button>
+</div>
+
 <section class="section" id="seguranca">
   <h2><span class="sec-icon" style="background:var(--red-subtle);color:var(--red);"><i data-lucide="lock" class="icon-svg"></i></span> 11. Segurança Operacional</h2>
 
@@ -2213,6 +2349,40 @@ spec:
 </section>
 
 <!-- ==================== FULLSTACK ==================== -->
+
+<!-- Quiz: Fullstack -->
+<div class="quiz-box" id="quiz-fullstack">
+  <h4><i data-lucide="brain" class="icon-svg lg"></i> Quiz — Aplicação Fullstack</h4>
+  <div class="quiz-subtitle">Frontend + Backend + Banco + Volumes + Secrets</div>
+
+  <div class="quiz-question" data-correct="1">
+    <div class="q-text">1. Para um PostgreSQL em Kubernetes, qual controlador é mais adequado?</div>
+    <label class="quiz-option"><input type="radio" name="q-fs1" value="0" onchange="checkQuiz(this)"> Deployment</label>
+    <label class="quiz-option"><input type="radio" name="q-fs1" value="1" onchange="checkQuiz(this)"> StatefulSet</label>
+    <label class="quiz-option"><input type="radio" name="q-fs1" value="2" onchange="checkQuiz(this)"> DaemonSet</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="2">
+    <div class="q-text">2. Qual recurso K8s injeta variáveis de ambiente não sensíveis no container?</div>
+    <label class="quiz-option"><input type="radio" name="q-fs2" value="0" onchange="checkQuiz(this)"> Secret</label>
+    <label class="quiz-option"><input type="radio" name="q-fs2" value="1" onchange="checkQuiz(this)"> PVC</label>
+    <label class="quiz-option"><input type="radio" name="q-fs2" value="2" onchange="checkQuiz(this)"> ConfigMap</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="0">
+    <div class="q-text">3. Em um Ingress com dois paths (/ e /api), como o Traefik roteia o tráfego?</div>
+    <label class="quiz-option"><input type="radio" name="q-fs3" value="0" onchange="checkQuiz(this)"> Roteia conforme o path da requisição para cada Service correspondente</label>
+    <label class="quiz-option"><input type="radio" name="q-fs3" value="1" onchange="checkQuiz(this)"> Envia tudo para o primeiro Service listado</label>
+    <label class="quiz-option"><input type="radio" name="q-fs3" value="2" onchange="checkQuiz(this)"> Balanceia aleatoriamente entre os dois Services</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-score" id="score-fullstack"></div>
+  <button class="quiz-btn" onclick="showScore('fullstack', 3)">Ver Resultado</button>
+</div>
+
 <section class="section" id="fullstack">
   <h2><span class="sec-icon" style="background:var(--green-subtle);color:var(--green);"><i data-lucide="rocket" class="icon-svg"></i></span> 12. Implementando uma Aplicação Fullstack</h2>
 
@@ -2444,6 +2614,40 @@ jobs:
 
 
 <!-- ==================== OBSERVABILIDADE ==================== -->
+
+<!-- Quiz: Observabilidade -->
+<div class="quiz-box" id="quiz-observabilidade">
+  <h4><i data-lucide="brain" class="icon-svg lg"></i> Quiz — Observabilidade</h4>
+  <div class="quiz-subtitle">Métricas, logs, tracing e health checks</div>
+
+  <div class="quiz-question" data-correct="0">
+    <div class="q-text">1. Quais são os três pilares da observabilidade?</div>
+    <label class="quiz-option"><input type="radio" name="q-o1" value="0" onchange="checkQuiz(this)"> Métricas, logs e traces (tracing)</label>
+    <label class="quiz-option"><input type="radio" name="q-o1" value="1" onchange="checkQuiz(this)"> CPU, memória e disco</label>
+    <label class="quiz-option"><input type="radio" name="q-o1" value="2" onchange="checkQuiz(this)"> Prometheus, Grafana e Elasticsearch</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="2">
+    <div class="q-text">2. Qual ferramenta é usada para visualizar métricas em dashboards no ecossistema Kubernetes?</div>
+    <label class="quiz-option"><input type="radio" name="q-o2" value="0" onchange="checkQuiz(this)"> Prometheus</label>
+    <label class="quiz-option"><input type="radio" name="q-o2" value="1" onchange="checkQuiz(this)"> Fluentd</label>
+    <label class="quiz-option"><input type="radio" name="q-o2" value="2" onchange="checkQuiz(this)"> Grafana</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="1">
+    <div class="q-text">3. Qual a diferença entre readinessProbe e livenessProbe?</div>
+    <label class="quiz-option"><input type="radio" name="q-o3" value="0" onchange="checkQuiz(this)"> São a mesma coisa</label>
+    <label class="quiz-option"><input type="radio" name="q-o3" value="1" onchange="checkQuiz(this)"> readiness controla se o Pod recebe tráfego; liveness controla se o Pod deve ser reiniciado</label>
+    <label class="quiz-option"><input type="radio" name="q-o3" value="2" onchange="checkQuiz(this)"> readiness reinicia o Pod; liveness remove do Service</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-score" id="score-observabilidade"></div>
+  <button class="quiz-btn" onclick="showScore('observabilidade', 3)">Ver Resultado</button>
+</div>
+
 <section class="section" id="observabilidade">
   <h2><span class="sec-icon" style="background:var(--purple-subtle);color:var(--purple);"><i data-lucide="bar-chart-3" class="icon-svg"></i></span> 14. Observabilidade</h2>
 
@@ -2601,6 +2805,40 @@ openssl x509 -in cloudflare.crt -text -noout</code></pre>
 </section>
 
 <!-- ==================== ESCOLHER ARQUITETURA ==================== -->
+
+<!-- Quiz: Troubleshooting -->
+<div class="quiz-box" id="quiz-troubleshooting">
+  <h4><i data-lucide="brain" class="icon-svg lg"></i> Quiz — Troubleshooting</h4>
+  <div class="quiz-subtitle">Metodologia SRE e diagnóstico de problemas</div>
+
+  <div class="quiz-question" data-correct="1">
+    <div class="q-text">1. Um Pod fica em ImagePullBackOff. Qual é a causa mais provável?</div>
+    <label class="quiz-option"><input type="radio" name="q-t1" value="0" onchange="checkQuiz(this)"> O node está sem memória</label>
+    <label class="quiz-option"><input type="radio" name="q-t1" value="1" onchange="checkQuiz(this)"> O nome da imagem, tag ou credenciais do registry estão incorretos</label>
+    <label class="quiz-option"><input type="radio" name="q-t1" value="2" onchange="checkQuiz(this)"> O Service não está configurado</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="2">
+    <div class="q-text">2. Um Ingress retorna 404. Qual é a ordem correta de verificação?</div>
+    <label class="quiz-option"><input type="radio" name="q-t2" value="0" onchange="checkQuiz(this)"> Reiniciar o Ingress Controller</label>
+    <label class="quiz-option"><input type="radio" name="q-t2" value="1" onchange="checkQuiz(this)"> Deletar e recriar o Ingress</label>
+    <label class="quiz-option"><input type="radio" name="q-t2" value="2" onchange="checkQuiz(this)"> Verificar host, path, serviceName, port e endpoints com kubectl describe ingress</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="0">
+    <div class="q-text">3. Qual é a cadeia correta de diagnóstico SRE (do mais externo ao mais interno)?</div>
+    <label class="quiz-option"><input type="radio" name="q-t3" value="0" onchange="checkQuiz(this)"> DNS/CDN → Ingress → Service → Pod → Container/Logs</label>
+    <label class="quiz-option"><input type="radio" name="q-t3" value="1" onchange="checkQuiz(this)"> Container → Pod → Service → Ingress</label>
+    <label class="quiz-option"><input type="radio" name="q-t3" value="2" onchange="checkQuiz(this)"> Pod → Service → Ingress → DNS</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-score" id="score-troubleshooting"></div>
+  <button class="quiz-btn" onclick="showScore('troubleshooting', 3)">Ver Resultado</button>
+</div>
+
 <section class="section" id="escolher-arquitetura">
   <h2><span class="sec-icon" style="background:var(--accent-subtle);color:var(--accent);"><i data-lucide="ruler" class="icon-svg"></i></span> 16. Escolhendo a Arquitetura Certa</h2>
   <div class="table-wrapper">
