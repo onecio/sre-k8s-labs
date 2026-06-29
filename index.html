@@ -3901,7 +3901,7 @@ function showScore(quizId, totalQuestions) {
     scoreEl.textContent = '\ud83d\udcda Continue estudando! ' + correct + '/' + totalQuestions + ' (' + pct + '%)';
   }
 
-  progress.quizzes[quizId] = { ...existing, score: correct, total: totalQuestions, pct: pct, completed: true, bestPct: Math.max(pct, bestPct) };
+  progress.quizzes[quizId] = { ...existing, score: correct, total: totalQuestions, pct: pct, completed: true, bestPct: Math.max(pct, bestPct), attempts: (existing.attempts || 0) + 1 };
   saveProgress(progress);
   updateProgressUI();
   checkAchievements();
@@ -3971,7 +3971,7 @@ function retryQuiz(quizId) {
 
   // Keep best score, clear current attempt data
   if (progress.quizzes) {
-    progress.quizzes[quizId] = { bestPct: existing.bestPct || 0 };
+    progress.quizzes[quizId] = { bestPct: existing.bestPct || 0, attempts: existing.attempts || 0 };
     saveProgress(progress);
   }
   updateProgressUI();
@@ -3993,6 +3993,7 @@ function updateProgressUI() {
     const iconClass = isComplete ? 'done' : 'pending';
     const icon = isComplete ? (data.pct === 100 ? '\ud83c\udf89' : (data.pct >= 60 ? '\u2713' : '\u2717')) : '\u25cb';
     let scoreText = isComplete ? data.score + '/' + data.total + ' (' + data.pct + '%)' : 'N\u00e3o respondido';
+    if (data.attempts && data.attempts > 1) scoreText += ' | Tentativas: ' + data.attempts;
     if (data && data.bestPct > 0 && (!isComplete || data.pct < data.bestPct)) {
       scoreText += ' | Melhor: ' + data.bestPct + '%';
     }
