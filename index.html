@@ -860,6 +860,55 @@ img { max-width: 100%; }
   .progress-quiz-list { grid-template-columns: 1fr; }
 }
 
+
+/* ===== LAB CHECKBOX ===== */
+.lab-check {
+  display: flex; align-items: center; gap: 8px;
+  margin-left: auto; flex-shrink: 0; padding: 6px 10px;
+  border-radius: var(--radius-sm); cursor: pointer;
+  transition: all var(--transition); border: 1px solid var(--border);
+  background: var(--bg-tertiary); font-size: 12px; color: var(--text-muted);
+  position: relative; z-index: 2;
+}
+.lab-check:hover { border-color: var(--accent); color: var(--text-primary); }
+.lab-check input[type="checkbox"] {
+  width: 16px; height: 16px; accent-color: var(--green); cursor: pointer;
+}
+.lab-check .check-label { font-weight: 500; white-space: nowrap; }
+.lab-check.done {
+  background: var(--green-subtle); border-color: var(--green); color: var(--green);
+}
+.lab-check.done .check-label { font-weight: 600; }
+/* Progress lab list */
+.progress-lab-list {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px;
+}
+.progress-lab-item {
+  display: flex; align-items: center; gap: 10px; padding: 10px 12px;
+  border-radius: var(--radius-sm); border: 1px solid var(--border-light);
+  font-size: 13px; transition: border var(--transition);
+}
+.progress-lab-item:hover { border-color: var(--accent); }
+.progress-lab-item .pl-icon {
+  width: 28px; height: 28px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; flex-shrink: 0;
+}
+.progress-lab-item .pl-icon.done { background: var(--green-subtle); color: var(--green); }
+.progress-lab-item .pl-icon.pending { background: var(--bg-tertiary); color: var(--text-muted); }
+.progress-lab-item .pl-info { flex: 1; }
+.progress-lab-item .pl-name { font-weight: 600; color: var(--text-primary); font-size: 13px; }
+.progress-lab-item .pl-status { font-size: 11px; color: var(--text-muted); }
+.progress-lab-item .pl-status.done { color: var(--green); font-weight: 600; }
+.progress-section-divider {
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.05em; color: var(--text-muted); padding: 8px 0 4px;
+  border-top: 1px solid var(--border-light); margin-top: 12px;
+}
+@media (max-width: 640px) {
+  .progress-lab-list { grid-template-columns: 1fr; }
+}
+
 </style>
 </head>
 <body>
@@ -994,6 +1043,8 @@ img { max-width: 100%; }
       <div class="progress-bar-fill" id="progressBarFill" style="width: 0%"></div>
     </div>
     <div class="progress-quiz-list" id="progressQuizList"></div>
+    <div class="progress-section-divider"><i data-lucide="flask-conical" class="icon-svg"></i> Laboratórios</div>
+    <div class="progress-lab-list" id="progressLabList"></div>
     <button class="progress-reset" onclick="resetProgress()">🗑️ Limpar progresso</button>
   </div>
 </section>
@@ -3187,7 +3238,8 @@ openssl x509 -in cloudflare.crt -text -noout</code></pre>
           <span><i data-lucide="server" class="icon-svg"></i> 2 VMs</span>
         </div>
       </div>
-      <span class="lab-arrow">▼</span>
+      <span class="<label class="lab-check" onclick="event.stopPropagation()" id="check-lab-01"><input type="checkbox" onchange="toggleLabComplete('lab-01')" id="cb-lab-01"><span class="check-label">Concluído</span></label>
+      lab-arrow">▼</span>
     </div>
     <div class="lab-card-body"><div class="lab-card-body-inner">
       <p>Monte um cluster K3s com um node server (control plane) e um worker. Ao final, você terá um cluster funcional pronto para receber aplicações.</p>
@@ -3214,7 +3266,8 @@ openssl x509 -in cloudflare.crt -text -noout</code></pre>
           <span><i data-lucide="package" class="icon-svg"></i> 1 ferramenta</span>
         </div>
       </div>
-      <span class="lab-arrow">▼</span>
+      <span class="<label class="lab-check" onclick="event.stopPropagation()" id="check-lab-02"><input type="checkbox" onchange="toggleLabComplete('lab-02')" id="cb-lab-02"><span class="check-label">Concluído</span></label>
+      lab-arrow">▼</span>
     </div>
     <div class="lab-card-body"><div class="lab-card-body-inner">
       <p>Instale o Helm 3, adicione repositórios essenciais e aprenda a gerenciar chart repositories.</p>
@@ -3240,7 +3293,8 @@ openssl x509 -in cloudflare.crt -text -noout</code></pre>
           <span><i data-lucide="target" class="icon-svg"></i> Ingress Controller</span>
         </div>
       </div>
-      <span class="lab-arrow">▼</span>
+      <span class="<label class="lab-check" onclick="event.stopPropagation()" id="check-lab-03"><input type="checkbox" onchange="toggleLabComplete('lab-03')" id="cb-lab-03"><span class="check-label">Concluído</span></label>
+      lab-arrow">▼</span>
     </div>
     <div class="lab-card-body"><div class="lab-card-body-inner">
       <p>Instale o Traefik como Ingress Controller via Helm com CRDs, HostPort e redirecionamento HTTPS.</p>
@@ -3266,7 +3320,8 @@ openssl x509 -in cloudflare.crt -text -noout</code></pre>
           <span><i data-lucide="shield" class="icon-svg"></i> TLS / SSL</span>
         </div>
       </div>
-      <span class="lab-arrow">▼</span>
+      <span class="<label class="lab-check" onclick="event.stopPropagation()" id="check-lab-04"><input type="checkbox" onchange="toggleLabComplete('lab-04')" id="cb-lab-04"><span class="check-label">Concluído</span></label>
+      lab-arrow">▼</span>
     </div>
     <div class="lab-card-body"><div class="lab-card-body-inner">
       <p>Configure certificado TLS da Cloudflare no Traefik para o modo Full Strict.</p>
@@ -3292,7 +3347,8 @@ openssl x509 -in cloudflare.crt -text -noout</code></pre>
           <span><i data-lucide="layout" class="icon-svg"></i> Web Server</span>
         </div>
       </div>
-      <span class="lab-arrow">▼</span>
+      <span class="<label class="lab-check" onclick="event.stopPropagation()" id="check-lab-05"><input type="checkbox" onchange="toggleLabComplete('lab-05')" id="cb-lab-05"><span class="check-label">Concluído</span></label>
+      lab-arrow">▼</span>
     </div>
     <div class="lab-card-body"><div class="lab-card-body-inner">
       <p>Implante um servidor web Nginx com Deployment, Service e Ingress para servir conteúdo estático.</p>
@@ -3318,7 +3374,8 @@ openssl x509 -in cloudflare.crt -text -noout</code></pre>
           <span><i data-lucide="server" class="icon-svg"></i> API</span>
         </div>
       </div>
-      <span class="lab-arrow">▼</span>
+      <span class="<label class="lab-check" onclick="event.stopPropagation()" id="check-lab-06"><input type="checkbox" onchange="toggleLabComplete('lab-06')" id="cb-lab-06"><span class="check-label">Concluído</span></label>
+      lab-arrow">▼</span>
     </div>
     <div class="lab-card-body"><div class="lab-card-body-inner">
       <p>Implante uma API backend com ConfigMap, Secret e Health Checks.</p>
@@ -3344,7 +3401,8 @@ openssl x509 -in cloudflare.crt -text -noout</code></pre>
           <span><i data-lucide="database" class="icon-svg"></i> Database</span>
         </div>
       </div>
-      <span class="lab-arrow">▼</span>
+      <span class="<label class="lab-check" onclick="event.stopPropagation()" id="check-lab-07"><input type="checkbox" onchange="toggleLabComplete('lab-07')" id="cb-lab-07"><span class="check-label">Concluído</span></label>
+      lab-arrow">▼</span>
     </div>
     <div class="lab-card-body"><div class="lab-card-body-inner">
       <p>Implante um PostgreSQL com StatefulSet, VolumeClaimTemplate e dados persistentes.</p>
@@ -3370,7 +3428,8 @@ openssl x509 -in cloudflare.crt -text -noout</code></pre>
           <span><i data-lucide="refresh-cw" class="icon-svg"></i> Pipeline</span>
         </div>
       </div>
-      <span class="lab-arrow">▼</span>
+      <span class="<label class="lab-check" onclick="event.stopPropagation()" id="check-lab-08"><input type="checkbox" onchange="toggleLabComplete('lab-08')" id="cb-lab-08"><span class="check-label">Concluído</span></label>
+      lab-arrow">▼</span>
     </div>
     <div class="lab-card-body"><div class="lab-card-body-inner">
       <p>Configure um pipeline CI/CD com GitHub Actions para build, push e deploy automatizado.</p>
@@ -3396,7 +3455,8 @@ openssl x509 -in cloudflare.crt -text -noout</code></pre>
           <span><i data-lucide="bar-chart-3" class="icon-svg"></i> Métricas</span>
         </div>
       </div>
-      <span class="lab-arrow">▼</span>
+      <span class="<label class="lab-check" onclick="event.stopPropagation()" id="check-lab-09"><input type="checkbox" onchange="toggleLabComplete('lab-09')" id="cb-lab-09"><span class="check-label">Concluído</span></label>
+      lab-arrow">▼</span>
     </div>
     <div class="lab-card-body"><div class="lab-card-body-inner">
       <p>Instale a stack de observabilidade completa: Prometheus para métricas e Grafana para dashboards.</p>
@@ -3422,7 +3482,8 @@ openssl x509 -in cloudflare.crt -text -noout</code></pre>
           <span><i data-lucide="wrench" class="icon-svg"></i> Diagnóstico</span>
         </div>
       </div>
-      <span class="lab-arrow">▼</span>
+      <span class="<label class="lab-check" onclick="event.stopPropagation()" id="check-lab-10"><input type="checkbox" onchange="toggleLabComplete('lab-10')" id="cb-lab-10"><span class="check-label">Concluído</span></label>
+      lab-arrow">▼</span>
     </div>
     <div class="lab-card-body"><div class="lab-card-body-inner">
       <p>Pratique cenários reais de troubleshooting: Pods em CrashLoop, Services sem endpoints, Ingress quebrado.</p>
@@ -3460,277 +3521,12 @@ openssl x509 -in cloudflare.crt -text -noout</code></pre>
   </div>
 </div>
 
-<script>
-// ===== DATA =====
-const searchData = [
-  {t:"Laboratórios",s:"Prática",h:"#labs"},
-  {t:"Lab K3s",s:"Prática",h:"#lab-01"},
-  {t:"Lab Helm",s:"Prática",h:"#lab-02"},
-  {t:"Lab Traefik",s:"Prática",h:"#lab-03"},
-  {t:"Lab Cloudflare",s:"Prática",h:"#lab-04"},
-  {t:"Lab Frontend",s:"Prática",h:"#lab-05"},
-  {t:"Lab Backend",s:"Prática",h:"#lab-06"},
-  {t:"Lab PostgreSQL",s:"Prática",h:"#lab-07"},
-  {t:"Lab CI/CD",s:"Prática",h:"#lab-08"},
-  {t:"Lab Observabilidade",s:"Prática",h:"#lab-09"},
-  {t:"Lab Troubleshooting",s:"Prática",h:"#lab-10"},
-  {t:"Quiz",s:"Avaliação",h:"#labs"},
-
-  {t:"Laboratórios",s:"Prática",h:"#labs"},
-  {t:"Lab K3s",s:"Prática",h:"#lab-01"},
-  {t:"Lab Helm",s:"Prática",h:"#lab-02"},
-  {t:"Lab Traefik",s:"Prática",h:"#lab-03"},
-  {t:"Lab Cloudflare",s:"Prática",h:"#lab-04"},
-  {t:"Lab Frontend",s:"Prática",h:"#lab-05"},
-  {t:"Lab Backend",s:"Prática",h:"#lab-06"},
-  {t:"Lab PostgreSQL",s:"Prática",h:"#lab-07"},
-  {t:"Lab CI/CD",s:"Prática",h:"#lab-08"},
-  {t:"Lab Observabilidade",s:"Prática",h:"#lab-09"},
-  {t:"Lab Troubleshooting",s:"Prática",h:"#lab-10"},
-  {t:"Quiz",s:"Avaliação",h:"#labs"},
-
-  {t:"Container",s:"Fundamentos",h:"#fundamentos"},
-  {t:"Imagem",s:"Fundamentos",h:"#fundamentos"},
-  {t:"Registry",s:"Fundamentos",h:"#fundamentos"},
-  {t:"Kubernetes",s:"Fundamentos",h:"#o-que-e-k8s"},
-  {t:"K3s",s:"Fundamentos",h:"#instalacao-k3s"},
-  {t:"Pod",s:"Recursos Básicos",h:"#recursos-basicos"},
-  {t:"Deployment",s:"Recursos Básicos",h:"#recursos-basicos"},
-  {t:"ReplicaSet",s:"Recursos Básicos",h:"#recursos-basicos"},
-  {t:"StatefulSet",s:"Recursos Básicos",h:"#recursos-basicos"},
-  {t:"DaemonSet",s:"Recursos Básicos",h:"#recursos-basicos"},
-  {t:"Job / CronJob",s:"Recursos Básicos",h:"#recursos-basicos"},
-  {t:"kubectl",s:"Operação",h:"#kubectl"},
-  {t:"kubeconfig",s:"Operação",h:"#kubectl"},
-  {t:"Service",s:"Services e Portas",h:"#services"},
-  {t:"ClusterIP",s:"Services e Portas",h:"#services"},
-  {t:"NodePort",s:"Services e Portas",h:"#services"},
-  {t:"LoadBalancer",s:"Services e Portas",h:"#services"},
-  {t:"HostPort",s:"Services e Portas",h:"#services"},
-  {t:"containerPort",s:"Services e Portas",h:"#services"},
-  {t:"targetPort",s:"Services e Portas",h:"#services"},
-  {t:"kube-proxy",s:"Rede",h:"#kube-proxy"},
-  {t:"CNI",s:"Rede",h:"#kube-proxy"},
-  {t:"Flannel",s:"Rede",h:"#kube-proxy"},
-  {t:"Calico",s:"Rede",h:"#kube-proxy"},
-  {t:"Cilium",s:"Rede",h:"#kube-proxy"},
-  {t:"Ingress",s:"Ingress",h:"#ingress"},
-  {t:"Ingress Controller",s:"Ingress",h:"#ingress"},
-  {t:"Traefik",s:"Proxies",h:"#proxy-comparacao"},
-  {t:"NGINX Ingress",s:"Proxies",h:"#proxy-comparacao"},
-  {t:"HAProxy",s:"Proxies",h:"#proxy-comparacao"},
-  {t:"Envoy",s:"Proxies",h:"#proxy-comparacao"},
-  {t:"Cloudflare",s:"Proxies",h:"#proxy-comparacao"},
-  {t:"MetalLB",s:"On-premises",h:"#proxy-comparacao"},
-  {t:"Volume",s:"Storage",h:"#storage"},
-  {t:"PVC",s:"Storage",h:"#storage"},
-  {t:"PersistentVolume",s:"Storage",h:"#storage"},
-  {t:"StorageClass",s:"Storage",h:"#storage"},
-  {t:"CSI",s:"Storage",h:"#storage"},
-  {t:"Longhorn",s:"Storage",h:"#longhorn"},
-  {t:"NFS",s:"Storage",h:"#longhorn"},
-  {t:"Ceph",s:"Storage",h:"#longhorn"},
-  {t:"emptyDir",s:"Storage",h:"#storage"},
-  {t:"hostPath",s:"Storage",h:"#storage"},
-  {t:"Secret",s:"Segurança",h:"#seguranca"},
-  {t:"ConfigMap",s:"Segurança",h:"#seguranca"},
-  {t:"RBAC",s:"Segurança",h:"#seguranca"},
-  {t:"NetworkPolicy",s:"Segurança",h:"#seguranca"},
-  {t:"Sealed Secrets",s:"Segurança",h:"#seguranca"},
-  {t:"Helm",s:"CI/CD",h:"#cicd"},
-  {t:"Chart",s:"CI/CD",h:"#cicd"},
-  {t:"Release",s:"CI/CD",h:"#cicd"},
-  {t:"GitHub Actions",s:"CI/CD",h:"#cicd"},
-  {t:"GitLab CI",s:"CI/CD",h:"#cicd"},
-  {t:"GitOps",s:"CI/CD",h:"#cicd"},
-  {t:"Argo CD",s:"CI/CD",h:"#cicd"},
-  {t:"Flux CD",s:"CI/CD",h:"#cicd"},
-  {t:"Terraform",s:"CI/CD",h:"#cicd"},
-  {t:"Ansible",s:"CI/CD",h:"#cicd"},
-  {t:"Kustomize",s:"CI/CD",h:"#cicd"},
-  {t:"CrashLoopBackOff",s:"Troubleshooting",h:"#troubleshooting"},
-  {t:"ImagePullBackOff",s:"Troubleshooting",h:"#troubleshooting"},
-  {t:"Pending",s:"Troubleshooting",h:"#troubleshooting"},
-  {t:"521",s:"Troubleshooting",h:"#troubleshooting"},
-  {t:"526",s:"Troubleshooting",h:"#troubleshooting"},
-  {t:"502",s:"Troubleshooting",h:"#troubleshooting"},
-  {t:"404",s:"Troubleshooting",h:"#troubleshooting"},
-  {t:"Prometheus",s:"Observabilidade",h:"#observabilidade"},
-  {t:"Grafana",s:"Observabilidade",h:"#observabilidade"},
-  {t:"Loki",s:"Observabilidade",h:"#observabilidade"},
-  {t:"readinessProbe",s:"Observabilidade",h:"#observabilidade"},
-  {t:"livenessProbe",s:"Observabilidade",h:"#observabilidade"},
-  {t:"startupProbe",s:"Observabilidade",h:"#observabilidade"},
-  {t:"HPA",s:"Referência",h:"#glossario"},
-  {t:"PDB",s:"Referência",h:"#glossario"},
-  {t:"Glossário",s:"Referência",h:"#glossario"},
-  {t:"Checklist",s:"Checklists",h:"#checklists"},
-  {t:"Plano de Estudos",s:"Plano 30 Dias",h:"#plano-estudos"},
-  {t:"Fórmula Mental",s:"Fórmula Mental",h:"#formula"}
-];
-
-// ===== THEME TOGGLE =====
-const themeToggle = document.getElementById('themeToggle');
-const html = document.documentElement;
-const savedTheme = localStorage.getItem('k8s-theme') || 'dark';
-html.setAttribute('data-theme', savedTheme);
-themeToggle.innerHTML = savedTheme === 'dark' ? '<i data-lucide="moon" class="icon-svg"></i>' : '<i data-lucide="sun" class="icon-svg"></i>';
-
-themeToggle.addEventListener('click', () => {
-  const current = html.getAttribute('data-theme');
-  const next = current === 'dark' ? 'light' : 'dark';
-  html.setAttribute('data-theme', next);
-  localStorage.setItem('k8s-theme', next);
-  themeToggle.innerHTML = next === 'dark' ? '<i data-lucide="moon" class="icon-svg"></i>' : '<i data-lucide="sun" class="icon-svg"></i>';
-    lucide.createIcons();
-});
-
-// ===== SIDEBAR TOGGLE (MOBILE) =====
-const menuToggle = document.getElementById('menuToggle');
-const sidebar = document.getElementById('sidebar');
-const overlay = document.getElementById('sidebarOverlay');
-
-menuToggle.addEventListener('click', () => {
-  sidebar.classList.toggle('open');
-  overlay.classList.toggle('open');
-});
-overlay.addEventListener('click', () => {
-  sidebar.classList.remove('open');
-  overlay.classList.remove('open');
-});
-
-// Close sidebar on link click (mobile)
-sidebar.querySelectorAll('.sidebar-link').forEach(link => {
-  link.addEventListener('click', () => {
-    if (window.innerWidth <= 1024) {
-      sidebar.classList.remove('open');
-      overlay.classList.remove('open');
-    }
-  });
-});
-
-// ===== ACTIVE SIDEBAR TRACKING =====
-const sections = document.querySelectorAll('.section[id], .hero[id], .journey[id]');
-const sidebarLinks = document.querySelectorAll('.sidebar-link');
-
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      const id = entry.target.id;
-      sidebarLinks.forEach(link => {
-        link.classList.toggle('active', link.getAttribute('href') === '#' + id);
-      });
-    }
-  });
-}, { rootMargin: '-80px 0px -70% 0px', threshold: 0 });
-
-sections.forEach(s => observer.observe(s));
-
-// ===== PROGRESS BAR =====
-const progressBar = document.getElementById('progress-bar');
-window.addEventListener('scroll', () => {
-  const scrollTop = document.documentElement.scrollTop;
-  const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-  const progress = (scrollTop / scrollHeight) * 100;
-  progressBar.style.width = progress + '%';
-});
-
-// ===== BACK TO TOP =====
-const backToTop = document.getElementById('backToTop');
-window.addEventListener('scroll', () => {
-  backToTop.classList.toggle('visible', window.scrollY > 400);
-});
-
-// ===== SEARCH =====
-const searchModal = document.getElementById('searchModal');
-const searchInput = document.getElementById('searchInput');
-const searchResults = document.getElementById('searchResults');
-const searchBtn = document.getElementById('searchBtn');
-
-function openSearch() {
-  searchModal.classList.add('open');
-  searchInput.focus();
+// Migrate old key
+if (localStorage.getItem('k8s-quiz-progress') && !localStorage.getItem('k8s-progress')) {
+  localStorage.setItem('k8s-progress', localStorage.getItem('k8s-quiz-progress'));
+  localStorage.removeItem('k8s-quiz-progress');
 }
-function closeSearch() {
-  searchModal.classList.remove('open');
-  searchInput.value = '';
-  searchResults.innerHTML = '<div class="search-empty">Digite para buscar no manual...</div>';
-}
-
-searchBtn.addEventListener('click', openSearch);
-searchModal.addEventListener('click', (e) => {
-  if (e.target === searchModal) closeSearch();
-});
-document.addEventListener('keydown', (e) => {
-  if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
-    e.preventDefault();
-    searchModal.classList.contains('open') ? closeSearch() : openSearch();
-  }
-  if (e.key === 'Escape') closeSearch();
-});
-
-function performSearch(query) {
-  if (!query.trim()) {
-    searchResults.innerHTML = '<div class="search-empty">Digite para buscar no manual...</div>';
-    return;
-  }
-  const q = query.toLowerCase();
-  const results = searchData.filter(d => d.t.toLowerCase().includes(q) || d.s.toLowerCase().includes(q));
-  if (results.length === 0) {
-    searchResults.innerHTML = '<div class="search-empty">Nenhum resultado encontrado.</div>';
-    return;
-  }
-  searchResults.innerHTML = results.map(r =>
-    `<a class="search-result" href="${r.h}" onclick="closeSearch()"><div class="sr-title">${r.t}</div><div class="sr-section">${r.s}</div></a>`
-  ).join('');
-}
-
-// ===== COPY CODE =====
-function copyCode(btn, e) {
-  if (e) e.stopPropagation();
-  const code = btn.closest('.code-block').querySelector('code').textContent;
-  navigator.clipboard.writeText(code).then(() => {
-    btn.classList.add('copied');
-    btn.innerHTML = '✅ Copiado!';
-    setTimeout(() => {
-      btn.classList.remove('copied');
-      btn.innerHTML = '📋 Copiar';
-    }, 2000);
-  });
-}
-
-// ===== COLLAPSIBLE =====
-function toggleCollapsible(el, e) {
-  // Don't toggle if clicking inside code block or copy button
-  if (e && e.target.closest('.code-block') || event.target.closest('.copy-btn')) return;
-  el.classList.toggle('open');
-  const body = el.querySelector('.collapsible-body');
-  if (el.classList.contains('open')) {
-    body.style.maxHeight = body.scrollHeight + 'px';
-  } else {
-    body.style.maxHeight = '0';
-  }
-}
-
-// ===== CHECKLIST =====
-function toggleChecklist(checkbox) {
-  const item = checkbox.closest('.checklist-item');
-  item.classList.toggle('checked', checkbox.checked);
-}
-
-// ===== GLOSSARY FILTER =====
-function filterGlossary(query) {
-  const items = document.querySelectorAll('.glossary-item');
-  const q = query.toLowerCase();
-  items.forEach(item => {
-    const term = item.getAttribute('data-term') || '';
-    const text = item.textContent.toLowerCase();
-    item.style.display = (!q || text.includes(q) || term.includes(q)) ? '' : 'none';
-  });
-}
-</script>
-
-// ===== QUIZ DATA & PROGRESS =====
+// ===== DATA & CONSTANTS =====
 const QUIZ_IDS = ['fundamentos','arquitetura','kubectl','services','ingress','storage','seguranca','fullstack','cicd','observabilidade','troubleshooting'];
 const QUIZ_NAMES = {
   fundamentos: 'Fundamentos', arquitetura: 'Arquitetura', kubectl: 'kubectl',
@@ -3740,16 +3536,26 @@ const QUIZ_NAMES = {
 };
 const TOTAL_QUESTIONS = {fundamentos:3, arquitetura:3, kubectl:3, services:3, ingress:3, storage:2, seguranca:3, fullstack:3, cicd:2, observabilidade:3, troubleshooting:3};
 
+const LAB_IDS = ['lab-01','lab-02','lab-03','lab-04','lab-05','lab-06','lab-07','lab-08','lab-09','lab-10'];
+const LAB_NAMES = {
+  'lab-01': 'K3s Server + Worker', 'lab-02': 'Helm e Repositórios',
+  'lab-03': 'Traefik via Helm', 'lab-04': 'Cloudflare TLS',
+  'lab-05': 'Deploy Frontend', 'lab-06': 'Deploy Backend',
+  'lab-07': 'PostgreSQL', 'lab-08': 'CI/CD GitHub Actions',
+  'lab-09': 'Observabilidade', 'lab-10': 'Troubleshooting',
+};
+
+// ===== PERSISTENCE =====
 function getProgress() {
-  try { return JSON.parse(localStorage.getItem('k8s-quiz-progress') || '{}'); } catch(e) { return {}; }
+  try { return JSON.parse(localStorage.getItem('k8s-progress') || '{}'); } catch(e) { return {}; }
 }
 function saveProgress(progress) {
-  localStorage.setItem('k8s-quiz-progress', JSON.stringify(progress));
+  localStorage.setItem('k8s-progress', JSON.stringify(progress));
 }
 
 // ===== LAB TOGGLE =====
 function toggleLab(el, e) {
-  if (e.target.closest('a')) return;
+  if (e.target.closest('a') || e.target.closest('.lab-check')) return;
   const body = el.querySelector('.lab-card-body');
   const isOpen = el.classList.contains('open');
   document.querySelectorAll('.lab-card.open').forEach(card => {
@@ -3757,6 +3563,23 @@ function toggleLab(el, e) {
   });
   if (isOpen) { el.classList.remove('open'); body.style.maxHeight = '0'; }
   else { el.classList.add('open'); body.style.maxHeight = body.scrollHeight + 'px'; }
+}
+
+// ===== LAB COMPLETION =====
+function toggleLabComplete(labId) {
+  const cb = document.getElementById('cb-' + labId);
+  const label = document.getElementById('check-' + labId);
+  const progress = getProgress();
+  if (!progress.labs) progress.labs = {};
+  if (cb.checked) {
+    progress.labs[labId] = true;
+    label.classList.add('done');
+  } else {
+    delete progress.labs[labId];
+    label.classList.remove('done');
+  }
+  saveProgress(progress);
+  updateProgressUI();
 }
 
 // ===== QUIZ SYSTEM =====
@@ -3775,19 +3598,19 @@ function checkQuiz(radio) {
   if (selected === correct) {
     radio.closest('.quiz-option').classList.add('correct');
     feedback.className = 'quiz-feedback show correct-fb';
-    feedback.textContent = '✓ Correto! Excelente!';
+    feedback.textContent = '\u2713 Correto! Excelente!';
   } else {
     radio.closest('.quiz-option').classList.add('incorrect');
     options[correct].classList.add('correct');
     feedback.className = 'quiz-feedback show incorrect-fb';
-    feedback.textContent = '✗ Incorreto. A resposta correta está destacada em verde.';
+    feedback.textContent = '\u2717 Incorreto. A resposta correta est\u00e1 destacada em verde.';
   }
 
-  // Save individual answer
   const progress = getProgress();
-  if (!progress[quizId]) progress[quizId] = {};
+  if (!progress.quizzes) progress.quizzes = {};
   const qIndex = Array.from(quizBox.querySelectorAll('.quiz-question')).indexOf(question);
-  progress[quizId]['q' + qIndex] = selected === correct;
+  if (!progress.quizzes[quizId]) progress.quizzes[quizId] = {};
+  progress.quizzes[quizId]['q' + qIndex] = selected === correct;
   saveProgress(progress);
 }
 
@@ -3815,60 +3638,76 @@ function showScore(quizId, totalQuestions) {
   if (pct === 100) {
     scoreEl.style.background = 'var(--green-subtle)'; scoreEl.style.color = 'var(--green)';
     scoreEl.style.borderColor = 'rgba(63,185,80,0.3)';
-    scoreEl.textContent = '🎉 Perfeito! ' + correct + '/' + totalQuestions + ' — Você dominou este módulo!';
+    scoreEl.textContent = '\ud83c\udf89 Perfeito! ' + correct + '/' + totalQuestions + ' \u2014 Voc\u00ea dominou este m\u00f3dulo!';
   } else if (pct >= 60) {
     scoreEl.style.background = 'var(--accent-subtle)'; scoreEl.style.color = 'var(--accent)';
     scoreEl.style.borderColor = 'rgba(88,166,255,0.3)';
-    scoreEl.textContent = '👍 Bom! ' + correct + '/' + totalQuestions + ' (' + pct + '%) — Revise os tópicos errados.';
+    scoreEl.textContent = '\ud83d\udc4d Bom! ' + correct + '/' + totalQuestions + ' (' + pct + '%) \u2014 Revise os t\u00f3picos errados.';
   } else {
     scoreEl.style.background = 'var(--red-subtle)'; scoreEl.style.color = 'var(--red)';
     scoreEl.style.borderColor = 'rgba(248,81,73,0.3)';
-    scoreEl.textContent = '📚 Continue estudando! ' + correct + '/' + totalQuestions + ' (' + pct + '%) — Revise a seção e tente novamente.';
+    scoreEl.textContent = '\ud83d\udcda Continue estudando! ' + correct + '/' + totalQuestions + ' (' + pct + '%) \u2014 Revise a se\u00e7\u00e3o e tente novamente.';
   }
 
-  // Save score
   const progress = getProgress();
-  progress[quizId] = { score: correct, total: totalQuestions, pct: pct, completed: true };
+  if (!progress.quizzes) progress.quizzes = {};
+  progress.quizzes[quizId] = { score: correct, total: totalQuestions, pct: pct, completed: true };
   saveProgress(progress);
   updateProgressUI();
 }
 
-// ===== PROGRESS TRACKER =====
+// ===== PROGRESS TRACKER UI =====
 function updateProgressUI() {
   const progress = getProgress();
-  let completed = 0, totalScore = 0, totalPossible = 0;
-  const listEl = document.getElementById('progressQuizList');
+  if (!progress.quizzes) progress.quizzes = {};
+  if (!progress.labs) progress.labs = {};
+
+  // --- Quizzes ---
+  let quizCompleted = 0;
+  const quizListEl = document.getElementById('progressQuizList');
+  let quizHtml = '';
+  QUIZ_IDS.forEach(id => {
+    const data = progress.quizzes[id];
+    const isComplete = data && data.completed;
+    if (isComplete) quizCompleted++;
+    const iconClass = isComplete ? 'done' : 'pending';
+    const icon = isComplete ? (data.pct === 100 ? '\ud83c\udf89' : (data.pct >= 60 ? '\u2713' : '\u2717')) : '\u25cb';
+    let scoreText = isComplete ? data.score + '/' + data.total + ' (' + data.pct + '%)' : 'N\u00e3o respondido';
+    let scoreClass = isComplete ? (data.pct === 100 ? 'perfect' : (data.pct >= 60 ? 'good' : 'needs-work')) : '';
+    quizHtml += '<div class="progress-quiz-item"><span class="pi-icon ' + iconClass + '">' + icon + '</span><div class="pi-info"><div class="pi-name">' + QUIZ_NAMES[id] + '</div><div class="pi-score ' + scoreClass + '">' + scoreText + '</div></div></div>';
+  });
+  if (quizListEl) quizListEl.innerHTML = quizHtml;
+
+  // --- Labs ---
+  let labCompleted = 0;
+  const labListEl = document.getElementById('progressLabList');
+  let labHtml = '';
+  LAB_IDS.forEach(id => {
+    const isDone = progress.labs[id] === true;
+    if (isDone) labCompleted++;
+    const iconClass = isDone ? 'done' : 'pending';
+    const icon = isDone ? '\u2713' : '\u25cb';
+    let statusText = isDone ? 'Conclu\u00eddo' : 'Pendente';
+    let statusClass = isDone ? 'done' : '';
+    labHtml += '<div class="progress-lab-item"><span class="pl-icon ' + iconClass + '">' + icon + '</span><div class="pl-info"><div class="pl-name">' + LAB_NAMES[id] + '</div><div class="pl-status ' + statusClass + '">' + statusText + '</div></div></div>';
+  });
+  if (labListEl) labListEl.innerHTML = labHtml;
+
+  // --- Overall ---
+  const totalItems = QUIZ_IDS.length + LAB_IDS.length;
+  const totalDone = quizCompleted + labCompleted;
+  const overallPct = totalItems > 0 ? Math.round((totalDone / totalItems) * 100) : 0;
   const pctEl = document.getElementById('progressPct');
   const barEl = document.getElementById('progressBarFill');
-  if (!listEl) return;
-
-  let html = '';
-  QUIZ_IDS.forEach(id => {
-    const data = progress[id];
-    const isComplete = data && data.completed;
-    if (isComplete) { completed++; totalScore += data.score; totalPossible += data.total; }
-
-    const iconClass = isComplete ? 'done' : 'pending';
-    const icon = isComplete ? (data.pct === 100 ? '🎉' : (data.pct >= 60 ? '✓' : '✗')) : '○';
-    let scoreText = isComplete ? data.score + '/' + data.total + ' (' + data.pct + '%)' : 'Não respondido';
-    let scoreClass = isComplete ? (data.pct === 100 ? 'perfect' : (data.pct >= 60 ? 'good' : 'needs-work')) : '';
-
-    html += '<div class="progress-quiz-item">' +
-      '<span class="pi-icon ' + iconClass + '">' + icon + '</span>' +
-      '<div class="pi-info"><div class="pi-name">' + QUIZ_NAMES[id] + '</div>' +
-      '<div class="pi-score ' + scoreClass + '">' + scoreText + '</div></div></div>';
-  });
-  listEl.innerHTML = html;
-
-  const overallPct = QUIZ_IDS.length > 0 ? Math.round((completed / QUIZ_IDS.length) * 100) : 0;
-  if (pctEl) pctEl.textContent = overallPct + '%';
+  if (pctEl) pctEl.textContent = overallPct + '% (' + totalDone + '/' + totalItems + ')';
   if (barEl) barEl.style.width = overallPct + '%';
 }
 
+// ===== RESET =====
 function resetProgress() {
   if (!confirm('Tem certeza que deseja limpar todo o progresso?')) return;
-  localStorage.removeItem('k8s-quiz-progress');
-  // Reset all quiz UIs
+  localStorage.removeItem('k8s-progress');
+  // Reset quiz UIs
   QUIZ_IDS.forEach(id => {
     const quiz = document.getElementById('quiz-' + id);
     if (quiz) {
@@ -3882,41 +3721,60 @@ function resetProgress() {
       if (scoreEl) { scoreEl.className = 'quiz-score'; scoreEl.textContent = ''; scoreEl.removeAttribute('style'); }
     }
   });
+  // Reset lab checkboxes
+  LAB_IDS.forEach(id => {
+    const cb = document.getElementById('cb-' + id);
+    const label = document.getElementById('check-' + id);
+    if (cb) cb.checked = false;
+    if (label) label.classList.remove('done');
+  });
   updateProgressUI();
 }
 
-function restoreQuizState() {
+// ===== RESTORE STATE =====
+function restoreState() {
   const progress = getProgress();
+  if (!progress.quizzes) progress.quizzes = {};
+  if (!progress.labs) progress.labs = {};
+
+  // Restore quiz scores
   QUIZ_IDS.forEach(id => {
-    const data = progress[id];
+    const data = progress.quizzes[id];
     if (!data || !data.completed) return;
-    // Restore the score display
     const scoreEl = document.getElementById('score-' + id);
     if (scoreEl && data.pct !== undefined) {
       scoreEl.className = 'quiz-score show';
       if (data.pct === 100) {
         scoreEl.style.background = 'var(--green-subtle)'; scoreEl.style.color = 'var(--green)';
         scoreEl.style.borderColor = 'rgba(63,185,80,0.3)';
-        scoreEl.textContent = '🎉 Perfeito! ' + data.score + '/' + data.total + ' — Você dominou este módulo!';
+        scoreEl.textContent = '\ud83c\udf89 Perfeito! ' + data.score + '/' + data.total + ' \u2014 Voc\u00ea dominou este m\u00f3dulo!';
       } else if (data.pct >= 60) {
         scoreEl.style.background = 'var(--accent-subtle)'; scoreEl.style.color = 'var(--accent)';
         scoreEl.style.borderColor = 'rgba(88,166,255,0.3)';
-        scoreEl.textContent = '👍 Bom! ' + data.score + '/' + data.total + ' (' + data.pct + '%) — Revise os tópicos errados.';
+        scoreEl.textContent = '\ud83d\udc4d Bom! ' + data.score + '/' + data.total + ' (' + data.pct + '%) \u2014 Revise os t\u00f3picos errados.';
       } else {
         scoreEl.style.background = 'var(--red-subtle)'; scoreEl.style.color = 'var(--red)';
         scoreEl.style.borderColor = 'rgba(248,81,73,0.3)';
-        scoreEl.textContent = '📚 Continue estudando! ' + data.score + '/' + data.total + ' (' + data.pct + '%) — Revise a seção e tente novamente.';
+        scoreEl.textContent = '\ud83d\udcda Continue estudando! ' + data.score + '/' + data.total + ' (' + data.pct + '%)';
       }
+    }
+  });
+
+  // Restore lab checkboxes
+  LAB_IDS.forEach(id => {
+    if (progress.labs[id]) {
+      const cb = document.getElementById('cb-' + id);
+      const label = document.getElementById('check-' + id);
+      if (cb) cb.checked = true;
+      if (label) label.classList.add('done');
     }
   });
 }
 
 // ===== INIT =====
 document.addEventListener('DOMContentLoaded', function() {
-  restoreQuizState();
+  restoreState();
   updateProgressUI();
 });
 
-
-</body>
-</html>
+>
