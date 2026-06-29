@@ -3666,11 +3666,28 @@ openssl x509 -in cloudflare.crt -text -noout</code></pre>
   </div>
 </div>
 
-// Migrate old key
+// Migrate old keys
 if (localStorage.getItem('k8s-quiz-progress') && !localStorage.getItem('k8s-progress')) {
   localStorage.setItem('k8s-progress', localStorage.getItem('k8s-quiz-progress'));
   localStorage.removeItem('k8s-quiz-progress');
 }
+// Migrate old quiz format (boolean values to objects)
+try {
+  var _p = JSON.parse(localStorage.getItem('k8s-progress') || '{}');
+  if (_p.quizzes) {
+    Object.keys(_p.quizzes).forEach(function(qid) {
+      var q = _p.quizzes[qid];
+      Object.keys(q).forEach(function(k) {
+        if (typeof q[k] === 'boolean') {
+          // Old format: q0: true/false — can't restore radio without knowing which option
+          // Mark as needing retake by deleting the key
+          delete q[k];
+        }
+      });
+    });
+    localStorage.setItem('k8s-progress', JSON.stringify(_p));
+  }
+} catch(e) {}
 // ===== DATA & CONSTANTS =====
 const QUIZ_IDS = ['fundamentos','arquitetura','kubectl','services','ingress','storage','seguranca','fullstack','cicd','observabilidade','troubleshooting'];
 const QUIZ_NAMES = {
@@ -3797,7 +3814,7 @@ function showScore(quizId, totalQuestions) {
 
   const progress = getProgress();
   if (!progress.quizzes) progress.quizzes = {};
-  progress.quizzes[quizId] = { score: correct, total: totalQuestions, pct: pct, completed: true };
+  progress.quizzes[quizId] = { ...progress.quizzes[quizId], score: correct, total: totalQuestions, pct: pct, completed: true };
   saveProgress(progress);
   updateProgressUI();
 }
@@ -3984,7 +4001,8 @@ function checkQuiz(radio) {
   options.forEach(opt => { opt.classList.add('disabled'); opt.querySelector('input').disabled = true; });
   const quizBox = radio.closest('.quiz-box');
   const quizId = quizBox.id.replace('quiz-', '');
-  if (selected === correct) {
+  const isCorrect = selected === correct;
+  if (isCorrect) {
     radio.closest('.quiz-option').classList.add('correct');
     feedback.className = 'quiz-feedback show correct-fb';
     feedback.textContent = '\u2713 Correto! Excelente!';
@@ -3998,7 +4016,7 @@ function checkQuiz(radio) {
   if (!progress.quizzes) progress.quizzes = {};
   const qIndex = Array.from(quizBox.querySelectorAll('.quiz-question')).indexOf(question);
   if (!progress.quizzes[quizId]) progress.quizzes[quizId] = {};
-  progress.quizzes[quizId]['q' + qIndex] = selected === correct;
+  progress.quizzes[quizId]['q' + qIndex] = { selected: selected, correct: isCorrect };
   saveProgress(progress);
 }
 
@@ -4035,7 +4053,7 @@ function showScore(quizId, totalQuestions) {
   }
   const progress = getProgress();
   if (!progress.quizzes) progress.quizzes = {};
-  progress.quizzes[quizId] = { score: correct, total: totalQuestions, pct: pct, completed: true };
+  progress.quizzes[quizId] = { ...progress.quizzes[quizId], score: correct, total: totalQuestions, pct: pct, completed: true };
   saveProgress(progress);
   updateProgressUI();
   checkAchievements();
@@ -4273,27 +4291,62 @@ function restoreState() {
   const progress = getProgress();
   if (!progress.quizzes) progress.quizzes = {};
   if (!progress.labs) progress.labs = {};
+
   QUIZ_IDS.forEach(id => {
     const data = progress.quizzes[id];
-    if (!data || !data.completed) return;
-    const scoreEl = document.getElementById('score-' + id);
-    if (scoreEl && data.pct !== undefined) {
-      scoreEl.className = 'quiz-score show';
-      if (data.pct === 100) {
-        scoreEl.style.background = 'var(--green-subtle)'; scoreEl.style.color = 'var(--green)';
-        scoreEl.style.borderColor = 'rgba(63,185,80,0.3)';
-        scoreEl.textContent = '\ud83c\udf89 Perfeito! ' + data.score + '/' + data.total + ' \u2014 Voc\u00ea dominou este m\u00f3dulo!';
-      } else if (data.pct >= 60) {
-        scoreEl.style.background = 'var(--accent-subtle)'; scoreEl.style.color = 'var(--accent)';
-        scoreEl.style.borderColor = 'rgba(88,166,255,0.3)';
-        scoreEl.textContent = '\ud83d\udc4d Bom! ' + data.score + '/' + data.total + ' (' + data.pct + '%)';
-      } else {
-        scoreEl.style.background = 'var(--red-subtle)'; scoreEl.style.color = 'var(--red)';
-        scoreEl.style.borderColor = 'rgba(248,81,73,0.3)';
-        scoreEl.textContent = '\ud83d\udcda Continue estudando! ' + data.score + '/' + data.total + ' (' + data.pct + '%)';
+    if (!data) return;
+
+    // Restore individual question states
+    const quiz = document.getElementById('quiz-' + id);
+    if (quiz) {
+      const questions = quiz.querySelectorAll('.quiz-question');
+      questions.forEach((q, qIndex) => {
+        const qData = data['q' + qIndex];
+        if (!qData || typeof qData !== 'object') return;
+        const options = q.querySelectorAll('.quiz-option');
+        const feedback = q.querySelector('.quiz-feedback');
+        // Disable all options
+        options.forEach(opt => { opt.classList.add('disabled'); opt.querySelector('input').disabled = true; });
+        // Check the saved radio
+        const savedRadio = q.querySelector('input[value="' + qData.selected + '"]');
+        if (savedRadio) savedRadio.checked = true;
+        // Show correct/incorrect classes
+        if (qData.correct) {
+          savedRadio.closest('.quiz-option').classList.add('correct');
+          feedback.className = 'quiz-feedback show correct-fb';
+          feedback.textContent = '\u2713 Correto! Excelente!';
+        } else {
+          savedRadio.closest('.quiz-option').classList.add('incorrect');
+          const correctIdx = parseInt(q.dataset.correct);
+          if (options[correctIdx]) options[correctIdx].classList.add('correct');
+          feedback.className = 'quiz-feedback show incorrect-fb';
+          feedback.textContent = '\u2717 Incorreto. A resposta correta est\u00e1 destacada em verde.';
+        }
+      });
+    }
+
+    // Restore score display
+    if (data.completed && data.pct !== undefined) {
+      const scoreEl = document.getElementById('score-' + id);
+      if (scoreEl) {
+        scoreEl.className = 'quiz-score show';
+        if (data.pct === 100) {
+          scoreEl.style.background = 'var(--green-subtle)'; scoreEl.style.color = 'var(--green)';
+          scoreEl.style.borderColor = 'rgba(63,185,80,0.3)';
+          scoreEl.textContent = '\ud83c\udf89 Perfeito! ' + data.score + '/' + data.total + ' \u2014 Voc\u00ea dominou este m\u00f3dulo!';
+        } else if (data.pct >= 60) {
+          scoreEl.style.background = 'var(--accent-subtle)'; scoreEl.style.color = 'var(--accent)';
+          scoreEl.style.borderColor = 'rgba(88,166,255,0.3)';
+          scoreEl.textContent = '\ud83d\udc4d Bom! ' + data.score + '/' + data.total + ' (' + data.pct + '%)';
+        } else {
+          scoreEl.style.background = 'var(--red-subtle)'; scoreEl.style.color = 'var(--red)';
+          scoreEl.style.borderColor = 'rgba(248,81,73,0.3)';
+          scoreEl.textContent = '\ud83d\udcda Continue estudando! ' + data.score + '/' + data.total + ' (' + data.pct + '%)';
+        }
       }
     }
   });
+
   LAB_IDS.forEach(id => {
     if (progress.labs[id]) {
       const cb = document.getElementById('cb-' + id);
