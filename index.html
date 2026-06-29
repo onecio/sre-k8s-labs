@@ -4399,13 +4399,15 @@ function copyCode(btn, e) {
   if (e) e.stopPropagation();
   var block = btn.closest('.code-block'); if (!block) return; var pre = block.querySelector('pre');
   if (!pre) return;
+  var orig = btn.innerHTML;
   navigator.clipboard.writeText(pre.textContent).then(function() {
-    var orig = btn.innerHTML;
     btn.innerHTML = '✅ Copiado!';
     btn.classList.add('copied');
     setTimeout(function() { btn.innerHTML = orig; btn.classList.remove('copied'); }, 2000);
+  }).catch(function() {
+    btn.innerHTML = '❌ Erro';
+    setTimeout(function() { btn.innerHTML = orig; }, 2000);
   });
-  }).catch(function() { btn.innerHTML = '\u274c Erro'; setTimeout(function() { btn.innerHTML = orig; }, 2000); });
 }
 
 function toggleCollapsible(el, e) {
