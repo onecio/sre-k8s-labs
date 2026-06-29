@@ -4393,6 +4393,32 @@ function copyBadgeText() {
   });
 }
 
+
+// ===== CODE COPY & COLLAPSIBLE =====
+function copyCode(btn, e) {
+  if (e) e.stopPropagation();
+  var pre = btn.closest('.code-block').querySelector('pre');
+  if (!pre) return;
+  navigator.clipboard.writeText(pre.textContent).then(function() {
+    var orig = btn.innerHTML;
+    btn.innerHTML = '✅ Copiado!';
+    btn.classList.add('copied');
+    setTimeout(function() { btn.innerHTML = orig; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+function toggleCollapsible(el, e) {
+  if (e) e.stopPropagation();
+  el.classList.toggle('open');
+  var body = el.querySelector('.collapsible-body');
+  if (!body) return;
+  if (el.classList.contains('open')) {
+    body.style.maxHeight = body.scrollHeight + 'px';
+  } else {
+    body.style.maxHeight = '0';
+  }
+}
+
 </script>
 
 </body>
