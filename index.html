@@ -1069,6 +1069,27 @@ img { max-width: 100%; }
 
 
 
+
+/* ===== ACCESSIBILITY ===== */
+.skip-link {
+  position: fixed; top: -100px; left: 16px; z-index: 99999;
+  background: var(--accent); color: #fff; padding: 8px 16px;
+  border-radius: var(--radius-sm); font-size: 14px; font-weight: 600;
+  text-decoration: none; transition: top 0.2s ease;
+}
+.skip-link:focus { top: 8px; text-decoration: none; color: #fff; }
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.quiz-option input[type="radio"]:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
 </style>
 
 
@@ -1198,7 +1219,7 @@ img { max-width: 100%; }
 
 
 <!-- Badge Preview Modal -->
-<div class="badge-overlay" id="badgeOverlay" onclick="if(event.target===this)closeBadge()">
+<div class="badge-overlay" id="badgeOverlay" role="dialog" aria-modal="true" aria-label="Badge de conquista" onclick="if(event.target===this)closeBadge()">
   <div class="badge-dialog">
     <div class="badge-dialog-header">
       <h3 id="badgeTitle">Badge de Conquista</h3>
@@ -1216,7 +1237,7 @@ img { max-width: 100%; }
 
 
 <!-- Certificate Modal -->
-<div class="cert-overlay" id="certOverlay" onclick="if(event.target===this)closeCert()">
+<div class="cert-overlay" id="certOverlay" role="dialog" aria-modal="true" aria-label="Certificado de conquista" onclick="if(event.target===this)closeCert()">
   <div class="cert-card">
     <button class="cert-close" onclick="closeCert()">✕</button>
     <div class="cert-header">
@@ -1257,7 +1278,7 @@ img { max-width: 100%; }
   <div class="progress-tracker" id="progressPanel">
     <div class="progress-header">
       <h4><i data-lucide="trophy" class="icon-svg lg"></i> Seu Progresso</h4>
-      <span class="progress-pct" id="progressPct">0%</span>
+      <span class="progress-pct" id="progressPct" aria-live="polite">0%</span>
     </div>
     <div class="progress-bar-wrap">
       <div class="progress-bar-fill" id="progressBarFill" style="width: 0%"></div>
@@ -1888,7 +1909,7 @@ kubectl delete -f arquivo.yaml</code></pre>
   </div>
 
   <h3>Exemplos</h3>
-  <div class="collapsible" onclick="toggleCollapsible(this, event)">
+  <div class="collapsible" role="button" tabindex="0" aria-expanded="false" onclick="toggleCollapsible(this, event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleCollapsible(this,event)}">
     <div class="collapsible-header"><i data-lucide="circle" class="icon-svg lg" style="color:var(--accent)"></i> ClusterIP <span class="collapsible-arrow">▼</span></div>
     <div class="collapsible-body"><div class="collapsible-body-inner">
       <div class="code-block">
@@ -1908,7 +1929,7 @@ spec:
       </div>
     </div></div>
   </div>
-  <div class="collapsible" onclick="toggleCollapsible(this, event)">
+  <div class="collapsible" role="button" tabindex="0" aria-expanded="false" onclick="toggleCollapsible(this, event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleCollapsible(this,event)}">
     <div class="collapsible-header"><i data-lucide="circle" class="icon-svg lg" style="color:var(--orange)"></i> NodePort <span class="collapsible-arrow">▼</span></div>
     <div class="collapsible-body"><div class="collapsible-body-inner">
       <div class="code-block">
@@ -1929,7 +1950,7 @@ spec:
       </div>
     </div></div>
   </div>
-  <div class="collapsible" onclick="toggleCollapsible(this, event)">
+  <div class="collapsible" role="button" tabindex="0" aria-expanded="false" onclick="toggleCollapsible(this, event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleCollapsible(this,event)}">
     <div class="collapsible-header"><i data-lucide="circle" class="icon-svg lg" style="color:var(--green)"></i> LoadBalancer <span class="collapsible-arrow">▼</span></div>
     <div class="collapsible-body"><div class="collapsible-body-inner">
       <div class="code-block">
@@ -3250,7 +3271,7 @@ openssl x509 -in cloudflare.crt -text -noout</code></pre>
 <section class="section" id="exercicios">
   <h2><span class="sec-icon" style="background:var(--orange-subtle);color:var(--orange);"><i data-lucide="dumbbell" class="icon-svg"></i></span> 18. Exercícios de Aprendizagem</h2>
 
-  <div class="collapsible" onclick="toggleCollapsible(this, event)">
+  <div class="collapsible" role="button" tabindex="0" aria-expanded="false" onclick="toggleCollapsible(this, event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleCollapsible(this,event)}">
     <div class="collapsible-header"><i data-lucide="circle" class="icon-svg" style="color:var(--green)"></i> Nível 1 — Publicar Página Estática <span class="collapsible-arrow">▼</span></div>
     <div class="collapsible-body"><div class="collapsible-body-inner">
       <ol>
@@ -3264,7 +3285,7 @@ openssl x509 -in cloudflare.crt -text -noout</code></pre>
     </div></div>
   </div>
 
-  <div class="collapsible" onclick="toggleCollapsible(this, event)">
+  <div class="collapsible" role="button" tabindex="0" aria-expanded="false" onclick="toggleCollapsible(this, event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleCollapsible(this,event)}">
     <div class="collapsible-header"><i data-lucide="circle" class="icon-svg" style="color:var(--accent)"></i> Nível 2 — Publicar API <span class="collapsible-arrow">▼</span></div>
     <div class="collapsible-body"><div class="collapsible-body-inner">
       <ol>
@@ -3277,7 +3298,7 @@ openssl x509 -in cloudflare.crt -text -noout</code></pre>
     </div></div>
   </div>
 
-  <div class="collapsible" onclick="toggleCollapsible(this, event)">
+  <div class="collapsible" role="button" tabindex="0" aria-expanded="false" onclick="toggleCollapsible(this, event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleCollapsible(this,event)}">
     <div class="collapsible-header"><i data-lucide="circle" class="icon-svg" style="color:var(--orange)"></i> Nível 3 — Banco com Volume <span class="collapsible-arrow">▼</span></div>
     <div class="collapsible-body"><div class="collapsible-body-inner">
       <ol>
@@ -3290,7 +3311,7 @@ openssl x509 -in cloudflare.crt -text -noout</code></pre>
     </div></div>
   </div>
 
-  <div class="collapsible" onclick="toggleCollapsible(this, event)">
+  <div class="collapsible" role="button" tabindex="0" aria-expanded="false" onclick="toggleCollapsible(this, event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleCollapsible(this,event)}">
     <div class="collapsible-header"><i data-lucide="circle" class="icon-svg" style="color:var(--red)"></i> Nível 4 — CI/CD <span class="collapsible-arrow">▼</span></div>
     <div class="collapsible-body"><div class="collapsible-body-inner">
       <ol>
@@ -3449,7 +3470,7 @@ openssl x509 -in cloudflare.crt -text -noout</code></pre>
 
   <!-- Lab 01 -->
   <div class="lab-card" id="lab-01">
-    <div class="lab-card-header" onclick="toggleLab(this.closest('[id^=lab-]').parentElement, event)"> onclick="toggleLab(this.closest(\'[id^=lab-]\').parentElement, event)"
+    <div class="lab-card-header" role="button" tabindex="0" aria-expanded="false" onclick="toggleLab(this.closest('[id^=lab-]').parentElement, event)"> onclick="toggleLab(this.closest(\'[id^=lab-]\').parentElement, event)"
       <span class="lab-num">01</span>
       <div class="lab-info">
         <h4>Instalar K3s Server e Worker</h4>
@@ -3477,7 +3498,7 @@ openssl x509 -in cloudflare.crt -text -noout</code></pre>
 
   <!-- Lab 02 -->
   <div class="lab-card" id="lab-02">
-    <div class="lab-card-header" onclick="toggleLab(this.closest('[id^=lab-]').parentElement, event)"> onclick="toggleLab(this.closest(\'[id^=lab-]\').parentElement, event)"
+    <div class="lab-card-header" role="button" tabindex="0" aria-expanded="false" onclick="toggleLab(this.closest('[id^=lab-]').parentElement, event)"> onclick="toggleLab(this.closest(\'[id^=lab-]\').parentElement, event)"
       <span class="lab-num">02</span>
       <div class="lab-info">
         <h4>Helm e Repositórios</h4>
@@ -3504,7 +3525,7 @@ openssl x509 -in cloudflare.crt -text -noout</code></pre>
 
   <!-- Lab 03 -->
   <div class="lab-card" id="lab-03">
-    <div class="lab-card-header" onclick="toggleLab(this.closest('[id^=lab-]').parentElement, event)"> onclick="toggleLab(this.closest(\'[id^=lab-]\').parentElement, event)"
+    <div class="lab-card-header" role="button" tabindex="0" aria-expanded="false" onclick="toggleLab(this.closest('[id^=lab-]').parentElement, event)"> onclick="toggleLab(this.closest(\'[id^=lab-]\').parentElement, event)"
       <span class="lab-num">03</span>
       <div class="lab-info">
         <h4>Traefik via Helm</h4>
@@ -3531,7 +3552,7 @@ openssl x509 -in cloudflare.crt -text -noout</code></pre>
 
   <!-- Lab 04 -->
   <div class="lab-card" id="lab-04">
-    <div class="lab-card-header" onclick="toggleLab(this.closest('[id^=lab-]').parentElement, event)"> onclick="toggleLab(this.closest(\'[id^=lab-]\').parentElement, event)"
+    <div class="lab-card-header" role="button" tabindex="0" aria-expanded="false" onclick="toggleLab(this.closest('[id^=lab-]').parentElement, event)"> onclick="toggleLab(this.closest(\'[id^=lab-]\').parentElement, event)"
       <span class="lab-num">04</span>
       <div class="lab-info">
         <h4>Cloudflare Origin Certificate + TLSStore</h4>
@@ -3558,7 +3579,7 @@ openssl x509 -in cloudflare.crt -text -noout</code></pre>
 
   <!-- Lab 05 -->
   <div class="lab-card" id="lab-05">
-    <div class="lab-card-header" onclick="toggleLab(this.closest('[id^=lab-]').parentElement, event)"> onclick="toggleLab(this.closest(\'[id^=lab-]\').parentElement, event)"
+    <div class="lab-card-header" role="button" tabindex="0" aria-expanded="false" onclick="toggleLab(this.closest('[id^=lab-]').parentElement, event)"> onclick="toggleLab(this.closest(\'[id^=lab-]\').parentElement, event)"
       <span class="lab-num">05</span>
       <div class="lab-info">
         <h4>Deploy Frontend (Nginx)</h4>
@@ -3585,7 +3606,7 @@ openssl x509 -in cloudflare.crt -text -noout</code></pre>
 
   <!-- Lab 06 -->
   <div class="lab-card" id="lab-06">
-    <div class="lab-card-header" onclick="toggleLab(this.closest('[id^=lab-]').parentElement, event)"> onclick="toggleLab(this.closest(\'[id^=lab-]\').parentElement, event)"
+    <div class="lab-card-header" role="button" tabindex="0" aria-expanded="false" onclick="toggleLab(this.closest('[id^=lab-]').parentElement, event)"> onclick="toggleLab(this.closest(\'[id^=lab-]\').parentElement, event)"
       <span class="lab-num">06</span>
       <div class="lab-info">
         <h4>Deploy Backend (API)</h4>
@@ -3612,7 +3633,7 @@ openssl x509 -in cloudflare.crt -text -noout</code></pre>
 
   <!-- Lab 07 -->
   <div class="lab-card" id="lab-07">
-    <div class="lab-card-header" onclick="toggleLab(this.closest('[id^=lab-]').parentElement, event)"> onclick="toggleLab(this.closest(\'[id^=lab-]\').parentElement, event)"
+    <div class="lab-card-header" role="button" tabindex="0" aria-expanded="false" onclick="toggleLab(this.closest('[id^=lab-]').parentElement, event)"> onclick="toggleLab(this.closest(\'[id^=lab-]\').parentElement, event)"
       <span class="lab-num">07</span>
       <div class="lab-info">
         <h4>PostgreSQL com StatefulSet</h4>
@@ -3639,7 +3660,7 @@ openssl x509 -in cloudflare.crt -text -noout</code></pre>
 
   <!-- Lab 08 -->
   <div class="lab-card" id="lab-08">
-    <div class="lab-card-header" onclick="toggleLab(this.closest('[id^=lab-]').parentElement, event)"> onclick="toggleLab(this.closest(\'[id^=lab-]\').parentElement, event)"
+    <div class="lab-card-header" role="button" tabindex="0" aria-expanded="false" onclick="toggleLab(this.closest('[id^=lab-]').parentElement, event)"> onclick="toggleLab(this.closest(\'[id^=lab-]\').parentElement, event)"
       <span class="lab-num">08</span>
       <div class="lab-info">
         <h4>CI/CD com GitHub Actions</h4>
@@ -3666,7 +3687,7 @@ openssl x509 -in cloudflare.crt -text -noout</code></pre>
 
   <!-- Lab 09 -->
   <div class="lab-card" id="lab-09">
-    <div class="lab-card-header" onclick="toggleLab(this.closest('[id^=lab-]').parentElement, event)"> onclick="toggleLab(this.closest(\'[id^=lab-]\').parentElement, event)"
+    <div class="lab-card-header" role="button" tabindex="0" aria-expanded="false" onclick="toggleLab(this.closest('[id^=lab-]').parentElement, event)"> onclick="toggleLab(this.closest(\'[id^=lab-]\').parentElement, event)"
       <span class="lab-num">09</span>
       <div class="lab-info">
         <h4>Observabilidade com Prometheus + Grafana</h4>
@@ -3693,7 +3714,7 @@ openssl x509 -in cloudflare.crt -text -noout</code></pre>
 
   <!-- Lab 10 -->
   <div class="lab-card" id="lab-10">
-    <div class="lab-card-header" onclick="toggleLab(this.closest('[id^=lab-]').parentElement, event)"> onclick="toggleLab(this.closest(\'[id^=lab-]\').parentElement, event)"
+    <div class="lab-card-header" role="button" tabindex="0" aria-expanded="false" onclick="toggleLab(this.closest('[id^=lab-]').parentElement, event)"> onclick="toggleLab(this.closest(\'[id^=lab-]\').parentElement, event)"
       <span class="lab-num">10</span>
       <div class="lab-info">
         <h4>Troubleshooting Completo</h4>
@@ -3730,7 +3751,7 @@ openssl x509 -in cloudflare.crt -text -noout</code></pre>
 <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
 <!-- Search Modal -->
-<div class="search-modal" id="searchModal">
+<div class="search-modal" id="searchModal" role="dialog" aria-modal="true" aria-label="Busca">
   <div class="search-dialog">
     <div class="search-input-wrap">
       <span class="icon">🔍</span>
@@ -3815,10 +3836,12 @@ function toggleLab(el, e) {
   const body = el.querySelector('.lab-card-body');
   const isOpen = el.classList.contains('open');
   document.querySelectorAll('.lab-card.open').forEach(card => {
-    if (card !== el) { card.classList.remove('open'); card.querySelector('.lab-card-body').style.maxHeight = '0'; }
+    if (card !== el) { card.classList.remove('open'); card.querySelector('.lab-card-body').style.maxHeight = '0'; var hdr = card.querySelector('.lab-card-header'); if (hdr) hdr.setAttribute('aria-expanded', 'false'); }
   });
   if (isOpen) { el.classList.remove('open'); body.style.maxHeight = '0'; }
   else { el.classList.add('open'); body.style.maxHeight = body.scrollHeight + 'px'; }
+  var header = el.querySelector('.lab-card-header');
+  if (header) header.setAttribute('aria-expanded', String(!isOpen));
 }
 
 // ===== LAB COMPLETION =====
@@ -4413,6 +4436,7 @@ function copyCode(btn, e) {
 function toggleCollapsible(el, e) {
   if (e) e.stopPropagation();
   el.classList.toggle('open');
+  el.setAttribute('aria-expanded', el.classList.contains('open'));
   var body = el.querySelector('.collapsible-body');
   if (!body) return;
   if (el.classList.contains('open')) {
@@ -4420,6 +4444,95 @@ function toggleCollapsible(el, e) {
   } else {
     body.style.maxHeight = '0';
   }
+}
+
+
+// ===== KEYBOARD ACCESSIBILITY =====
+
+var _previousFocus = null;
+
+// Escape key closes open modals
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    var cert = document.getElementById('certOverlay');
+    if (cert && cert.classList.contains('open')) { closeCert(); return; }
+    var badge = document.getElementById('badgeOverlay');
+    if (badge && badge.classList.contains('open')) { closeBadge(); return; }
+    var search = document.getElementById('searchModal');
+    if (search && search.classList.contains('open')) { search.classList.remove('open'); document.body.style.overflow = ''; if (_previousFocus && _previousFocus.focus) { _previousFocus.focus(); _previousFocus = null; } return; }
+  }
+});
+
+// Focus trap for modals
+function trapFocus(modalEl) {
+  var focusable = modalEl.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+  if (focusable.length === 0) return;
+  var first = focusable[0];
+  var last = focusable[focusable.length - 1];
+  function handler(e) {
+    if (e.key !== 'Tab') return;
+    if (e.shiftKey) {
+      if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+    } else {
+      if (document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+  }
+  modalEl._trapHandler = handler;
+  modalEl.addEventListener('keydown', handler);
+  first.focus();
+}
+function releaseFocus(modalEl) {
+  if (modalEl._trapHandler) {
+    modalEl.removeEventListener('keydown', modalEl._trapHandler);
+    modalEl._trapHandler = null;
+  }
+  if (_previousFocus && _previousFocus.focus) {
+    _previousFocus.focus();
+    _previousFocus = null;
+  }
+}
+
+// Override openCert/closeCert to add focus trap + focus restoration
+var _origOpenCert = openCert;
+openCert = function() {
+  _previousFocus = document.activeElement;
+  _origOpenCert();
+  trapFocus(document.getElementById('certOverlay'));
+};
+var _origCloseCert = closeCert;
+closeCert = function() {
+  releaseFocus(document.getElementById('certOverlay'));
+  _origCloseCert();
+};
+
+// Override shareQuizBadge/closeBadge for badge modal focus trap + restoration
+var _origShareQuizBadge = shareQuizBadge;
+shareQuizBadge = function(quizId) {
+  _previousFocus = document.activeElement;
+  _origShareQuizBadge(quizId);
+  trapFocus(document.getElementById('badgeOverlay'));
+};
+var _origCloseBadge = closeBadge;
+closeBadge = function() {
+  releaseFocus(document.getElementById('badgeOverlay'));
+  _origCloseBadge();
+};
+
+// Lab card keyboard support (Enter/Space to toggle)
+document.querySelectorAll('.lab-card-header').forEach(function(header) {
+  header.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      var card = header.closest('[id^="lab-"]').parentElement;
+      if (card) toggleLab(card, e);
+    }
+  });
+});
+
+// Progress reset: add aria-label
+var resetBtn = document.querySelector('.progress-reset');
+if (resetBtn && !resetBtn.getAttribute('aria-label')) {
+  resetBtn.setAttribute('aria-label', 'Limpar todo o progresso');
 }
 
 </script>
