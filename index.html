@@ -913,7 +913,7 @@ img { max-width: 100%; }
   <div class="hero-actions">
     <a href="#fundamentos" class="hero-btn primary"><i data-lucide="rocket" class="icon-svg"></i> Começar do Zero</a>
     <a href="#arquitetura" class="hero-btn secondary"><i data-lucide="building-2" class="icon-svg"></i> Ver Arquitetura</a>
-    <a href="#instalacao-k3s" class="hero-btn secondary"><i data-lucide="monitor" class="icon-svg"></i> Laboratórios</a>
+    <a href="#labs" class="hero-btn secondary"><i data-lucide="flask-conical" class="icon-svg"></i> Laboratórios</a>
     <a href="#troubleshooting" class="hero-btn secondary"><i data-lucide="wrench" class="icon-svg"></i> Troubleshooting</a>
   </div>
   <div class="hero-meta">
@@ -2863,8 +2863,8 @@ openssl x509 -in cloudflare.crt -text -noout</code></pre>
   </div>
 
   <!-- Lab 01 -->
-  <div class="lab-card" id="lab-01" onclick="toggleLab(this, event)">
-    <div class="lab-card-header">
+  <div class="lab-card" id="lab-01">
+    <div class="lab-card-header" onclick="toggleLab(this.closest('[id^=lab-]').parentElement, event)"> onclick="toggleLab(this.closest(\'[id^=lab-]\').parentElement, event)"
       <span class="lab-num">01</span>
       <div class="lab-info">
         <h4>Instalar K3s Server e Worker</h4>
@@ -2890,8 +2890,8 @@ openssl x509 -in cloudflare.crt -text -noout</code></pre>
   </div>
 
   <!-- Lab 02 -->
-  <div class="lab-card" id="lab-02" onclick="toggleLab(this, event)">
-    <div class="lab-card-header">
+  <div class="lab-card" id="lab-02">
+    <div class="lab-card-header" onclick="toggleLab(this.closest('[id^=lab-]').parentElement, event)"> onclick="toggleLab(this.closest(\'[id^=lab-]\').parentElement, event)"
       <span class="lab-num">02</span>
       <div class="lab-info">
         <h4>Helm e Repositórios</h4>
@@ -2916,8 +2916,8 @@ openssl x509 -in cloudflare.crt -text -noout</code></pre>
   </div>
 
   <!-- Lab 03 -->
-  <div class="lab-card" id="lab-03" onclick="toggleLab(this, event)">
-    <div class="lab-card-header">
+  <div class="lab-card" id="lab-03">
+    <div class="lab-card-header" onclick="toggleLab(this.closest('[id^=lab-]').parentElement, event)"> onclick="toggleLab(this.closest(\'[id^=lab-]\').parentElement, event)"
       <span class="lab-num">03</span>
       <div class="lab-info">
         <h4>Traefik via Helm</h4>
@@ -2942,8 +2942,8 @@ openssl x509 -in cloudflare.crt -text -noout</code></pre>
   </div>
 
   <!-- Lab 04 -->
-  <div class="lab-card" id="lab-04" onclick="toggleLab(this, event)">
-    <div class="lab-card-header">
+  <div class="lab-card" id="lab-04">
+    <div class="lab-card-header" onclick="toggleLab(this.closest('[id^=lab-]').parentElement, event)"> onclick="toggleLab(this.closest(\'[id^=lab-]\').parentElement, event)"
       <span class="lab-num">04</span>
       <div class="lab-info">
         <h4>Cloudflare Origin Certificate + TLSStore</h4>
@@ -2968,8 +2968,8 @@ openssl x509 -in cloudflare.crt -text -noout</code></pre>
   </div>
 
   <!-- Lab 05 -->
-  <div class="lab-card" id="lab-05" onclick="toggleLab(this, event)">
-    <div class="lab-card-header">
+  <div class="lab-card" id="lab-05">
+    <div class="lab-card-header" onclick="toggleLab(this.closest('[id^=lab-]').parentElement, event)"> onclick="toggleLab(this.closest(\'[id^=lab-]\').parentElement, event)"
       <span class="lab-num">05</span>
       <div class="lab-info">
         <h4>Deploy Frontend (Nginx)</h4>
@@ -2994,8 +2994,8 @@ openssl x509 -in cloudflare.crt -text -noout</code></pre>
   </div>
 
   <!-- Lab 06 -->
-  <div class="lab-card" id="lab-06" onclick="toggleLab(this, event)">
-    <div class="lab-card-header">
+  <div class="lab-card" id="lab-06">
+    <div class="lab-card-header" onclick="toggleLab(this.closest('[id^=lab-]').parentElement, event)"> onclick="toggleLab(this.closest(\'[id^=lab-]\').parentElement, event)"
       <span class="lab-num">06</span>
       <div class="lab-info">
         <h4>Deploy Backend (API)</h4>
@@ -3020,8 +3020,8 @@ openssl x509 -in cloudflare.crt -text -noout</code></pre>
   </div>
 
   <!-- Lab 07 -->
-  <div class="lab-card" id="lab-07" onclick="toggleLab(this, event)">
-    <div class="lab-card-header">
+  <div class="lab-card" id="lab-07">
+    <div class="lab-card-header" onclick="toggleLab(this.closest('[id^=lab-]').parentElement, event)"> onclick="toggleLab(this.closest(\'[id^=lab-]\').parentElement, event)"
       <span class="lab-num">07</span>
       <div class="lab-info">
         <h4>PostgreSQL com StatefulSet</h4>
@@ -3046,8 +3046,8 @@ openssl x509 -in cloudflare.crt -text -noout</code></pre>
   </div>
 
   <!-- Lab 08 -->
-  <div class="lab-card" id="lab-08" onclick="toggleLab(this, event)">
-    <div class="lab-card-header">
+  <div class="lab-card" id="lab-08">
+    <div class="lab-card-header" onclick="toggleLab(this.closest('[id^=lab-]').parentElement, event)"> onclick="toggleLab(this.closest(\'[id^=lab-]\').parentElement, event)"
       <span class="lab-num">08</span>
       <div class="lab-info">
         <h4>CI/CD com GitHub Actions</h4>
@@ -3072,8 +3072,8 @@ openssl x509 -in cloudflare.crt -text -noout</code></pre>
   </div>
 
   <!-- Lab 09 -->
-  <div class="lab-card" id="lab-09" onclick="toggleLab(this, event)">
-    <div class="lab-card-header">
+  <div class="lab-card" id="lab-09">
+    <div class="lab-card-header" onclick="toggleLab(this.closest('[id^=lab-]').parentElement, event)"> onclick="toggleLab(this.closest(\'[id^=lab-]\').parentElement, event)"
       <span class="lab-num">09</span>
       <div class="lab-info">
         <h4>Observabilidade com Prometheus + Grafana</h4>
@@ -3098,8 +3098,8 @@ openssl x509 -in cloudflare.crt -text -noout</code></pre>
   </div>
 
   <!-- Lab 10 -->
-  <div class="lab-card" id="lab-10" onclick="toggleLab(this, event)">
-    <div class="lab-card-header">
+  <div class="lab-card" id="lab-10">
+    <div class="lab-card-header" onclick="toggleLab(this.closest('[id^=lab-]').parentElement, event)"> onclick="toggleLab(this.closest(\'[id^=lab-]\').parentElement, event)"
       <span class="lab-num">10</span>
       <div class="lab-info">
         <h4>Troubleshooting Completo</h4>
