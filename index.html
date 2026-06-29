@@ -802,6 +802,64 @@ img { max-width: 100%; }
 .theme-toggle .icon-svg { width: 18px; height: 18px; }
 /* Search button */
 .search-btn .icon-svg { width: 14px; height: 14px; }
+
+/* ===== PROGRESS TRACKER ===== */
+.progress-tracker {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 20px; margin: 20px 0;
+  border-top: 3px solid var(--green);
+}
+.progress-tracker h4 {
+  font-size: 16px; font-weight: 700; margin-bottom: 14px;
+  display: flex; align-items: center; gap: 8px;
+}
+.progress-tracker .progress-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 14px;
+}
+.progress-tracker .progress-header .progress-pct {
+  font-size: 24px; font-weight: 800; color: var(--green);
+}
+.progress-tracker .progress-bar-wrap {
+  height: 8px; background: var(--progress-bg); border-radius: 4px;
+  overflow: hidden; margin-bottom: 16px;
+}
+.progress-tracker .progress-bar-fill {
+  height: 100%; border-radius: 4px; transition: width 0.5s ease;
+  background: linear-gradient(90deg, var(--green), var(--teal));
+}
+.progress-quiz-list {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px;
+}
+.progress-quiz-item {
+  display: flex; align-items: center; gap: 10px; padding: 10px 12px;
+  border-radius: var(--radius-sm); border: 1px solid var(--border-light);
+  font-size: 13px; transition: border var(--transition);
+}
+.progress-quiz-item:hover { border-color: var(--accent); }
+.progress-quiz-item .pi-icon {
+  width: 28px; height: 28px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; flex-shrink: 0;
+}
+.progress-quiz-item .pi-icon.done { background: var(--green-subtle); color: var(--green); }
+.progress-quiz-item .pi-icon.pending { background: var(--bg-tertiary); color: var(--text-muted); }
+.progress-quiz-item .pi-info { flex: 1; }
+.progress-quiz-item .pi-name { font-weight: 600; color: var(--text-primary); font-size: 13px; }
+.progress-quiz-item .pi-score { font-size: 11px; color: var(--text-muted); }
+.progress-quiz-item .pi-score.perfect { color: var(--green); font-weight: 600; }
+.progress-quiz-item .pi-score.good { color: var(--accent); font-weight: 600; }
+.progress-quiz-item .pi-score.needs-work { color: var(--red); font-weight: 600; }
+.progress-reset {
+  margin-top: 12px; padding: 6px 14px; border: 1px solid var(--border);
+  border-radius: var(--radius-sm); background: none; color: var(--text-muted);
+  font-size: 12px; cursor: pointer; transition: all var(--transition);
+}
+.progress-reset:hover { border-color: var(--red); color: var(--red); }
+@media (max-width: 640px) {
+  .progress-quiz-list { grid-template-columns: 1fr; }
+}
+
 </style>
 </head>
 <body>
@@ -835,6 +893,7 @@ img { max-width: 100%; }
     <div class="sidebar-section-title">Início</div>
     <a class="sidebar-link" href="#hero"><span class="icon"><i data-lucide="home" class="icon-svg"></i></span> Apresentação</a>
     <a class="sidebar-link" href="#journey"><span class="icon"><i data-lucide="map" class="icon-svg"></i></span> Mapa da Jornada</a>
+    <a class="sidebar-link" href="#progress-tracker"><span class="icon"><i data-lucide="trophy" class="icon-svg"></i></span> Meu Progresso</a>
   </div>
   <div class="sidebar-section">
     <div class="sidebar-section-title">Fundamentos</div>
@@ -920,6 +979,22 @@ img { max-width: 100%; }
     <div class="hero-meta-item"><span class="dot blue"></span> Nível: Iniciante → Intermediário</div>
     <div class="hero-meta-item"><span class="dot green"></span> Foco: Prática Operacional</div>
     <div class="hero-meta-item"><span class="dot purple"></span> K8s · K3s · Traefik · Helm · CI/CD</div>
+  </div>
+</section>
+
+
+<!-- ==================== PROGRESS TRACKER ==================== -->
+<section class="section" id="progress-tracker" style="scroll-margin-top: 80px;">
+  <div class="progress-tracker" id="progressPanel">
+    <div class="progress-header">
+      <h4><i data-lucide="trophy" class="icon-svg lg"></i> Seu Progresso</h4>
+      <span class="progress-pct" id="progressPct">0%</span>
+    </div>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-fill" id="progressBarFill" style="width: 0%"></div>
+    </div>
+    <div class="progress-quiz-list" id="progressQuizList"></div>
+    <button class="progress-reset" onclick="resetProgress()">🗑️ Limpar progresso</button>
   </div>
 </section>
 
@@ -3655,33 +3730,33 @@ function filterGlossary(query) {
 }
 </script>
 
-<script>
-// Initialize Lucide icons
-document.addEventListener('DOMContentLoaded', function() {
-  lucide.createIcons();
-  // Re-initialize after any dynamic changes
+// ===== QUIZ DATA & PROGRESS =====
+const QUIZ_IDS = ['fundamentos','arquitetura','kubectl','services','ingress','storage','seguranca','fullstack','cicd','observabilidade','troubleshooting'];
+const QUIZ_NAMES = {
+  fundamentos: 'Fundamentos', arquitetura: 'Arquitetura', kubectl: 'kubectl',
+  services: 'Services', ingress: 'Ingress', storage: 'Storage',
+  seguranca: 'Segurança', fullstack: 'Fullstack', cicd: 'CI/CD',
+  observabilidade: 'Observabilidade', troubleshooting: 'Troubleshooting'
+};
+const TOTAL_QUESTIONS = {fundamentos:3, arquitetura:3, kubectl:3, services:3, ingress:3, storage:2, seguranca:3, fullstack:3, cicd:2, observabilidade:3, troubleshooting:3};
 
-});
+function getProgress() {
+  try { return JSON.parse(localStorage.getItem('k8s-quiz-progress') || '{}'); } catch(e) { return {}; }
+}
+function saveProgress(progress) {
+  localStorage.setItem('k8s-quiz-progress', JSON.stringify(progress));
+}
 
 // ===== LAB TOGGLE =====
 function toggleLab(el, e) {
   if (e.target.closest('a')) return;
   const body = el.querySelector('.lab-card-body');
   const isOpen = el.classList.contains('open');
-  // Close all other labs
   document.querySelectorAll('.lab-card.open').forEach(card => {
-    if (card !== el) {
-      card.classList.remove('open');
-      card.querySelector('.lab-card-body').style.maxHeight = '0';
-    }
+    if (card !== el) { card.classList.remove('open'); card.querySelector('.lab-card-body').style.maxHeight = '0'; }
   });
-  if (isOpen) {
-    el.classList.remove('open');
-    body.style.maxHeight = '0';
-  } else {
-    el.classList.add('open');
-    body.style.maxHeight = body.scrollHeight + 'px';
-  }
+  if (isOpen) { el.classList.remove('open'); body.style.maxHeight = '0'; }
+  else { el.classList.add('open'); body.style.maxHeight = body.scrollHeight + 'px'; }
 }
 
 // ===== QUIZ SYSTEM =====
@@ -3692,10 +3767,10 @@ function checkQuiz(radio) {
   const options = question.querySelectorAll('.quiz-option');
   const feedback = question.querySelector('.quiz-feedback');
 
-  options.forEach(opt => {
-    opt.classList.add('disabled');
-    opt.querySelector('input').disabled = true;
-  });
+  options.forEach(opt => { opt.classList.add('disabled'); opt.querySelector('input').disabled = true; });
+
+  const quizBox = radio.closest('.quiz-box');
+  const quizId = quizBox.id.replace('quiz-', '');
 
   if (selected === correct) {
     radio.closest('.quiz-option').classList.add('correct');
@@ -3707,29 +3782,29 @@ function checkQuiz(radio) {
     feedback.className = 'quiz-feedback show incorrect-fb';
     feedback.textContent = '✗ Incorreto. A resposta correta está destacada em verde.';
   }
+
+  // Save individual answer
+  const progress = getProgress();
+  if (!progress[quizId]) progress[quizId] = {};
+  const qIndex = Array.from(quizBox.querySelectorAll('.quiz-question')).indexOf(question);
+  progress[quizId]['q' + qIndex] = selected === correct;
+  saveProgress(progress);
 }
 
 function showScore(quizId, totalQuestions) {
   const quiz = document.getElementById('quiz-' + quizId);
   const scoreEl = document.getElementById('score-' + quizId);
   const questions = quiz.querySelectorAll('.quiz-question');
-  let correct = 0;
-  let answered = 0;
+  let correct = 0, answered = 0;
 
   questions.forEach(q => {
     const selected = q.querySelector('input:checked');
-    if (selected) {
-      answered++;
-      if (parseInt(selected.value) === parseInt(q.dataset.correct)) {
-        correct++;
-      }
-    }
+    if (selected) { answered++; if (parseInt(selected.value) === parseInt(q.dataset.correct)) correct++; }
   });
 
   if (answered < totalQuestions) {
     scoreEl.className = 'quiz-score show';
-    scoreEl.style.background = 'var(--orange-subtle)';
-    scoreEl.style.color = 'var(--orange)';
+    scoreEl.style.background = 'var(--orange-subtle)'; scoreEl.style.color = 'var(--orange)';
     scoreEl.style.borderColor = 'rgba(210,153,34,0.3)';
     scoreEl.textContent = 'Responda todas as perguntas antes de ver o resultado (' + answered + '/' + totalQuestions + ')';
     return;
@@ -3738,23 +3813,110 @@ function showScore(quizId, totalQuestions) {
   const pct = Math.round((correct / totalQuestions) * 100);
   scoreEl.className = 'quiz-score show';
   if (pct === 100) {
-    scoreEl.style.background = 'var(--green-subtle)';
-    scoreEl.style.color = 'var(--green)';
+    scoreEl.style.background = 'var(--green-subtle)'; scoreEl.style.color = 'var(--green)';
     scoreEl.style.borderColor = 'rgba(63,185,80,0.3)';
     scoreEl.textContent = '🎉 Perfeito! ' + correct + '/' + totalQuestions + ' — Você dominou este módulo!';
   } else if (pct >= 60) {
-    scoreEl.style.background = 'var(--accent-subtle)';
-    scoreEl.style.color = 'var(--accent)';
+    scoreEl.style.background = 'var(--accent-subtle)'; scoreEl.style.color = 'var(--accent)';
     scoreEl.style.borderColor = 'rgba(88,166,255,0.3)';
     scoreEl.textContent = '👍 Bom! ' + correct + '/' + totalQuestions + ' (' + pct + '%) — Revise os tópicos errados.';
   } else {
-    scoreEl.style.background = 'var(--red-subtle)';
-    scoreEl.style.color = 'var(--red)';
+    scoreEl.style.background = 'var(--red-subtle)'; scoreEl.style.color = 'var(--red)';
     scoreEl.style.borderColor = 'rgba(248,81,73,0.3)';
     scoreEl.textContent = '📚 Continue estudando! ' + correct + '/' + totalQuestions + ' (' + pct + '%) — Revise a seção e tente novamente.';
   }
+
+  // Save score
+  const progress = getProgress();
+  progress[quizId] = { score: correct, total: totalQuestions, pct: pct, completed: true };
+  saveProgress(progress);
+  updateProgressUI();
 }
 
-</script>
+// ===== PROGRESS TRACKER =====
+function updateProgressUI() {
+  const progress = getProgress();
+  let completed = 0, totalScore = 0, totalPossible = 0;
+  const listEl = document.getElementById('progressQuizList');
+  const pctEl = document.getElementById('progressPct');
+  const barEl = document.getElementById('progressBarFill');
+  if (!listEl) return;
+
+  let html = '';
+  QUIZ_IDS.forEach(id => {
+    const data = progress[id];
+    const isComplete = data && data.completed;
+    if (isComplete) { completed++; totalScore += data.score; totalPossible += data.total; }
+
+    const iconClass = isComplete ? 'done' : 'pending';
+    const icon = isComplete ? (data.pct === 100 ? '🎉' : (data.pct >= 60 ? '✓' : '✗')) : '○';
+    let scoreText = isComplete ? data.score + '/' + data.total + ' (' + data.pct + '%)' : 'Não respondido';
+    let scoreClass = isComplete ? (data.pct === 100 ? 'perfect' : (data.pct >= 60 ? 'good' : 'needs-work')) : '';
+
+    html += '<div class="progress-quiz-item">' +
+      '<span class="pi-icon ' + iconClass + '">' + icon + '</span>' +
+      '<div class="pi-info"><div class="pi-name">' + QUIZ_NAMES[id] + '</div>' +
+      '<div class="pi-score ' + scoreClass + '">' + scoreText + '</div></div></div>';
+  });
+  listEl.innerHTML = html;
+
+  const overallPct = QUIZ_IDS.length > 0 ? Math.round((completed / QUIZ_IDS.length) * 100) : 0;
+  if (pctEl) pctEl.textContent = overallPct + '%';
+  if (barEl) barEl.style.width = overallPct + '%';
+}
+
+function resetProgress() {
+  if (!confirm('Tem certeza que deseja limpar todo o progresso?')) return;
+  localStorage.removeItem('k8s-quiz-progress');
+  // Reset all quiz UIs
+  QUIZ_IDS.forEach(id => {
+    const quiz = document.getElementById('quiz-' + id);
+    if (quiz) {
+      quiz.querySelectorAll('.quiz-option').forEach(opt => {
+        opt.classList.remove('disabled', 'correct', 'incorrect');
+        opt.querySelector('input').disabled = false;
+        opt.querySelector('input').checked = false;
+      });
+      quiz.querySelectorAll('.quiz-feedback').forEach(fb => fb.className = 'quiz-feedback');
+      const scoreEl = document.getElementById('score-' + id);
+      if (scoreEl) { scoreEl.className = 'quiz-score'; scoreEl.textContent = ''; scoreEl.removeAttribute('style'); }
+    }
+  });
+  updateProgressUI();
+}
+
+function restoreQuizState() {
+  const progress = getProgress();
+  QUIZ_IDS.forEach(id => {
+    const data = progress[id];
+    if (!data || !data.completed) return;
+    // Restore the score display
+    const scoreEl = document.getElementById('score-' + id);
+    if (scoreEl && data.pct !== undefined) {
+      scoreEl.className = 'quiz-score show';
+      if (data.pct === 100) {
+        scoreEl.style.background = 'var(--green-subtle)'; scoreEl.style.color = 'var(--green)';
+        scoreEl.style.borderColor = 'rgba(63,185,80,0.3)';
+        scoreEl.textContent = '🎉 Perfeito! ' + data.score + '/' + data.total + ' — Você dominou este módulo!';
+      } else if (data.pct >= 60) {
+        scoreEl.style.background = 'var(--accent-subtle)'; scoreEl.style.color = 'var(--accent)';
+        scoreEl.style.borderColor = 'rgba(88,166,255,0.3)';
+        scoreEl.textContent = '👍 Bom! ' + data.score + '/' + data.total + ' (' + data.pct + '%) — Revise os tópicos errados.';
+      } else {
+        scoreEl.style.background = 'var(--red-subtle)'; scoreEl.style.color = 'var(--red)';
+        scoreEl.style.borderColor = 'rgba(248,81,73,0.3)';
+        scoreEl.textContent = '📚 Continue estudando! ' + data.score + '/' + data.total + ' (' + data.pct + '%) — Revise a seção e tente novamente.';
+      }
+    }
+  });
+}
+
+// ===== INIT =====
+document.addEventListener('DOMContentLoaded', function() {
+  restoreQuizState();
+  updateProgressUI();
+});
+
+
 </body>
 </html>
