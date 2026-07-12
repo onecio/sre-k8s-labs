@@ -1,6 +1,7 @@
 # Manual Kubernetes para SRE/DevOps
 
 > Do absoluto zero a implantacao, operacao, diagnostico e automacao de aplicacoes em Kubernetes.
+n[![Deploy to GitHub Pages](https://github.com/onecio/sre-k8s-labs/actions/workflows/deploy.yml/badge.svg)](https://github.com/onecio/sre-k8s-labs/actions/workflows/deploy.yml)
 
 ## Visao Geral
 
