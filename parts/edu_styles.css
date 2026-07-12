@@ -1,0 +1,159 @@
+/* ===== TERMINAL SIMULATOR ===== */
+.terminal-sim {
+  background: #0a0e14; border: 1px solid var(--border); border-radius: var(--radius);
+  margin: 20px 0; overflow: hidden; font-family: var(--font-mono);
+}
+.terminal-header {
+  background: #161b22; padding: 8px 14px; display: flex; align-items: center; gap: 8px;
+  border-bottom: 1px solid var(--border);
+}
+.terminal-dot { width: 12px; height: 12px; border-radius: 50%; }
+.terminal-dot.red { background: #f85149; }
+.terminal-dot.yellow { background: #d29922; }
+.terminal-dot.green { background: #3fb950; }
+.terminal-title { font-size: 12px; color: var(--text-muted); margin-left: 8px; }
+.terminal-output {
+  padding: 16px; max-height: 400px; overflow-y: auto; font-size: 13px;
+  line-height: 1.6; color: #c9d1d9; min-height: 200px;
+}
+.terminal-output::-webkit-scrollbar { width: 6px; }
+.terminal-output::-webkit-scrollbar-thumb { background: #30363d; border-radius: 3px; }
+.terminal-line { white-space: pre-wrap; word-break: break-all; }
+.terminal-line.prompt-line { color: #3fb950; }
+.terminal-line.output-line { color: #c9d1d9; }
+.terminal-line.error-line { color: #f85149; }
+.terminal-line.info-line { color: #58a6ff; }
+.terminal-line.warning-line { color: #d29922; }
+.terminal-line.success-line { color: #3fb950; }
+.terminal-input-row {
+  display: flex; align-items: center; padding: 8px 16px 16px; gap: 8px;
+  border-top: 1px solid #21262d;
+}
+.terminal-prompt { color: #3fb950; font-size: 13px; white-space: nowrap; }
+.terminal-input {
+  flex: 1; background: none; border: none; outline: none; color: #e6edf3;
+  font-family: var(--font-mono); font-size: 13px; caret-color: #58a6ff;
+}
+.terminal-hint {
+  font-size: 11px; color: var(--text-muted); padding: 0 16px 12px;
+  display: flex; flex-wrap: wrap; gap: 6px;
+}
+.terminal-hint span {
+  background: #161b22; border: 1px solid #30363d; padding: 2px 8px;
+  border-radius: 4px; font-family: var(--font-mono); font-size: 11px; color: #8b949e;
+  cursor: pointer; transition: all 0.2s;
+}
+.terminal-hint span:hover { border-color: var(--accent); color: var(--accent); }
+/* ===== YAML EXPLORER ===== */
+.yaml-explorer {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); margin: 20px 0; overflow: hidden;
+}
+.yaml-explorer-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 16px; background: var(--bg-tertiary); border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 8px;
+}
+.yaml-explorer-header h4 { font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 8px; margin: 0; }
+.yaml-tabs { display: flex; gap: 4px; }
+.yaml-tab {
+  padding: 4px 12px; border-radius: var(--radius-sm); font-size: 12px;
+  font-weight: 500; cursor: pointer; border: 1px solid transparent;
+  background: none; color: var(--text-muted); transition: all 0.2s;
+}
+.yaml-tab:hover { color: var(--text-primary); }
+.yaml-tab.active { background: var(--accent-subtle); color: var(--accent); border-color: rgba(88,166,255,0.3); }
+.yaml-explorer-body { display: flex; min-height: 300px; }
+.yaml-code-panel {
+  flex: 1; padding: 16px; overflow-x: auto; font-family: var(--font-mono);
+  font-size: 13px; line-height: 1.8; color: var(--text-primary);
+  border-right: 1px solid var(--border); position: relative;
+}
+.yaml-key { color: #7ee787; cursor: pointer; position: relative; }
+.yaml-key:hover { text-decoration: underline; text-decoration-style: dotted; }
+.yaml-key.highlighted { background: rgba(88,166,255,0.15); border-radius: 2px; }
+.yaml-str { color: #a5d6ff; }
+.yaml-num { color: #79c0ff; }
+.yaml-doc-panel {
+  width: 320px; padding: 16px; background: var(--bg-secondary);
+  overflow-y: auto; font-size: 13px; color: var(--text-secondary);
+}
+.yaml-doc-panel h5 { font-size: 14px; font-weight: 700; color: var(--accent); margin-bottom: 8px; }
+.yaml-doc-panel p { font-size: 13px; line-height: 1.6; margin-bottom: 8px; }
+.yaml-doc-panel .yaml-doc-type {
+  display: inline-block; padding: 2px 8px; border-radius: 4px;
+  font-size: 11px; font-weight: 600; margin-bottom: 12px;
+  background: var(--accent-subtle); color: var(--accent);
+}
+.yaml-doc-panel .yaml-doc-required { color: var(--red); font-weight: 600; }
+.yaml-doc-panel .yaml-doc-optional { color: var(--text-muted); }
+.yaml-doc-empty { color: var(--text-muted); font-style: italic; text-align: center; padding: 40px 16px; }
+@media (max-width: 768px) {
+  .yaml-explorer-body { flex-direction: column; }
+  .yaml-doc-panel { width: 100%; border-right: none; border-top: 1px solid var(--border); max-height: 200px; }
+}
+/* ===== FLASHCARDS ===== */
+.flashcard-area { margin: 20px 0; }
+.flashcard-controls {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 16px; flex-wrap: wrap; gap: 8px;
+}
+.flashcard-category-select { display: flex; gap: 4px; flex-wrap: wrap; }
+.flashcat-btn {
+  padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600;
+  border: 1px solid var(--border); background: var(--bg-card);
+  color: var(--text-secondary); cursor: pointer; transition: all 0.2s;
+}
+.flashcat-btn:hover { border-color: var(--accent); color: var(--accent); }
+.flashcat-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+.flashcard-progress-info { font-size: 12px; color: var(--text-muted); }
+.flashcard-container { perspective: 1000px; height: 280px; margin-bottom: 16px; }
+.flashcard {
+  width: 100%; height: 100%; position: relative;
+  transform-style: preserve-3d; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+.flashcard.flipped { transform: rotateY(180deg); }
+.flashcard-face {
+  position: absolute; inset: 0; backface-visibility: hidden;
+  border-radius: var(--radius); padding: 32px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; border: 1px solid var(--border);
+}
+.flashcard-front { background: linear-gradient(135deg, var(--bg-card), var(--bg-secondary)); }
+.flashcard-back {
+  background: linear-gradient(135deg, rgba(88,166,255,0.05), rgba(188,140,255,0.05));
+  transform: rotateY(180deg); border-color: var(--accent);
+}
+.flashcard-term { font-size: 22px; font-weight: 700; color: var(--text-primary); margin-bottom: 8px; }
+.flashcard-category-badge {
+  font-size: 11px; font-weight: 600; padding: 2px 10px; border-radius: 12px;
+  background: var(--accent-subtle); color: var(--accent); margin-bottom: 12px;
+}
+.flashcard-definition { font-size: 15px; color: var(--text-secondary); line-height: 1.6; }
+.flashcard-example {
+  margin-top: 12px; padding: 8px 14px; background: var(--bg-code);
+  border-radius: var(--radius-sm); font-family: var(--font-mono);
+  font-size: 12px; color: var(--accent); border: 1px solid var(--border);
+}
+.flashcard-hint { font-size: 11px; color: var(--text-muted); margin-top: 12px; }
+.flashcard-nav {
+  display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap;
+}
+.flashcard-nav button {
+  padding: 8px 20px; border-radius: var(--radius-sm); font-size: 13px;
+  font-weight: 600; cursor: pointer; border: 1px solid var(--border);
+  background: var(--bg-card); color: var(--text-secondary); transition: all 0.2s;
+}
+.flashcard-nav button:hover { border-color: var(--accent); color: var(--accent); }
+.flashcard-nav button:disabled { opacity: 0.4; cursor: not-allowed; }
+.flashcard-nav .fc-counter { font-size: 13px; color: var(--text-muted); font-weight: 600; min-width: 60px; text-align: center; }
+.flashcard-nav .fc-know { background: var(--green-subtle); color: var(--green); border-color: var(--green); }
+.flashcard-nav .fc-know:hover { background: var(--green); color: #fff; }
+.flashcard-nav .fc-dunno { background: var(--red-subtle); color: var(--red); border-color: var(--red); }
+.flashcard-nav .fc-dunno:hover { background: var(--red); color: #fff; }
+/* ===== ROLLOUT SIMULATOR ===== */
+.rollout-sim {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 24px; margin: 20px 0;
+}
+.rollout-sim h4 { font-size: 16px; font-weight: 700; margin-bottom: 16px; display: flex; 
