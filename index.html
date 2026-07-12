@@ -6,6 +6,13 @@
 <meta name="description" content="Manual Kubernetes para SRE/DevOps — Do absoluto zero à implantação, operação, diagnóstico e automação de aplicações em Kubernetes.">
 <meta name="keywords" content="Kubernetes, SRE, DevOps, K3s, Traefik, Cloudflare, CI/CD, Helm, GitOps, Troubleshooting">
 <title>Manual Kubernetes para SRE/DevOps — Do Zero ao Operacional</title>
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#161b22">
+<meta name="color-scheme" content="dark light">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="K8s Manual">
+<link rel="apple-touch-icon" href="icon.svg">
 <style>
 /* ===== CSS CUSTOM PROPERTIES ===== */
 :root {
@@ -153,6 +160,13 @@ img { max-width: 100%; }
   transition: all var(--transition);
 }
 .theme-toggle:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-subtle); }
+.print-btn {
+  background: none; border: 1px solid var(--border); color: var(--text-secondary);
+  width: 36px; height: 36px; border-radius: 50%; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; font-size: 18px;
+  transition: all var(--transition);
+}
+.print-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-subtle); }
 /* ===== SIDEBAR ===== */
 .sidebar {
   position: fixed; top: var(--header-height); left: 0; bottom: 0;
@@ -1070,6 +1084,128 @@ img { max-width: 100%; }
 
 
 
+/* ===== DARK READER COMPATIBILITY ===== */
+/* Signal browser + extensions that we natively support dark mode */
+html { color-scheme: dark; }
+:root { color-scheme: dark; }
+
+/* Protect Lucide SVG icons from inversion — Dark Reader tends to flip them */
+.icon-svg,
+[data-lucide],
+i[class*="lucide"],
+i[class*="icon-"],
+.k8s-icon .icon-svg,
+.sidebar-link .icon svg,
+.alert-icon svg,
+.hero-btn svg,
+.service-card svg,
+.concept-title svg,
+.collapsible-header svg,
+.quiz-box h4 svg,
+.lab-card-header svg,
+.trouble-card h4 svg,
+.study-week h4 svg,
+.cert-quiz-item svg,
+.badge-preview canvas,
+.cert-card svg {
+  forced-color-adjust: none !important;
+  -webkit-print-color-adjust: exact !important;
+  color-adjust: exact !important;
+}
+
+/* Protect gradient text (hero h1, cert-header h3) from Dark Reader stripping */
+.hero h1,
+.cert-header h3 {
+  forced-color-adjust: none !important;
+  -webkit-print-color-adjust: exact !important;
+  color-adjust: exact !important;
+}
+
+/* Protect gradient backgrounds from being flattened */
+.hero,
+.hero-btn.primary,
+.lab-num,
+#progress-bar,
+.progress-tracker .progress-bar-fill,
+.cert-btn.primary,
+.achievement-badge.gold,
+.cert-header,
+.back-to-top,
+.k8s-icon {
+  forced-color-adjust: none !important;
+  -webkit-print-color-adjust: exact !important;
+  color-adjust: exact !important;
+}
+
+/* Protect code blocks — Dark Reader can invert syntax colors */
+.code-block,
+.code-block pre,
+.code-block code,
+.section code,
+td code,
+li code,
+.lab-step .step-content code {
+  forced-color-adjust: none !important;
+  -webkit-print-color-adjust: exact !important;
+  color-adjust: exact !important;
+}
+
+/* Protect colored backgrounds (alerts, concept layers, quiz feedback) */
+.alert,
+.concept-layer,
+.quiz-option.correct,
+.quiz-option.incorrect,
+.quiz-feedback,
+.quiz-score,
+.lab-verify,
+.lab-check.done,
+.checklist,
+.trouble-card,
+.progress-quiz-item .pi-icon.done,
+.progress-lab-item .pl-icon.done,
+.progress-quiz-item .pi-icon.pending,
+.progress-lab-item .pl-icon.pending,
+.achievement-badge,
+.cert-quiz-item,
+.badge-dialog,
+.cert-card,
+.quiz-box,
+.progress-tracker {
+  forced-color-adjust: none !important;
+  -webkit-print-color-adjust: exact !important;
+  color-adjust: exact !important;
+}
+
+/* Protect hero gradient effects */
+.hero::before,
+.hero::after {
+  forced-color-adjust: none !important;
+}
+
+/* Protect architecture diagram nodes and arrows */
+.arch-node,
+.arch-arrow,
+.arch-flow {
+  forced-color-adjust: none !important;
+}
+
+/* Protect table header backgrounds */
+.table-wrapper th {
+  forced-color-adjust: none !important;
+}
+
+/* Protect images from inversion */
+img {
+  forced-color-adjust: none !important;
+}
+
+/* Protect scrollbar colors from being overridden */
+::-webkit-scrollbar,
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-thumb {
+  color-scheme: dark;
+}
+
 /* ===== ACCESSIBILITY ===== */
 .skip-link {
   position: fixed; top: -100px; left: 16px; z-index: 99999;
@@ -1098,6 +1234,333 @@ button:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
+
+/* ===== PRINT STYLES ===== */
+@media print {
+  /* Reset: clean white background, black text, no shadows */
+  * { background: transparent !important; box-shadow: none !important; text-shadow: none !important; }
+  html { scroll-behavior: initial; }
+  body {
+    background: #fff !important;
+    color: #000 !important;
+    font-size: 11pt;
+    line-height: 1.5;
+    overflow: visible !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  @page { margin: 2cm 2.2cm; }
+
+  /* Hide all interactive/UI elements */
+  .header,
+  .sidebar,
+  .sidebar-overlay,
+  #progress-bar,
+  .back-to-top,
+  .search-modal,
+  .search-btn,
+  .menu-toggle,
+  .theme-toggle,
+  .copy-btn,
+  .quiz-btn,
+  .quiz-retry,
+  .quiz-share-btn,
+  .quiz-score,
+  .quiz-feedback,
+  .badge-overlay,
+  .cert-overlay,
+  .cert-confetti,
+  .achievement-section,
+  .section-nav,
+  .progress-reset,
+  .lab-check,
+  .lab-arrow,
+  .hero-actions,
+  .skip-link,
+  .alert-icon,
+  .hero::before,
+  .hero::after,
+  .hero-badge .icon-svg { display: none !important; }
+
+  /* Reset main layout for full-width print */
+  .main { margin-left: 0 !important; padding-top: 0 !important; }
+  .content { max-width: 100% !important; padding: 0 !important; margin: 0 !important; }
+
+  /* Hero section */
+  .hero {
+    padding: 0 0 20px !important;
+    margin-bottom: 30px !important;
+    border: none !important;
+    border-radius: 0 !important;
+    background: none !important;
+  }
+  .hero h1 {
+    font-size: 24pt !important;
+    line-height: 1.2 !important;
+    color: #000 !important;
+    -webkit-text-fill-color: #000 !important;
+    background: none !important;
+    margin-bottom: 8px !important;
+  }
+  .hero .subtitle { font-size: 14pt !important; color: #333 !important; }
+  .hero .desc { font-size: 11pt !important; color: #555 !important; }
+  .hero-badge {
+    display: inline-flex !important;
+    background: #eee !important;
+    color: #333 !important;
+    border: 1px solid #ccc !important;
+    font-size: 10pt !important;
+    padding: 2px 10px !important;
+    margin-bottom: 10px !important;
+  }
+  .hero-meta { border-top: 1px solid #ddd !important; padding-top: 12px !important; margin-top: 16px !important; }
+  .hero-meta-item { color: #666 !important; }
+
+  /* Section headings */
+  .section { margin-bottom: 30px !important; break-inside: avoid; }
+  .section[id="arquitetura"],
+  .section[id="kubectl"],
+  .section[id="services"],
+  .section[id="instalacao-k3s"],
+  .section[id="fullstack"],
+  .section[id="cicd"],
+  .section[id="troubleshooting"],
+  .section[id="glossario"],
+  .section[id="plano-estudos"] { break-before: page; }
+  .section > h2 {
+    font-size: 18pt !important;
+    color: #000 !important;
+    border-bottom: 2px solid #333 !important;
+    padding-bottom: 6px !important;
+    margin-bottom: 12px !important;
+  }
+  .section > h2 .sec-icon { display: inline-flex !important; background: #eee !important; color: #333 !important; }
+  .section > h3 { font-size: 14pt !important; color: #000 !important; margin: 20px 0 8px !important; }
+  .section > h4 { font-size: 12pt !important; color: #000 !important; }
+  .section p { color: #000 !important; font-size: 11pt !important; }
+  .section ul, .section ol { color: #000 !important; }
+  .section li { margin-bottom: 4px !important; }
+  .section code:not(.code-block code), td code, li code {
+    background: #f0f0f0 !important;
+    border: 1px solid #ddd !important;
+    color: #c00 !important;
+    padding: 1px 5px !important;
+    font-size: 10pt !important;
+  }
+
+  /* Concept cards */
+  .concept-card {
+    border: 1px solid #ddd !important;
+    border-radius: 0 !important;
+    padding: 16px !important;
+    margin-bottom: 14px !important;
+    break-inside: avoid;
+  }
+  .concept-card .concept-title { font-size: 14pt !important; color: #000 !important; }
+  .concept-layer { border-left-width: 3px !important; padding: 8px 14px !important; margin-bottom: 8px !important; }
+  .concept-layer.simple { border-color: #2a7 !important; background: #f0faf5 !important; }
+  .concept-layer.technical { border-color: #06c !important; background: #f0f6ff !important; }
+  .concept-layer.practical { border-color: #83c !important; background: #f7f0ff !important; }
+  .concept-layer .layer-label { font-size: 9pt !important; }
+  .concept-layer p { font-size: 10pt !important; }
+
+  /* Code blocks */
+  .code-block {
+    border: 1px solid #ccc !important;
+    border-radius: 0 !important;
+    margin: 12px 0 !important;
+    break-inside: avoid;
+  }
+  .code-header { background: #e8e8e8 !important; padding: 4px 10px !important; border-bottom: 1px solid #ccc !important; }
+  .code-lang { color: #666 !important; font-size: 9pt !important; }
+  .code-block pre {
+    background: #f9f9f9 !important;
+    padding: 10px 14px !important;
+    font-size: 9pt !important;
+    line-height: 1.4 !important;
+    color: #000 !important;
+    white-space: pre-wrap !important;
+    word-break: break-all !important;
+  }
+
+  /* Architecture diagrams */
+  .arch-diagram {
+    border: 1px solid #ddd !important;
+    padding: 14px !important;
+    margin: 12px 0 !important;
+    break-inside: avoid;
+  }
+  .arch-diagram .arch-title { color: #000 !important; font-size: 11pt !important; }
+  .arch-node {
+    background: #eef4ff !important;
+    border: 1px solid #bcd !important;
+    color: #333 !important;
+    font-size: 10pt !important;
+  }
+  .arch-arrow { color: #999 !important; }
+
+  /* Tables */
+  .table-wrapper { border: 1px solid #ccc !important; margin: 12px 0 !important; overflow: visible !important; }
+  .table-wrapper th {
+    background: #e8e8e8 !important;
+    color: #000 !important;
+    font-size: 9pt !important;
+    border-bottom: 2px solid #ccc !important;
+  }
+  .table-wrapper td { color: #000 !important; border-bottom: 1px solid #ddd !important; font-size: 10pt !important; }
+  .table-wrapper tr:hover td { background: inherit !important; }
+
+  /* Alert boxes */
+  .alert {
+    border: 1px solid #ccc !important;
+    padding: 10px 14px !important;
+    margin: 10px 0 !important;
+    break-inside: avoid;
+  }
+  .alert.info { background: #f0f6ff !important; border-color: #bdf !important; }
+  .alert.warning { background: #fff8e0 !important; border-color: #eda !important; }
+  .alert.danger { background: #fff0f0 !important; border-color: #fbb !important; }
+  .alert.success { background: #f0faf0 !important; border-color: #aea !important; }
+  .alert.tip { background: #f7f0ff !important; border-color: #dcf !important; }
+  .alert-content strong { color: #000 !important; }
+  .alert-content { color: #333 !important; }
+
+  /* Collapsibles & lab cards — always expanded */
+  .collapsible { border: 1px solid #ddd !important; margin: 10px 0 !important; break-inside: avoid; }
+  .collapsible-header {
+    background: #f5f5f5 !important;
+    color: #000 !important;
+    cursor: default !important;
+    padding: 8px 12px !important;
+  }
+  .collapsible .collapsible-arrow { display: none !important; }
+  .collapsible-body { max-height: none !important; overflow: visible !important; }
+  .collapsible-body-inner { padding: 12px !important; }
+
+  /* Lab cards */
+  .lab-card { border: 1px solid #ddd !important; margin: 12px 0 !important; break-inside: avoid; }
+  .lab-card-header { cursor: default !important; padding: 14px 18px !important; }
+  .lab-card-body { max-height: none !important; overflow: visible !important; }
+  .lab-card-body-inner { padding: 0 18px 18px !important; }
+  .lab-num { background: #eee !important; color: #333 !important; width: 34px !important; height: 34px !important; font-size: 14px !important; }
+  .lab-card-header .lab-info h4 { color: #000 !important; }
+  .lab-step { background: #f5f5f5 !important; border-left-color: #999 !important; }
+  .lab-step .step-content { color: #333 !important; }
+  .lab-verify { background: #f0faf0 !important; border: 1px solid #aea !important; color: #070 !important; }
+
+  /* Quiz boxes */
+  .quiz-box {
+    border: 1px solid #ddd !important;
+    border-top: 3px solid #06c !important;
+    padding: 16px !important;
+    margin: 14px 0 !important;
+    break-inside: avoid;
+  }
+  .quiz-box h4 { color: #000 !important; }
+  .quiz-box .quiz-subtitle { color: #666 !important; }
+  .quiz-question { border-bottom: 1px solid #eee !important; padding-bottom: 12px !important; margin-bottom: 12px !important; }
+  .quiz-question .q-text { color: #000 !important; font-size: 11pt !important; }
+  .quiz-option {
+    border: 1px solid #ddd !important;
+    color: #333 !important;
+    padding: 6px 10px !important;
+    margin-bottom: 4px !important;
+    font-size: 10pt !important;
+  }
+  .quiz-option input[type="radio"] { display: none !important; }
+  .quiz-option::before { content: "☐ "; font-size: 12pt; }
+  .quiz-option.correct { background: #f0faf0 !important; border-color: #2a7 !important; color: #070 !important; }
+  .quiz-option.correct::before { content: "✓ "; color: #070; }
+  .quiz-option.incorrect { background: #fff0f0 !important; border-color: #c00 !important; color: #700 !important; }
+  .quiz-option.incorrect::before { content: "✗ "; color: #700; }
+  .quiz-option.disabled { opacity: 1 !important; }
+
+  /* Service cards */
+  .service-card { border: 1px solid #ddd !important; padding: 12px !important; break-inside: avoid; }
+  .service-card h4 { color: #000 !important; }
+  .service-card p { color: #333 !important; }
+  .tag.internal, .tag.external, .tag.advanced {
+    background: #eee !important;
+    color: #333 !important;
+    border: 1px solid #ccc !important;
+  }
+
+  /* Decision matrix */
+  .decision-card { border: 1px solid #ddd !important; padding: 12px !important; }
+  .decision-card .choice { color: #000 !important; }
+  .decision-card .reason { color: #333 !important; }
+
+  /* Troubleshooting cards */
+  .trouble-card { border: 1px solid #ddd !important; border-left: 4px solid #c00 !important; }
+  .trouble-card h4 { color: #700 !important; }
+
+  /* Progress tracker */
+  .progress-tracker {
+    border: 1px solid #ddd !important;
+    border-top: 3px solid #2a7 !important;
+    padding: 16px !important;
+    break-inside: avoid;
+  }
+  .progress-tracker h4 { color: #000 !important; }
+  .progress-pct { color: #070 !important; }
+  .progress-bar-wrap { background: #eee !important; height: 6px !important; }
+  .progress-bar-fill { background: #2a7 !important; }
+  .progress-quiz-item { border: 1px solid #eee !important; }
+  .progress-quiz-item .pi-name { color: #000 !important; }
+  .pi-icon.done { background: #f0faf0 !important; color: #070 !important; }
+  .pi-icon.pending { background: #f0f0f0 !important; color: #999 !important; }
+  .progress-section-divider { color: #666 !important; }
+  .progress-lab-item { border: 1px solid #eee !important; }
+  .progress-lab-item .pl-name { color: #000 !important; }
+  .pl-icon.done { background: #f0faf0 !important; color: #070 !important; }
+  .pl-icon.pending { background: #f0f0f0 !important; color: #999 !important; }
+
+  /* Journey map cards */
+  .journey-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 8px !important; }
+  .journey-card {
+    border: 1px solid #ddd !important;
+    padding: 12px !important;
+    break-inside: avoid;
+  }
+  .journey-card h3 { color: #000 !important; font-size: 11pt !important; }
+  .journey-card p { color: #555 !important; font-size: 9pt !important; }
+  .journey-card .time { color: #888 !important; }
+
+  /* Glossary */
+  .glossary-search { display: none !important; }
+  .glossary-item { border: 1px solid #ddd !important; break-inside: avoid; }
+  .glossary-item h4 { color: #000 !important; font-size: 10pt !important; }
+  .glossary-item .def-simple { color: #333 !important; }
+  .glossary-item .def-tech { color: #666 !important; }
+
+  /* Study plan */
+  .study-week { border: 1px solid #ddd !important; break-inside: avoid; }
+  .study-week h4 { color: #000 !important; }
+
+  /* Formula box */
+  .formula-box { border: 1px solid #ddd !important; font-size: 11pt !important; break-inside: avoid; }
+  .formula-box .fl { color: #000 !important; }
+
+  /* Checklists */
+  .checklist { border: 1px solid #ddd !important; break-inside: avoid; }
+  .checklist h4 { color: #000 !important; }
+  .checklist-item { color: #333 !important; }
+  .checklist-item input[type="checkbox"] { accent-color: #000 !important; }
+  .checklist-item.checked { color: #999 !important; }
+
+  /* Show URLs for links pointing to external resources */
+  .content a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 9pt;
+    color: #555;
+    word-break: break-all;
+  }
+  .content a[href^="#"]::after { content: none; }
+  .arch-node a::after { content: none !important; }
+
+  /* Lucide icons in print */
+  .icon-svg { display: none !important; }
+}
 </style>
 
 
@@ -1121,6 +1584,7 @@ button:focus-visible {
     <button class="search-btn" id="searchBtn">
       <i data-lucide="search" class="icon-svg"></i> <span>Buscar...</span> <kbd>Ctrl+K</kbd>
     </button>
+    <button class="print-btn" id="printBtn" onclick="window.print()" title="Imprimir / Salvar como PDF" aria-label="Imprimir ou salvar como PDF"><i data-lucide="printer" class="icon-svg"></i></button>
     <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme"><i data-lucide="moon" class="icon-svg"></i></button>
   </div>
 </header>
@@ -4542,6 +5006,142 @@ var resetBtn = document.querySelector('.progress-reset');
 if (resetBtn && !resetBtn.getAttribute('aria-label')) {
   resetBtn.setAttribute('aria-label', 'Limpar todo o progresso');
 }
+
+/* ===== INIT ON DOM READY ===== */
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof lucide !== 'undefined' && lucide.createIcons) lucide.createIcons();
+  if (typeof restoreState === 'function') restoreState();
+  if (typeof updateProgressUI === 'function') updateProgressUI();
+  var t = document.getElementById('themeToggle'), h = document.documentElement;
+  var saved = localStorage.getItem('k8s-theme') || 'dark';
+  h.setAttribute('data-theme', saved);
+  if (t) t.addEventListener('click', function() {
+    var n = h.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    h.setAttribute('data-theme', n);
+    localStorage.setItem('k8s-theme', n);
+    if (typeof lucide !== 'undefined' && lucide.createIcons) lucide.createIcons();
+  });
+  var m = document.getElementById('menuToggle'), s = document.getElementById('sidebar'), o = document.getElementById('sidebarOverlay');
+  function cs() { if(s) s.classList.remove('open'); if(o) o.classList.remove('open'); }
+  if (m && s && o) {
+    m.addEventListener('click', function() { s.classList.contains('open') ? cs() : (s.classList.add('open'), o.classList.add('open')); });
+    o.addEventListener('click', cs);
+  }
+  var sb = document.getElementById('searchBtn');
+  var sm = document.getElementById('searchModal');
+  if (!sm) {
+    sm = document.createElement('div'); sm.className = 'search-modal'; sm.id = 'searchModal';
+    sm.innerHTML = '<div class="search-dialog"><div class="search-input-wrap"><span class="icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span><input type="text" class="search-input" placeholder="Buscar seções…" autofocus></div><div class="search-results"></div></div>';
+    document.body.appendChild(sm);
+  }
+  var si = sm ? sm.querySelector('.search-input') : null, sr = sm ? sm.querySelector('.search-results') : null;
+  function os() {
+    if (!sm) return; sm.classList.add('open');
+    if (si) { si.value = ''; si.focus(); ps(''); }
+    if (typeof trapFocus === 'function') trapFocus(sm);
+  }
+  function cs2() {
+    if (!sm) return; sm.classList.remove('open');
+    if (typeof releaseFocus === 'function') releaseFocus(sm);
+  }
+  function ps(q) {
+    if (!sr) return;
+    var all = document.querySelectorAll('section[id]');
+    if (!q || q.length < 1) {
+      var h = '';
+      all.forEach(function(sec) {
+        var t = (sec.querySelector('h2')||sec.querySelector('h3')||sec.querySelector('h1')||{}).textContent||sec.id;
+        h += '<a class="search-result" href="#'+sec.id+'" onclick="window.cs2&&cs2()"><span class="sr-title">'+t+'</span><span class="sr-section">#'+sec.id+'</span></a>';
+      });
+      sr.innerHTML = h || '<div class="search-empty">Nenhuma secao</div>'; return;
+    }
+    q = q.toLowerCase();
+    var h = '', c = 0;
+    all.forEach(function(sec) {
+      if ((sec.textContent||'').toLowerCase().indexOf(q) > -1 && c < 20) {
+        var t = (sec.querySelector('h2')||sec.querySelector('h3')||sec.querySelector('h1')||{}).textContent||sec.id;
+        h += '<a class="search-result" href="#'+sec.id+'" onclick="window.cs2&&cs2()"><span class="sr-title">'+t+'</span><span class="sr-section">#'+sec.id+'</span></a>';
+        c++;
+      }
+    });
+    sr.innerHTML = h || '<div class="search-empty">Nenhum resultado</div>';
+  }
+  if (sb) sb.addEventListener('click', os);
+  if (sm) {
+    sm.addEventListener('click', function(e) { if (e.target === sm) cs2(); });
+    if (si) {
+      si.addEventListener('input', function() { ps(this.value); });
+      si.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') cs2();
+        if (e.key === 'Enter') { var f = sm.querySelector('.search-result.focused'); if (f) f.click(); else { var fi = sm.querySelector('.search-result'); if(fi) fi.click(); } }
+        if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+          e.preventDefault();
+          var items = sm.querySelectorAll('.search-result');
+          var f = sm.querySelector('.search-result.focused');
+          var idx = Array.prototype.indexOf.call(items, f);
+          if (e.key === 'ArrowDown') { var nxt = items[idx+1]||items[0]; if(f) f.classList.remove('focused'); if(nxt) nxt.classList.add('focused'); }
+          else { var prv = items[idx-1]||items[items.length-1]; if(f) f.classList.remove('focused'); if(prv) prv.classList.add('focused'); }
+        }
+      });
+    }
+  }
+  window.cs2 = cs2; window.closeSearch = cs2;
+  document.addEventListener('keydown', function(e) {
+    if ((e.ctrlKey||e.metaKey) && e.key === 'k') { e.preventDefault(); os(); }
+    if (e.key === 'Escape') {
+      if (sm && sm.classList.contains('open')) cs2();
+      var co = document.getElementById('certOverlay');
+      if (co && co.classList.contains('open') && typeof closeCert === 'function') closeCert();
+      var bo = document.getElementById('badgeOverlay');
+      if (bo && bo.classList.contains('open') && typeof closeBadge === 'function') closeBadge();
+    }
+  });
+  var pb = document.getElementById('progress-bar');
+  if (pb) window.addEventListener('scroll', function() {
+    var st = window.pageYOffset||document.documentElement.scrollTop;
+    var dh = document.documentElement.scrollHeight - window.innerHeight;
+    if (dh > 0) pb.style.width = Math.min(100, Math.round((st/dh)*100)) + '%';
+  });
+  var bt = document.querySelector('.back-to-top');
+  if (!bt) {
+    bt = document.createElement('button'); bt.className = 'back-to-top'; bt.setAttribute('aria-label', 'Voltar ao topo');
+    bt.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>';
+    document.body.appendChild(bt);
+    bt.addEventListener('click', function() { window.scrollTo({top:0,behavior:'smooth'}); });
+  }
+  window.addEventListener('scroll', function() {
+    bt.classList.toggle('visible', window.pageYOffset > 300);
+  });
+  var links = document.querySelectorAll('.sidebar-link'), secs = [];
+  if (links.length) {
+    links.forEach(function(l) {
+      var hr = l.getAttribute('href');
+      if (hr && hr.startsWith('#')) { var tg = document.getElementById(hr.substring(1)); if (tg) secs.push({el:tg,link:l}); }
+    });
+    function ual() {
+      var sy = window.pageYOffset + 120, cur = null;
+      secs.forEach(function(i) { var ot = i.el.offsetTop, ob = ot + i.el.offsetHeight; if (sy >= ot && sy < ob) cur = i.link; });
+      links.forEach(function(l) { l.classList.remove('active'); });
+      if (cur) cur.classList.add('active');
+      else if (secs.length) secs[0].link.classList.add('active');
+    }
+    window.addEventListener('scroll', ual); ual();
+  }
+  var gs = document.querySelector('.glossary-search'), gi = document.querySelectorAll('.glossary-item');
+  if (gs && gi.length) gs.addEventListener('input', function() {
+    var q = this.value.toLowerCase();
+    gi.forEach(function(i) { i.style.display = i.textContent.toLowerCase().indexOf(q) > -1 ? '' : 'none'; });
+  });
+  /* Register service worker for PWA offline support */
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./service-worker.js').then(function(reg) {
+      console.log('[SW] Registrado com escopo:', reg.scope);
+    }).catch(function(err) {
+      console.warn('[SW] Erro no registro:', err);
+    });
+  }
+  console.log('[K8s Manual] Inicializado');
+});
 
 </script>
 
