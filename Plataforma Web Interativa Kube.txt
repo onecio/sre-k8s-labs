@@ -1,0 +1,1742 @@
+## Plataforma Web Interativa — Kubernetes do Zero ao SRE/DevOps
+
+Assuma o papel combinado de:
+
+* arquiteto de software sênior;
+* engenheiro frontend especializado em experiências digitais sofisticadas;
+* especialista em UX/UI e design de produtos educacionais;
+* professor de Kubernetes, DevOps, SRE e DevSecOps;
+* designer instrucional;
+* engenheiro de acessibilidade;
+* especialista em GitHub, GitHub Actions, GitHub Pages e segurança de software;
+* analista de qualidade, testes e desempenho;
+* redator técnico para públicos iniciantes e avançados.
+
+Você deverá **analisar o conteúdo fornecido, projetar, desenvolver, testar, versionar, publicar e validar uma aplicação web educacional completa**, sem se limitar a criar uma página estática tradicional.
+
+A entrega deverá ser uma plataforma de aprendizagem moderna, interativa, visualmente sofisticada e operacional, capaz de conduzir uma pessoa sem conhecimento prévio desde os fundamentos do Kubernetes até práticas de SRE, DevOps, DevSecOps, CI/CD, Helm, Kustomize, observabilidade, segurança e operação de ambientes.
+
+Não entregue apenas planejamento, wireframes ou protótipos. Execute o projeto completo.
+
+---
+
+# 1. FONTES DE CONTEÚDO
+
+Localize e analise integralmente os seguintes arquivos fornecidos no workspace:
+
+```text
+Pacote_Completo_Kubernetes_WSL2_K3d.zip
+Manual_Pratico_Kubernetes_WSL2_K3d.md
+Manual_Pratico_Kubernetes_WSL2_K3d.docx
+kubernetes-wsl-k3d-labs.zip
+```
+
+Considere a seguinte ordem de prioridade:
+
+1. `Manual_Pratico_Kubernetes_WSL2_K3d.md` como fonte textual principal;
+2. `kubernetes-wsl-k3d-labs.zip` como fonte dos códigos, scripts, manifests e workflows;
+3. `Manual_Pratico_Kubernetes_WSL2_K3d.docx` como referência de estrutura e apresentação;
+4. `Pacote_Completo_Kubernetes_WSL2_K3d.zip` como pacote de conferência.
+
+Extraia, catalogue e relacione:
+
+* capítulos;
+* seções;
+* conceitos;
+* comandos;
+* códigos;
+* arquivos YAML;
+* scripts;
+* Dockerfiles;
+* workflows;
+* exemplos;
+* laboratórios;
+* exercícios;
+* alertas;
+* boas práticas;
+* problemas comuns;
+* procedimentos de troubleshooting.
+
+Não descarte conteúdo relevante.
+
+Não publique credenciais, tokens, dados pessoais, caminhos privados ou informações sensíveis eventualmente presentes nos arquivos.
+
+---
+
+# 2. MISSÃO PRINCIPAL
+
+Crie uma plataforma denominada provisoriamente:
+
+```text
+Kubernetes Lab — Do Zero ao SRE
+```
+
+Nome sugerido para o repositório:
+
+```text
+kubernetes-wsl-k3d-academy
+```
+
+Caso o nome já esteja ocupado na conta, escolha uma variação curta, profissional e semanticamente equivalente.
+
+A plataforma deverá:
+
+1. transformar o manual em uma jornada educacional interativa;
+2. ensinar teoria e prática de forma integrada;
+3. permitir aprendizagem progressiva;
+4. oferecer experiências visuais e simulações;
+5. apresentar todos os códigos e laboratórios;
+6. permitir copiar e baixar artefatos;
+7. registrar localmente o progresso do estudante;
+8. funcionar em desktop, tablet e smartphone;
+9. funcionar parcialmente offline;
+10. ser publicada automaticamente no GitHub Pages;
+11. possuir repositório público;
+12. utilizar CI/CD, CodeQL e verificações de segurança;
+13. estar pronta para evolução contínua.
+
+---
+
+# 3. PRINCÍPIOS OBRIGATÓRIOS
+
+## 3.1 Autonomia
+
+Trabalhe de forma autônoma.
+
+Não interrompa a execução para solicitar confirmação a cada etapa.
+
+Tome decisões técnicas fundamentadas, registre-as e prossiga.
+
+Somente solicite uma ação humana quando houver um bloqueio externo impossível de resolver automaticamente, como:
+
+* autenticação inexistente no GitHub;
+* ausência de permissão para criar repositórios;
+* indisponibilidade de rede;
+* restrição imposta pelo sistema operacional.
+
+Antes de declarar bloqueio:
+
+1. confirme tecnicamente a causa;
+2. tente alternativas seguras;
+3. registre os comandos executados;
+4. informe a ação humana mínima necessária.
+
+## 3.2 Execução real
+
+Não produza:
+
+* telas falsas;
+* botões sem função;
+* links quebrados;
+* menus vazios;
+* conteúdo `Lorem ipsum`;
+* pseudocódigo quando for possível produzir código real;
+* funcionalidades apenas descritas;
+* arquivos com comentários `TODO` como substitutos de implementação;
+* testes que sempre passam sem validar comportamento;
+* informações inventadas.
+
+## 3.3 Qualidade didática
+
+Explique assuntos complexos por camadas:
+
+1. explicação para iniciantes;
+2. analogia;
+3. definição técnica;
+4. exemplo prático;
+5. código;
+6. resultado esperado;
+7. falha comum;
+8. exercício;
+9. validação da aprendizagem;
+10. aplicação em produção.
+
+O conteúdo deve ser tecnicamente rigoroso, porém compreensível.
+
+---
+
+# 4. ARQUITETURA RECOMENDADA
+
+Utilize uma arquitetura estática, compatível com GitHub Pages.
+
+## 4.1 Stack preferencial
+
+Avalie e, salvo impedimento tecnicamente demonstrável, utilize:
+
+```text
+Astro
+TypeScript
+React Islands
+MDX
+Tailwind CSS
+Shiki
+Mermaid ou solução equivalente
+Pagefind, Fuse.js ou mecanismo de busca estática equivalente
+Vitest
+Testing Library
+Playwright
+axe-core
+```
+
+Use as versões estáveis mais recentes disponíveis no momento da implementação e fixe todas as versões no lockfile.
+
+Astro deverá gerar a maior parte do conteúdo estaticamente. React deverá ser utilizado apenas nos componentes que realmente necessitem de interatividade.
+
+Caso escolha outra stack, documente em `docs/architecture-decision-record.md`:
+
+* opções avaliadas;
+* vantagens;
+* desvantagens;
+* impacto em desempenho;
+* impacto no GitHub Pages;
+* impacto em acessibilidade;
+* justificativa da decisão.
+
+## 4.2 Restrições arquiteturais
+
+A aplicação não deverá depender de servidor próprio.
+
+Recursos dinâmicos deverão funcionar no navegador por meio de:
+
+* estado local;
+* `localStorage`;
+* IndexedDB;
+* arquivos JSON;
+* conteúdo MDX;
+* Web Workers, quando úteis;
+* Service Worker;
+* Progressive Web App.
+
+Não implemente autenticação fictícia.
+
+Não inclua banco de dados remoto apenas para armazenar progresso.
+
+A arquitetura deverá permitir que uma futura versão incorpore backend sem reescrever toda a aplicação.
+
+## 4.3 Estrutura sugerida
+
+```text
+/
+├── .github/
+│   ├── workflows/
+│   ├── dependabot.yml
+│   ├── ISSUE_TEMPLATE/
+│   └── pull_request_template.md
+├── docs/
+│   ├── architecture.md
+│   ├── content-model.md
+│   ├── security.md
+│   ├── testing.md
+│   └── architecture-decision-record.md
+├── public/
+│   ├── assets/
+│   ├── labs/
+│   ├── icons/
+│   └── manifest.webmanifest
+├── scripts/
+│   ├── import-content.*
+│   ├── validate-content.*
+│   ├── build-search-index.*
+│   └── check-links.*
+├── src/
+│   ├── components/
+│   ├── content/
+│   ├── data/
+│   ├── features/
+│   ├── layouts/
+│   ├── pages/
+│   ├── services/
+│   ├── styles/
+│   ├── types/
+│   └── utils/
+├── tests/
+│   ├── unit/
+│   ├── integration/
+│   ├── accessibility/
+│   └── e2e/
+├── astro.config.*
+├── package.json
+├── README.md
+├── CONTRIBUTING.md
+├── SECURITY.md
+├── CODE_OF_CONDUCT.md
+└── LICENSE
+```
+
+Ajuste a estrutura quando tecnicamente necessário, preservando organização, separação de responsabilidades e facilidade de manutenção.
+
+---
+
+# 5. IDENTIDADE VISUAL E EXPERIÊNCIA
+
+A plataforma não deverá parecer um template genérico de documentação.
+
+Crie uma identidade própria que comunique:
+
+* tecnologia;
+* infraestrutura;
+* aprendizado;
+* confiabilidade;
+* evolução;
+* operação;
+* segurança;
+* ambientes distribuídos.
+
+## 5.1 Direção visual
+
+Utilize:
+
+* estética contemporânea;
+* excelente hierarquia visual;
+* tipografia legível;
+* espaçamento consistente;
+* cards com profundidade moderada;
+* diagramas claros;
+* animações discretas;
+* transições orientadas ao contexto;
+* elementos que remetam a nós, clusters, Pods, redes e pipelines;
+* modo claro e modo escuro;
+* componentes responsivos;
+* navegação confortável em dispositivos móveis.
+
+Evite:
+
+* poluição visual;
+* animações excessivas;
+* neon sem propósito;
+* excesso de gradientes;
+* textos com pouco contraste;
+* fontes excessivamente pequenas;
+* aparência de painel administrativo genérico;
+* efeitos que prejudiquem desempenho ou acessibilidade.
+
+## 5.2 Design system
+
+Crie um design system documentado com:
+
+* tokens de cores;
+* tokens de espaçamento;
+* escala tipográfica;
+* raios;
+* sombras;
+* estados de foco;
+* estados de erro;
+* estados de sucesso;
+* estados de alerta;
+* componentes;
+* padrões de ícones;
+* regras de responsividade.
+
+Implemente Storybook somente se seu custo de manutenção for justificável. Caso contrário, crie uma rota interna de demonstração dos componentes.
+
+---
+
+# 6. ARQUITETURA DA INFORMAÇÃO
+
+A navegação principal deverá incluir:
+
+```text
+Início
+Trilha de aprendizagem
+Fundamentos
+Instalação
+Recursos Kubernetes
+Laboratórios
+Helm
+Kustomize
+SRE e DevOps
+DevSecOps
+Comandos
+Glossário
+Desafios
+Meu progresso
+Referências
+```
+
+## 6.1 Trilhas
+
+Crie, no mínimo, as seguintes trilhas:
+
+### Trilha 1 — Primeiros passos
+
+* contêineres;
+* Kubernetes;
+* arquitetura;
+* control plane;
+* workers;
+* WSL2;
+* Docker;
+* K3d;
+* K3s;
+* kubectl;
+* criação do primeiro cluster.
+
+### Trilha 2 — Operação de aplicações
+
+* Namespace;
+* Pod;
+* Deployment;
+* ReplicaSet;
+* Service;
+* Ingress;
+* ConfigMap;
+* Secret;
+* volumes;
+* probes;
+* requests e limits.
+
+### Trilha 3 — Sistemas progressivos
+
+* homepage;
+* frontend e backend;
+* SQLite;
+* PostgreSQL;
+* MySQL;
+* microserviços.
+
+### Trilha 4 — Empacotamento
+
+* manifests;
+* Kustomize;
+* Helm;
+* releases;
+* upgrade;
+* rollback.
+
+### Trilha 5 — SRE e DevOps
+
+* CI/CD;
+* GitHub Actions;
+* rollout;
+* rollback;
+* observabilidade;
+* backup;
+* RPO;
+* RTO;
+* incidentes;
+* SLI;
+* SLO;
+* error budget.
+
+### Trilha 6 — DevSecOps
+
+* CodeQL;
+* dependências;
+* imagens;
+* RBAC;
+* NetworkPolicy;
+* Secrets;
+* supply chain;
+* segurança dos workflows;
+* verificações automatizadas.
+
+---
+
+# 7. FUNCIONALIDADES EDUCACIONAIS
+
+## 7.1 Painel de aprendizagem
+
+Apresente:
+
+* percentual de conclusão;
+* módulos iniciados;
+* módulos concluídos;
+* pontos de domínio;
+* exercícios pendentes;
+* sequência de estudo;
+* últimas páginas visitadas;
+* favoritos;
+* recomendações de revisão.
+
+O progresso deverá ser salvo localmente.
+
+Implemente:
+
+* exportação do progresso em JSON;
+* importação do progresso;
+* opção de reiniciar a trilha;
+* versionamento do formato de dados;
+* tratamento de dados antigos após atualizações.
+
+## 7.2 Modos de leitura
+
+Ofereça:
+
+### Modo iniciante
+
+* linguagem mais simples;
+* analogias;
+* explicações passo a passo;
+* menos informações simultâneas;
+* glossário contextual.
+
+### Modo técnico
+
+* detalhes internos;
+* campos YAML;
+* arquitetura;
+* segurança;
+* implicações de produção;
+* links entre conceitos.
+
+### Modo revisão
+
+* resumos;
+* flashcards;
+* perguntas;
+* mapas mentais;
+* comandos essenciais.
+
+## 7.3 Explicador de comandos
+
+Para cada comando relevante, apresente:
+
+* comando completo;
+* onde executar;
+* pré-requisitos;
+* o que ele faz;
+* explicação de cada argumento;
+* resultado esperado;
+* como validar;
+* riscos;
+* como desfazer;
+* erro comum.
+
+Exemplo de apresentação:
+
+```bash
+kubectl get pods -n minha-aplicacao -o wide
+```
+
+Explicar visualmente:
+
+```text
+kubectl                cliente da API Kubernetes
+get                    solicita a listagem de recursos
+pods                   recurso consultado
+-n minha-aplicacao     namespace consultado
+-o wide                saída com informações adicionais
+```
+
+Inclua botão para copiar e retorno visual acessível após a cópia.
+
+## 7.4 Terminal simulado
+
+Crie um terminal educacional no navegador.
+
+O terminal não deverá alegar que executa um Kubernetes real.
+
+Ele deverá:
+
+* simular comandos selecionados;
+* apresentar resultados determinísticos;
+* reconhecer erros comuns;
+* explicar o erro;
+* oferecer dicas progressivas;
+* permitir reiniciar o exercício;
+* marcar a atividade como concluída.
+
+Exemplos:
+
+```text
+kubectl get nodes
+kubectl get pods -A
+kubectl describe pod
+kubectl logs
+kubectl apply -f
+kubectl delete -f
+kubectl rollout status
+kubectl rollout history
+kubectl rollout undo
+helm install
+helm upgrade
+helm rollback
+kubectl kustomize
+```
+
+## 7.5 Explorador de YAML
+
+Crie um componente interativo que:
+
+* destaque cada campo;
+* relacione campos aos conceitos;
+* apresente documentação contextual;
+* mostre erros de indentação;
+* identifique chaves obrigatórias;
+* relacione selectors e labels;
+* mostre o fluxo entre Deployment, Pod e Service;
+* permita alternar entre YAML e representação visual.
+
+Exemplo:
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: web
+```
+
+Ao selecionar `replicas`, explique quantidade desejada, reconciliação e impacto operacional.
+
+## 7.6 Visualizador de arquitetura
+
+Implemente diagramas interativos para:
+
+* usuário → Ingress → Service → Pods;
+* kubectl → API Server;
+* Deployment → ReplicaSet → Pods;
+* PVC → PV → StorageClass;
+* frontend → backend → banco;
+* API Gateway → microserviços;
+* commit → GitHub Actions → registry → cluster;
+* rollout e rollback;
+* observabilidade.
+
+Permita selecionar componentes e visualizar:
+
+* função;
+* dependências;
+* portas;
+* fluxo;
+* possíveis falhas;
+* comandos de diagnóstico.
+
+## 7.7 Assistente de escolha de recursos
+
+Crie assistentes interativos para responder perguntas como:
+
+* Deployment ou StatefulSet?
+* ConfigMap ou Secret?
+* ClusterIP, NodePort ou LoadBalancer?
+* volume efêmero ou persistente?
+* Helm ou Kustomize?
+* SQLite, PostgreSQL ou MySQL?
+* monólito ou microserviços?
+* readinessProbe ou livenessProbe?
+* Job ou CronJob?
+
+O resultado deverá conter explicação, não apenas uma resposta.
+
+## 7.8 Questionários
+
+Cada módulo deverá possuir:
+
+* perguntas de múltipla escolha;
+* verdadeiro ou falso;
+* associação;
+* ordenação de etapas;
+* identificação de erros em YAML;
+* escolha de comandos;
+* cenários operacionais.
+
+Após cada resposta:
+
+* informe se está correta;
+* explique;
+* mostre por que as demais estão incorretas;
+* relacione ao capítulo;
+* permita revisar o conceito.
+
+Não utilize perguntas ambíguas.
+
+## 7.9 Flashcards
+
+Crie flashcards para:
+
+* recursos;
+* comandos;
+* siglas;
+* arquitetura;
+* segurança;
+* SRE;
+* troubleshooting.
+
+Utilize repetição espaçada simplificada com armazenamento local.
+
+## 7.10 Laboratórios guiados
+
+Cada laboratório deverá apresentar:
+
+1. objetivo;
+2. arquitetura;
+3. pré-requisitos;
+4. arquivos envolvidos;
+5. construção das imagens;
+6. aplicação dos manifests;
+7. validação;
+8. falha controlada;
+9. diagnóstico;
+10. correção;
+11. atualização;
+12. rollback;
+13. limpeza;
+14. desafios adicionais.
+
+Inclua os laboratórios originais:
+
+```text
+00-cluster
+01-homepage
+02-notes-sqlite
+03-products-postgres
+04-microservices
+05-kustomize
+06-helm
+07-cicd
+08-security-operations
+```
+
+Preserve os arquivos para download.
+
+## 7.11 Laboratório de troubleshooting
+
+Crie cenários simulados, no mínimo, para:
+
+* Pod em `Pending`;
+* `CrashLoopBackOff`;
+* `ImagePullBackOff`;
+* selector incorreto;
+* Service sem endpoints;
+* probe falhando;
+* PVC pendente;
+* ConfigMap ausente;
+* Secret ausente;
+* porta incorreta;
+* Ingress retornando 404;
+* rollout travado;
+* banco indisponível;
+* falha de DNS;
+* limite de memória;
+* permissão RBAC negada.
+
+O estudante deverá escolher comandos de diagnóstico e interpretar resultados.
+
+## 7.12 Simulador de rollout
+
+Permita simular:
+
+* rolling update;
+* falha na nova versão;
+* rollout status;
+* rollout history;
+* rollback;
+* blue/green;
+* canário conceitual.
+
+Mostre visualmente:
+
+* versão antiga;
+* nova versão;
+* Pods disponíveis;
+* Pods indisponíveis;
+* tráfego;
+* impacto;
+* decisão de rollback.
+
+---
+
+# 8. CONTEÚDO DE KUBERNETES
+
+A plataforma deverá cobrir, no mínimo:
+
+## Fundamentos
+
+* containers;
+* imagens;
+* registry;
+* Docker;
+* containerd;
+* Kubernetes;
+* K3s;
+* K3d;
+* WSL2;
+* control plane;
+* worker;
+* API Server;
+* scheduler;
+* controller manager;
+* kubelet;
+* CoreDNS;
+* CNI;
+* CSI.
+
+## Artefatos
+
+* Namespace;
+* Pod;
+* ReplicaSet;
+* Deployment;
+* StatefulSet;
+* DaemonSet;
+* Job;
+* CronJob;
+* Service;
+* Ingress;
+* ConfigMap;
+* Secret;
+* ServiceAccount;
+* Role;
+* ClusterRole;
+* RoleBinding;
+* ClusterRoleBinding;
+* PersistentVolume;
+* PersistentVolumeClaim;
+* StorageClass;
+* HorizontalPodAutoscaler;
+* PodDisruptionBudget;
+* ResourceQuota;
+* LimitRange;
+* NetworkPolicy.
+
+## Volumes
+
+Explique com exemplos:
+
+* `emptyDir`;
+* ConfigMap como volume;
+* Secret como volume;
+* `hostPath`;
+* PV;
+* PVC;
+* StorageClass;
+* volumes dinâmicos;
+* volumes estáticos;
+* modos de acesso;
+* retenção;
+* exclusão;
+* backup;
+* limitações do armazenamento local.
+
+## Rede
+
+* IP de Pod;
+* Service;
+* DNS;
+* ClusterIP;
+* NodePort;
+* LoadBalancer;
+* ExternalName;
+* headless Service;
+* Ingress;
+* Ingress Controller;
+* TLS;
+* NetworkPolicy.
+
+## Operação
+
+* logs;
+* describe;
+* exec;
+* events;
+* rollout;
+* scaling;
+* patch;
+* port-forward;
+* contextos;
+* namespaces;
+* labels;
+* annotations;
+* selectors;
+* troubleshooting.
+
+---
+
+# 9. HELM E KUSTOMIZE
+
+## 9.1 Helm
+
+Crie uma área interativa que explique:
+
+* Chart;
+* release;
+* repository;
+* `Chart.yaml`;
+* `values.yaml`;
+* templates;
+* helpers;
+* hooks;
+* NOTES;
+* instalação;
+* upgrade;
+* histórico;
+* rollback;
+* desinstalação;
+* validação;
+* lint;
+* renderização.
+
+Utilize os arquivos reais do pacote.
+
+Apresente comparações visuais entre:
+
+```bash
+helm template
+helm install
+helm upgrade
+helm history
+helm rollback
+helm uninstall
+```
+
+## 9.2 Kustomize
+
+Explique:
+
+* base;
+* overlay;
+* patches;
+* namespace;
+* labels;
+* geração de ConfigMaps;
+* geração de Secrets;
+* variações de ambiente;
+* renderização;
+* aplicação.
+
+Utilize:
+
+```bash
+kubectl kustomize
+kubectl apply -k
+kubectl diff -k
+```
+
+## 9.3 Comparador
+
+Crie um comparador que permita ao estudante selecionar um cenário e receber recomendação fundamentada entre:
+
+* YAML puro;
+* Helm;
+* Kustomize;
+* combinação entre Helm e Kustomize.
+
+---
+
+# 10. GLOSSÁRIO E BUSCA
+
+Crie glossário pesquisável em português, mantendo termos técnicos originais em inglês.
+
+Cada verbete deverá conter:
+
+* termo;
+* tradução ou interpretação;
+* definição simples;
+* definição técnica;
+* exemplo;
+* recursos relacionados;
+* comandos relacionados;
+* capítulo relacionado.
+
+Implemente busca global por:
+
+* títulos;
+* conceitos;
+* comandos;
+* erros;
+* códigos;
+* recursos;
+* laboratórios;
+* siglas.
+
+A busca deverá funcionar sem servidor.
+
+---
+
+# 11. ACESSIBILIDADE
+
+Atenda à WCAG 2.2 nível AA.
+
+Implemente:
+
+* HTML semântico;
+* navegação completa por teclado;
+* foco visível;
+* skip links;
+* labels;
+* landmarks;
+* hierarquia correta de títulos;
+* contraste adequado;
+* mensagens acessíveis;
+* suporte a leitores de tela;
+* respeito a `prefers-reduced-motion`;
+* áreas clicáveis adequadas;
+* alternativas textuais;
+* diagramas com descrição;
+* não depender exclusivamente de cor;
+* anúncios ARIA apenas quando necessários.
+
+Execute testes automatizados com axe-core e testes manuais de teclado.
+
+Nenhum erro crítico ou sério de acessibilidade poderá permanecer.
+
+---
+
+# 12. RESPONSIVIDADE E PWA
+
+A aplicação deverá funcionar adequadamente em:
+
+```text
+320 px
+375 px
+768 px
+1024 px
+1440 px
+1920 px
+```
+
+Implemente:
+
+* menu móvel;
+* navegação adaptativa;
+* blocos de código com rolagem;
+* tabelas responsivas;
+* diagramas adaptáveis;
+* controles adequados para toque;
+* instalação como PWA;
+* página offline;
+* cache seguro dos conteúdos essenciais;
+* atualização do Service Worker;
+* aviso de nova versão.
+
+O funcionamento offline não precisa incluir recursos externos, mas deverá permitir consultar conteúdos já armazenados.
+
+---
+
+# 13. DESEMPENHO
+
+Adote como meta, em produção:
+
+```text
+Performance:           >= 90
+Accessibility:         >= 95
+Best Practices:        >= 95
+SEO:                   >= 95
+```
+
+Priorize:
+
+* geração estática;
+* carregamento progressivo;
+* divisão de código;
+* redução de JavaScript;
+* lazy loading;
+* imagens otimizadas;
+* SVG;
+* fontes eficientes;
+* ausência de dependências desnecessárias;
+* redução de layout shift;
+* rápida interação inicial.
+
+Registre medições e limitações reais.
+
+Não manipule testes para gerar pontuação artificial.
+
+---
+
+# 14. SEGURANÇA
+
+## 14.1 Código
+
+Implemente:
+
+* TypeScript estrito;
+* lint;
+* formatação;
+* validação de entradas;
+* sanitização de conteúdo;
+* proteção contra XSS;
+* ausência de `eval`;
+* ausência de HTML arbitrário não sanitizado;
+* dependências mínimas;
+* lockfile versionado.
+
+## 14.2 GitHub Actions
+
+Utilize:
+
+* permissões mínimas;
+* ações oficiais;
+* actions de terceiros fixadas por SHA imutável;
+* `persist-credentials: false` quando aplicável;
+* ambientes protegidos;
+* concorrência de deploy;
+* nenhum segredo em logs;
+* nenhum deploy originado de código não confiável;
+* separação entre CI e deploy;
+* artefatos controlados.
+
+## 14.3 Verificações
+
+Configure:
+
+* CodeQL;
+* Dependabot para npm;
+* Dependabot para GitHub Actions;
+* dependency review em pull requests;
+* análise de segredos;
+* auditoria de dependências;
+* testes de segurança;
+* verificação de links;
+* verificação de conteúdo HTML.
+
+Use a suíte `security-extended` do CodeQL quando compatível.
+
+Crie `SECURITY.md` com política de comunicação de vulnerabilidades.
+
+---
+
+# 15. TESTES
+
+Implemente:
+
+## Testes unitários
+
+* armazenamento de progresso;
+* cálculo de conclusão;
+* questionários;
+* flashcards;
+* importação e exportação;
+* busca;
+* helpers;
+* validadores.
+
+## Testes de componentes
+
+* navegação;
+* cards;
+* blocos de código;
+* quiz;
+* terminal;
+* diagramas;
+* alternância de tema;
+* mensagens de erro.
+
+## Testes de integração
+
+* carregamento de conteúdo;
+* atualização de progresso;
+* conclusão de módulos;
+* restauração de sessão;
+* pesquisa;
+* download de laboratórios.
+
+## Testes end-to-end
+
+* abertura da homepage;
+* navegação por trilha;
+* conclusão de aula;
+* resposta de quiz;
+* salvamento de progresso;
+* mudança de tema;
+* pesquisa;
+* modo offline;
+* acesso direto às rotas;
+* atualização da página;
+* funcionamento sob o caminho do repositório no GitHub Pages.
+
+## Testes de acessibilidade
+
+* axe-core;
+* teclado;
+* foco;
+* contraste;
+* nomes acessíveis;
+* ordem de leitura.
+
+## Comandos obrigatórios
+
+O projeto deverá disponibilizar comandos equivalentes a:
+
+```bash
+npm run dev
+npm run check
+npm run lint
+npm run format:check
+npm run test
+npm run test:coverage
+npm run test:e2e
+npm run test:a11y
+npm run build
+npm run preview
+npm run check:links
+npm run validate:content
+```
+
+Todos deverão ser documentados.
+
+---
+
+# 16. CI/CD
+
+Crie workflows separados.
+
+## 16.1 CI
+
+Executar em pull requests e push:
+
+1. checkout;
+2. instalação determinística;
+3. type checking;
+4. lint;
+5. formatação;
+6. validação do conteúdo;
+7. testes unitários;
+8. testes de componentes;
+9. build;
+10. testes de acessibilidade;
+11. verificação de links.
+
+## 16.2 CodeQL
+
+Executar:
+
+* em push na branch principal;
+* em pull requests;
+* periodicamente;
+* manualmente quando necessário.
+
+## 16.3 Dependency review
+
+Executar em pull requests e bloquear introdução de vulnerabilidades conforme severidade definida.
+
+## 16.4 GitHub Pages
+
+No push para `main`:
+
+1. checkout;
+2. instalação;
+3. validações;
+4. build;
+5. configuração do GitHub Pages;
+6. upload do artefato;
+7. deploy;
+8. smoke test da URL publicada.
+
+Use o ambiente:
+
+```text
+github-pages
+```
+
+Configure corretamente:
+
+```yaml
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+```
+
+Configure concorrência para impedir deploys conflitantes.
+
+A aplicação deverá funcionar tanto em:
+
+```text
+https://USUARIO.github.io/
+```
+
+quanto em:
+
+```text
+https://USUARIO.github.io/NOME-DO-REPOSITORIO/
+```
+
+Calcule corretamente `site`, `base` e caminhos de assets.
+
+---
+
+# 17. CRIAÇÃO AUTOMÁTICA DO REPOSITÓRIO
+
+Antes de criar o repositório, execute:
+
+```bash
+git --version
+gh --version
+gh auth status
+```
+
+Caso a autenticação esteja válida:
+
+1. inicialize o Git;
+2. configure `.gitignore`;
+3. crie a branch `main`;
+4. faça o primeiro commit;
+5. crie o repositório público;
+6. configure o remote;
+7. envie o código;
+8. configure o GitHub Pages para workflow;
+9. habilite os recursos de segurança disponíveis;
+10. acompanhe os workflows;
+11. valide a URL publicada.
+
+Comando de referência:
+
+```bash
+gh repo create kubernetes-wsl-k3d-academy \
+  --public \
+  --source=. \
+  --remote=origin \
+  --push
+```
+
+Adapte o nome somente quando necessário.
+
+Não solicite ou exiba token pessoal.
+
+Não grave tokens em:
+
+* arquivos;
+* código;
+* histórico;
+* variáveis versionadas;
+* logs;
+* URLs.
+
+Utilize a autenticação existente da GitHub CLI.
+
+Configure o GitHub Pages com workflow por meio da interface, CLI ou API oficial, conforme as permissões disponíveis.
+
+---
+
+# 18. DOCUMENTAÇÃO DO REPOSITÓRIO
+
+Crie um `README.md` profissional contendo:
+
+* apresentação;
+* captura ou demonstração;
+* principais recursos;
+* stack;
+* arquitetura;
+* execução local;
+* testes;
+* build;
+* publicação;
+* estrutura de diretórios;
+* contribuição;
+* segurança;
+* licença;
+* URL do GitHub Pages.
+
+Crie também:
+
+```text
+CONTRIBUTING.md
+SECURITY.md
+CODE_OF_CONDUCT.md
+CHANGELOG.md
+LICENSE
+docs/architecture.md
+docs/content-model.md
+docs/testing.md
+docs/deployment.md
+docs/security.md
+```
+
+Inclua badges apenas quando representarem verificações reais.
+
+---
+
+# 19. SEO E COMPARTILHAMENTO
+
+Implemente:
+
+* título e descrição por página;
+* canonical URL;
+* Open Graph;
+* Twitter Cards;
+* favicon;
+* `robots.txt`;
+* sitemap;
+* manifesto PWA;
+* dados estruturados para curso e recurso educacional;
+* descrição para compartilhamento;
+* imagem social original;
+* URLs legíveis;
+* headings semanticamente corretos.
+
+A aplicação deverá priorizar português brasileiro e deixar preparada a futura internacionalização.
+
+---
+
+# 20. MODELO DE CONTEÚDO
+
+Converta o manual em unidades estruturadas.
+
+Exemplo:
+
+```typescript
+interface Lesson {
+  id: string;
+  slug: string;
+  title: string;
+  summary: string;
+  level: "beginner" | "intermediate" | "advanced";
+  estimatedMinutes: number;
+  prerequisites: string[];
+  objectives: string[];
+  concepts: string[];
+  commands: CommandExplanation[];
+  examples: CodeExample[];
+  exercises: Exercise[];
+  quiz: QuizQuestion[];
+  relatedLessons: string[];
+}
+```
+
+Crie modelos também para:
+
+* trilhas;
+* módulos;
+* comandos;
+* glossário;
+* laboratórios;
+* flashcards;
+* quizzes;
+* cenários de troubleshooting;
+* artefatos para download;
+* progresso.
+
+Valide os conteúdos durante o build.
+
+O build deverá falhar quando houver:
+
+* IDs duplicados;
+* links internos quebrados;
+* pré-requisitos inexistentes;
+* exemplos sem linguagem;
+* perguntas sem resposta;
+* downloads ausentes;
+* rotas inválidas.
+
+---
+
+# 21. CICLO DE EXECUÇÃO EM LOOP
+
+Execute o seguinte algoritmo até atingir a definição de pronto.
+
+```text
+ENQUANTO houver requisito não atendido:
+
+    1. OBSERVAR
+       - inspecionar o estado atual;
+       - ler arquivos;
+       - verificar código;
+       - verificar workflows;
+       - verificar testes;
+       - verificar publicação.
+
+    2. COMPARAR
+       - comparar o estado atual com os requisitos;
+       - identificar lacunas;
+       - classificar por risco e impacto.
+
+    3. SELECIONAR
+       - selecionar a lacuna de maior impacto;
+       - definir a menor entrega coerente que a resolva.
+
+    4. IMPLEMENTAR
+       - escrever código real;
+       - integrar conteúdo;
+       - atualizar documentação;
+       - preservar padrões arquiteturais.
+
+    5. VALIDAR
+       - executar type check;
+       - executar lint;
+       - executar testes;
+       - executar build;
+       - testar acessibilidade;
+       - testar segurança;
+       - testar navegação;
+       - testar responsividade.
+
+    6. DIAGNOSTICAR
+       - analisar falhas;
+       - identificar causa raiz;
+       - não mascarar erro;
+       - não desabilitar teste válido.
+
+    7. CORRIGIR
+       - aplicar a correção;
+       - repetir as validações;
+       - verificar regressões.
+
+    8. REGISTRAR
+       - atualizar STATUS.md;
+       - atualizar CHANGELOG.md;
+       - registrar decisões relevantes;
+       - criar commit semântico.
+
+    9. REAVALIAR
+       - revisar a definição de pronto;
+       - iniciar novo ciclo quando houver lacuna.
+```
+
+## Regras do loop
+
+* Não permaneça repetindo a mesma tentativa sem alterar a estratégia.
+* Após três falhas semelhantes, amplie o diagnóstico.
+* Não remova requisitos para fazer testes passarem.
+* Não silencie erros sem justificativa.
+* Não marque requisito como concluído sem evidência.
+* Não publique antes de o build local passar.
+* Após publicar, execute nova validação na URL real.
+* Corrija problemas encontrados no ambiente publicado.
+* Repita o deploy quando necessário.
+* Mantenha commits pequenos e semanticamente claros.
+
+Use commits como:
+
+```text
+feat:
+fix:
+docs:
+test:
+refactor:
+perf:
+security:
+ci:
+chore:
+```
+
+---
+
+# 22. FASES OBRIGATÓRIAS
+
+## Fase 0 — Inventário
+
+* localizar arquivos;
+* extrair pacotes;
+* gerar índice;
+* identificar duplicidades;
+* identificar dados sensíveis;
+* gerar relatório de conteúdo.
+
+## Fase 1 — Descoberta
+
+* compreender público;
+* compreender objetivos;
+* construir mapa de aprendizagem;
+* estabelecer pré-requisitos;
+* desenhar arquitetura da informação.
+
+## Fase 2 — Arquitetura
+
+* definir stack;
+* definir modelo de conteúdo;
+* definir estado;
+* definir persistência;
+* definir rotas;
+* definir estratégia GitHub Pages;
+* registrar decisão.
+
+## Fase 3 — Design system
+
+* criar tokens;
+* criar componentes;
+* criar layouts;
+* criar temas;
+* validar acessibilidade.
+
+## Fase 4 — Importação do conteúdo
+
+* converter manual;
+* organizar capítulos;
+* importar códigos;
+* catalogar laboratórios;
+* criar glossário;
+* criar referências cruzadas.
+
+## Fase 5 — Experiência educacional
+
+* implementar trilhas;
+* progresso;
+* busca;
+* quizzes;
+* flashcards;
+* terminal;
+* YAML explorer;
+* diagramas;
+* troubleshooting;
+* rollout simulator.
+
+## Fase 6 — Qualidade
+
+* testes;
+* acessibilidade;
+* desempenho;
+* segurança;
+* responsividade;
+* links;
+* conteúdo.
+
+## Fase 7 — GitHub
+
+* inicializar;
+* criar repositório público;
+* configurar workflows;
+* ativar Pages;
+* configurar CodeQL;
+* configurar Dependabot;
+* fazer push.
+
+## Fase 8 — Publicação
+
+* acompanhar Actions;
+* identificar falhas;
+* corrigir;
+* republicar;
+* executar smoke tests;
+* validar rotas, assets e PWA.
+
+## Fase 9 — Auditoria final
+
+* revisar todos os requisitos;
+* eliminar placeholders;
+* conferir conteúdo;
+* conferir downloads;
+* conferir segurança;
+* conferir acessibilidade;
+* conferir responsividade;
+* conferir documentação;
+* emitir relatório final.
+
+---
+
+# 23. DEFINIÇÃO DE PRONTO
+
+O projeto somente poderá ser considerado concluído quando:
+
+* [ ] todo o conteúdo relevante estiver representado;
+* [ ] os laboratórios estiverem disponíveis;
+* [ ] os downloads funcionarem;
+* [ ] a navegação estiver completa;
+* [ ] a busca funcionar;
+* [ ] o progresso persistir;
+* [ ] os quizzes funcionarem;
+* [ ] os flashcards funcionarem;
+* [ ] o terminal simulado funcionar;
+* [ ] o explorador YAML funcionar;
+* [ ] os diagramas funcionarem;
+* [ ] os exercícios de troubleshooting funcionarem;
+* [ ] o simulador de rollout funcionar;
+* [ ] o tema claro e escuro funcionar;
+* [ ] a experiência móvel estiver adequada;
+* [ ] os testes passarem;
+* [ ] o build passar;
+* [ ] a análise de acessibilidade passar;
+* [ ] o CodeQL estiver configurado;
+* [ ] o Dependabot estiver configurado;
+* [ ] o dependency review estiver configurado;
+* [ ] o repositório estiver público;
+* [ ] o GitHub Pages estiver publicado;
+* [ ] a URL pública responder;
+* [ ] rotas e assets funcionarem na URL pública;
+* [ ] a documentação estiver completa;
+* [ ] não houver segredos versionados;
+* [ ] não houver erros críticos conhecidos;
+* [ ] não houver placeholders funcionais;
+* [ ] o relatório final estiver produzido.
+
+---
+
+# 24. RELATÓRIO FINAL
+
+Ao concluir, apresente:
+
+## Resumo executivo
+
+* o que foi construído;
+* público atendido;
+* diferenciais;
+* arquitetura adotada.
+
+## URLs
+
+```text
+Repositório:
+GitHub Pages:
+Última execução do workflow:
+```
+
+## Informações técnicas
+
+* stack;
+* versões;
+* arquitetura;
+* persistência;
+* estratégia de conteúdo;
+* estratégia de publicação.
+
+## Testes
+
+Informe resultados reais:
+
+```text
+Type check:
+Lint:
+Testes unitários:
+Testes de integração:
+Testes E2E:
+Acessibilidade:
+Build:
+Links:
+CodeQL:
+Dependency review:
+```
+
+## Git
+
+Informe:
+
+```text
+Branch:
+Commit:
+Tag:
+```
+
+## Funcionalidades
+
+Liste o que está operacional.
+
+## Limitações
+
+Registre limitações reais, sem ocultá-las.
+
+## Próximas evoluções
+
+Sugira somente evoluções que não façam parte da definição obrigatória de pronto.
+
+---
+
+# 25. ORDEM DE INÍCIO
+
+Comece imediatamente pela seguinte sequência:
+
+```text
+1. verificar o diretório atual;
+2. localizar os arquivos-fonte;
+3. extrair e inventariar o conteúdo;
+4. verificar Git, Node.js, npm e GitHub CLI;
+5. verificar autenticação do GitHub;
+6. criar STATUS.md;
+7. criar plano técnico inicial;
+8. iniciar a implementação;
+9. executar o loop até a conclusão;
+10. publicar e validar a aplicação.
+```
+
+Não pare após criar o plano.
+
+Não pare após gerar a estrutura inicial.
+
+Não pare após a primeira versão visual.
+
+Não considere o projeto concluído apenas porque a página inicial abriu.
+
+O resultado deverá ser uma plataforma educacional pública, testada, segura, acessível, responsiva, documentada, versionada e efetivamente publicada.
