@@ -1566,10 +1566,47 @@ document.addEventListener('DOMContentLoaded', function() {
     if (typeof lucide !== 'undefined' && lucide.createIcons) lucide.createIcons();
   });
   const m = document.getElementById('menuToggle'), s = document.getElementById('sidebar'), o = document.getElementById('sidebarOverlay');
-  function cs() { if(s) s.classList.remove('open'); if(o) o.classList.remove('open'); }
-  if (m && s && o) {
-    m.addEventListener('click', function() { s.classList.contains('open') ? cs() : (s.classList.add('open'), o.classList.add('open')); });
-    o.addEventListener('click', cs);
+  const isMobile = function() { return window.innerWidth <= 1024; };
+  function cs() {
+    if (isMobile()) { if(s) s.classList.remove('open'); if(o) o.classList.remove('open'); }
+    else { if(s) s.classList.add('collapsed'); if(document.querySelector('.main')) document.querySelector('.main').classList.add('expanded'); }
+    localStorage.setItem('k8s-sidebar', 'collapsed');
+    if (m) m.classList.add('collapsed');
+  }
+  function openSidebar() {
+    if (isMobile()) { if(s) s.classList.add('open'); if(o) o.classList.add('open'); }
+    else { if(s) s.classList.remove('collapsed'); if(document.querySelector('.main')) document.querySelector('.main').classList.remove('expanded'); }
+    localStorage.setItem('k8s-sidebar', 'expanded');
+    if (m) m.classList.remove('collapsed');
+  }
+  if (m && s) {
+    m.addEventListener('click', function() {
+      if (isMobile()) { s.classList.contains('open') ? cs() : openSidebar(); }
+      else { s.classList.contains('collapsed') ? openSidebar() : cs(); }
+    });
+    if (o) o.addEventListener('click', cs);
+    // Sidebar internal collapse button
+    var scb = document.getElementById('sidebarCollapseBtn');
+    if (scb) scb.addEventListener('click', function(e) { e.stopPropagation(); cs(); });
+    // Restore previous state
+    var savedState = localStorage.getItem('k8s-sidebar');
+    if (savedState === 'collapsed') { cs(); }
+    // Close sidebar on Escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && ((isMobile() && s.classList.contains('open')) || (!isMobile() && !s.classList.contains('collapsed')))) { cs(); }
+    });
+    // On window resize, reset to collapsed if desktop and was collapsed
+    var resizeTimer;
+    window.addEventListener('resize', function() {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(function() {
+        if (localStorage.getItem('k8s-sidebar') === 'collapsed' && !isMobile()) {
+          if(s) s.classList.add('collapsed');
+          if(document.querySelector('.main')) document.querySelector('.main').classList.add('expanded');
+          if(m) m.classList.add('collapsed');
+        }
+      }, 150);
+    });
   }
   const sb = document.getElementById('searchBtn');
   let sm = document.getElementById('searchModal');
