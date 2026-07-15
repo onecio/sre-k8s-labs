@@ -1,19 +1,26 @@
 /* ===== K8s Manual — Service Worker ===== */
-var CACHE_NAME = 'k8s-manual-v1';
+var CACHE_NAME = 'k8s-manual-v5';
 
 var PRECACHE_URLS = [
   './',
   './index.html',
+  './offline.html',
   './manifest.json',
-  './icon.svg'
+  './icon.svg', './style.css', './script.js'
 ];
 
-/* --- Install: precache core assets (CDN cached on-demand) --- */
+/* --- Install: precache core assets individually (resilient to single failures) --- */
 self.addEventListener('install', function(event) {
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(function(cache) {
-        return cache.addAll(PRECACHE_URLS);
+        return Promise.all(
+          PRECACHE_URLS.map(function(url) {
+            return cache.add(url).catch(function(err) {
+              console.warn('[SW] Failed to precache:', url, err);
+            });
+          })
+        );
       })
       .then(function() {
         return self.skipWaiting();
@@ -70,7 +77,7 @@ self.addEventListener('fetch', function(event) {
         }).catch(function() {
           /* Offline fallback for navigation requests */
           if (event.request.mode === 'navigate') {
-            return caches.match('./index.html');
+            return caches.match('./offline.html');
           }
         });
       })
