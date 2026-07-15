@@ -1097,7 +1097,7 @@ function termExec(cmd) {
     return;
   }
   if (c.match(/^kubectl describe pod\s+(\S+)/)) {
-    const pod = cmd.match(/describe pod\s+(\S+)/)[1];
+    const pod = c.match(/describe pod\s+(\S+)/)[1];
     termPrint('Name:             ' + pod, 'output-line');
     termPrint('Namespace:        default', 'output-line');
     termPrint('Node:             worker1/192.168.1.101', 'output-line');
@@ -1124,7 +1124,7 @@ function termExec(cmd) {
     return;
   }
   if (c.match(/^kubectl logs\s+(\S+)/)) {
-    const pod = cmd.match(/logs\s+(\S+)/)[1];
+    const pod = c.match(/logs\s+(\S+)/)[1];
     termPrint('[' + pod + '] 2026-07-10T12:00:01Z INFO  Server starting on :8080', 'output-line');
     termPrint('[' + pod + '] 2026-07-10T12:00:01Z INFO  Connected to database', 'output-line');
     termPrint('[' + pod + '] 2026-07-10T12:00:02Z INFO  Health check ready at /healthz', 'output-line');
@@ -1375,21 +1375,32 @@ function renderFlashcard() {
   if (!fcFiltered.length) return;
   const card = fcFiltered[fcIndex];
   const el = document.getElementById('flashcard');
+  if (!el) return;
   el.classList.remove('flipped'); fcFlipped = false;
-  document.getElementById('flashcardTerm').textContent = card.term;
-  document.getElementById('flashcardCat').textContent = card.cat;
-  document.getElementById('flashcardCatBack').textContent = card.cat;
-  document.getElementById('flashcardDef').textContent = card.def;
+  var termEl = document.getElementById('flashcardTerm');
+  if (termEl) termEl.textContent = card.term;
+  var catEl = document.getElementById('flashcardCat');
+  if (catEl) catEl.textContent = card.cat;
+  var catBackEl = document.getElementById('flashcardCatBack');
+  if (catBackEl) catBackEl.textContent = card.cat;
+  var defEl = document.getElementById('flashcardDef');
+  if (defEl) defEl.textContent = card.def;
   const exEl = document.getElementById('flashcardExample');
-  if (card.example) { exEl.textContent = '$ ' + card.example; exEl.style.display = 'block'; }
-  else { exEl.style.display = 'none'; }
-  document.getElementById('fcCounter').textContent = (fcIndex + 1) + ' / ' + fcFiltered.length;
-  document.getElementById('fcPrevBtn').disabled = fcIndex === 0;
-  document.getElementById('fcNextBtn').disabled = fcIndex === fcFiltered.length - 1;
+  if (exEl) {
+    if (card.example) { exEl.textContent = '$ ' + card.example; exEl.style.display = 'block'; }
+    else { exEl.style.display = 'none'; }
+  }
+  var cntEl = document.getElementById('fcCounter');
+  if (cntEl) cntEl.textContent = (fcIndex + 1) + ' / ' + fcFiltered.length;
+  var prevEl = document.getElementById('fcPrevBtn');
+  if (prevEl) prevEl.disabled = fcIndex === 0;
+  var nextEl = document.getElementById('fcNextBtn');
+  if (nextEl) nextEl.disabled = fcIndex === fcFiltered.length - 1;
   updateFlashcardProgress();
 }
 function flipFlashcard() {
   const el = document.getElementById('flashcard');
+  if (!el) return;
   fcFlipped = !fcFlipped;
   el.classList.toggle('flipped', fcFlipped);
 }
@@ -1543,6 +1554,8 @@ document.addEventListener('DOMContentLoaded', function() {
   if (typeof initTerminal === 'function') initTerminal();
   if (typeof initFlashcards === 'function') initFlashcards();
   if (typeof initRolloutSim === 'function') initRolloutSim();
+  // YAML Explorer: populate initial tab content
+  if (typeof switchYamlTab === 'function') switchYamlTab('deployment', document.querySelector('.yaml-tab.active'));
   const t = document.getElementById('themeToggle'), h = document.documentElement;
   const saved = localStorage.getItem('k8s-theme') || 'dark';
   h.setAttribute('data-theme', saved);
