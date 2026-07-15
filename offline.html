@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Offline — Manual Kubernetes</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: #0d1117;
+    color: #e6edf3;
+    line-height: 1.7;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 20px;
+    text-align: center;
+  }
+  .container {
+    max-width: 500px;
+  }
+  .icon-wrap {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #58a6ff, #bc8cff);
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+  }
+  .icon-wrap svg {
+    width: 40px;
+    height: 40px;
+    color: #fff;
+  }
+  h1 {
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 12px;
+    color: #e6edf3;
+    background: linear-gradient(135deg, #e6edf3 0%, #58a6ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  p {
+    font-size: 15px;
+    color: #8b949e;
+    margin-bottom: 8px;
+  }
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(210,153,34,0.1);
+    border: 1px solid rgba(210,153,34,0.3);
+    color: #d29922;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 24px;
+  }
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #d29922;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+  .actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 24px;
+  }
+  .btn {
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.25s ease;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, #58a6ff, #bc8cff);
+    color: #fff;
+  }
+  .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+  .btn-secondary {
+    background: #1a1f2e;
+    color: #e6edf3;
+    border: 1px solid #30363d;
+  }
+  .btn-secondary:hover { border-color: #58a6ff; }
+  .tips {
+    margin-top: 32px;
+    padding: 20px;
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 10px;
+    text-align: left;
+  }
+  .tips h3 {
+    font-size: 13px;
+    color: #58a6ff;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 12px;
+  }
+  .tips ul {
+    list-style: none;
+    padding: 0;
+  }
+  .tips li {
+    font-size: 13px;
+    color: #8b949e;
+    padding: 6px 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .tips li::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    min-width: 6px;
+    border-radius: 50%;
+    background: #58a6ff;
+    margin-top: 8px;
+  }
+  .footer {
+    margin-top: 32px;
+    font-size: 12px;
+    color: #8b95a5;
+  }
+  .footer svg {
+    width: 14px;
+    height: 14px;
+    vertical-align: middle;
+  }
+  @media (max-width: 480px) {
+    h1 { font-size: 22px; }
+    .icon-wrap { width: 64px; height: 64px; }
+    .icon-wrap svg { width: 32px; height: 32px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .status-dot { animation: none; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="icon-wrap">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5"/>
+      <line x1="12" y1="22" x2="12" y2="15.5"/>
+      <polyline points="22 8.5 12 15.5 2 8.5"/>
+    </svg>
+  </div>
+
+  <div class="status-badge" role="status" aria-live="polite">
+    <span class="status-dot" aria-hidden="true"></span>
+    <span>Sem conexão com a rede</span>
+  </div>
+
+  <h1>Você está offline</h1>
+  <p>O conteúdo solicitado não está disponível no cache do seu dispositivo.</p>
+  <p>Conecte-se à internet para acessar todo o conteúdo interativo.</p>
+
+  <div class="actions">
+    <button class="btn btn-primary" onclick="window.location.reload()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+      Tentar novamente
+    </button>
+    <a class="btn btn-secondary" href="./">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Voltar ao início
+    </a>
+  </div>
+
+  <div class="tips">
+    <h3>Dicas para quando voltar</h3>
+    <ul>
+      <li>Explore os 10 laboratórios práticos guiados</li>
+      <li>Teste seus conhecimentos nos 11 quizzes interativos</li>
+      <li>Pratique com o simulador de rollout e terminal</li>
+      <li>Use os flashcards para revisão rápida</li>
+      <li>Seu progresso é salvo automaticamente no navegador</li>
+    </ul>
+  </div>
+
+  <div class="footer">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5"/></svg>
+    Manual Kubernetes para SRE/DevOps
+  </div>
+</div>
+</body>
+</html>
