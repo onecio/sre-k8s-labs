@@ -1,0 +1,12 @@
+{
+  "name": "kubelab-ecomnix",
+  "version": "3.0.0",
+  "private": true,
+  "description": "Formação prática de Kubernetes para DevOps e SRE",
+  "scripts": {
+    "dev": "npx --yes serve . -l 8000",
+    "validate": "node --check script.js && node scripts/validate-content.mjs",
+    "build": "node scripts/build.mjs"
+  },
+  "engines": { "node": ">=20" }
+}

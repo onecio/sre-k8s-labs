@@ -1,0 +1,6 @@
+apiVersion: v2
+name: kubelab-app
+description: Aplicação mínima para o laboratório GitOps
+type: application
+version: 0.1.0
+appVersion: "1.27"

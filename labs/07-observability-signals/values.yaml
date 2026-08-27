@@ -1,0 +1,10 @@
+grafana:
+  adminPassword: kubelab-local-only
+prometheus:
+  prometheusSpec:
+    retention: 6h
+    resources:
+      requests: { cpu: 100m, memory: 256Mi }
+      limits: { cpu: 500m, memory: 1Gi }
+alertmanager:
+  enabled: true

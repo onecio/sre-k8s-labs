@@ -1,7 +1,7 @@
 {
-  "name": "Manual Kubernetes para SRE/DevOps",
-  "short_name": "K8s Manual",
-  "description": "Do absoluto zero à implantação, operação, diagnóstico e automação de aplicações em Kubernetes",
+  "name": "KubeLab ECOMNIX - Kubernetes do Zero ao SRE",
+  "short_name": "KubeLab",
+  "description": "Formação prática de Kubernetes para DevOps e SRE",
   "start_url": ".",
   "scope": ".",
   "display": "standalone",

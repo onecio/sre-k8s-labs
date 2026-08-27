@@ -25,13 +25,15 @@ const QUIZ_NAMES = {
   observabilidade: 'Observabilidade', troubleshooting: 'Troubleshooting'
 };
 const TOTAL_QUESTIONS = {fundamentos:3, arquitetura:3, kubectl:3, services:3, ingress:3, storage:2, seguranca:3, fullstack:3, cicd:2, observabilidade:3, troubleshooting:3};
-const LAB_IDS = ['lab-01','lab-02','lab-03','lab-04','lab-05','lab-06','lab-07','lab-08','lab-09','lab-10'];
+const LAB_IDS = ['lab-01','lab-02','lab-03','lab-04','lab-05','lab-06','lab-07','lab-08','lab-09','lab-10','lab-11','lab-12'];
+const ASSOCIATE_LAB_IDS = LAB_IDS.slice(0, 10);
 const LAB_NAMES = {
-  'lab-01': 'K3s Server + Worker', 'lab-02': 'Helm e Reposit\u00f3rios',
-  'lab-03': 'Traefik via Helm', 'lab-04': 'Cloudflare TLS',
-  'lab-05': 'Deploy Frontend', 'lab-06': 'Deploy Backend',
-  'lab-07': 'PostgreSQL', 'lab-08': 'CI/CD GitHub Actions',
-  'lab-09': 'Observabilidade', 'lab-10': 'Troubleshooting',
+  'lab-01': 'WSL e preflight', 'lab-02': 'Primeiro cluster kind',
+  'lab-03': 'Workloads e configura\u00e7\u00e3o', 'lab-04': 'Gateway API e rede',
+  'lab-05': 'Storage e estado', 'lab-06': 'Seguran\u00e7a e pol\u00edticas',
+  'lab-07': 'Observabilidade', 'lab-08': 'Helm 4 e GitOps',
+  'lab-09': 'K3s em VMs', 'lab-10': 'Resposta a incidentes',
+  'lab-11': 'Alta disponibilidade', 'lab-12': 'SRE Capstone',
 };
 
 // ===== PERSISTENCE =====
@@ -125,15 +127,15 @@ function showScore(quizId, totalQuestions) {
   if (pct === 100) {
     scoreEl.style.background = 'var(--green-subtle)'; scoreEl.style.color = 'var(--green)';
     scoreEl.style.borderColor = 'rgba(63,185,80,0.3)';
-    scoreEl.textContent = '\ud83c\udf89 Perfeito! ' + correct + '/' + totalQuestions + ' \u2014 Voc\u00ea dominou este m\u00f3dulo!';
-  } else if (pct >= 60) {
+    scoreEl.textContent = 'Perfeito: ' + correct + '/' + totalQuestions + ' - você dominou este módulo.';
+  } else if (pct >= 80) {
     scoreEl.style.background = 'var(--accent-subtle)'; scoreEl.style.color = 'var(--accent)';
     scoreEl.style.borderColor = 'rgba(88,166,255,0.3)';
-    scoreEl.textContent = (isNewBest ? '\ud83d\udc4d Novo recorde! ' : '\ud83d\udc4d Bom! ') + correct + '/' + totalQuestions + ' (' + pct + '%)';
+    scoreEl.textContent = (isNewBest ? 'Novo recorde: ' : 'Aprovado: ') + correct + '/' + totalQuestions + ' (' + pct + '%)';
   } else {
     scoreEl.style.background = 'var(--red-subtle)'; scoreEl.style.color = 'var(--red)';
     scoreEl.style.borderColor = 'rgba(248,81,73,0.3)';
-    scoreEl.textContent = '\ud83d\udcda Continue estudando! ' + correct + '/' + totalQuestions + ' (' + pct + '%)';
+    scoreEl.textContent = 'Continue estudando: ' + correct + '/' + totalQuestions + ' (' + pct + '%)';
   }
 
   progress.quizzes[quizId] = { ...existing, score: correct, total: totalQuestions, pct: pct, completed: true, bestPct: Math.max(pct, bestPct), attempts: (existing.attempts || 0) + 1 };
@@ -152,7 +154,7 @@ function showRetryButton(quizId) {
   if (!retryBtn) {
     retryBtn = document.createElement('button');
     retryBtn.className = 'quiz-retry show';
-    retryBtn.innerHTML = '\ud83d\udd04 Tentar novamente';
+    retryBtn.textContent = 'Tentar novamente';
     retryBtn.onclick = function() { retryQuiz(quizId); };
     const scoreEl = document.getElementById('score-' + quizId);
     if (scoreEl) scoreEl.parentNode.insertBefore(retryBtn, scoreEl.nextSibling);
@@ -168,7 +170,7 @@ function showShareButton(quizId) {
   if (!existing) {
     const shareBtn = document.createElement('button');
     shareBtn.className = 'quiz-share-btn';
-    shareBtn.innerHTML = '\ud83d\udce4 Compartilhar badge';
+    shareBtn.textContent = 'Compartilhar badge';
     shareBtn.onclick = function() { shareQuizBadge(quizId); };
     // Insert after the retry button if it exists, otherwise after the score
     const retryBtn = quiz.querySelector('.quiz-retry');
@@ -226,13 +228,13 @@ function updateProgressUI() {
     const isComplete = data && data.completed;
     if (isComplete) quizCompleted++;
     const iconClass = isComplete ? 'done' : 'pending';
-    const icon = isComplete ? (data.pct === 100 ? '\ud83c\udf89' : (data.pct >= 60 ? '\u2713' : '\u2717')) : '\u25cb';
+    const icon = isComplete ? (data.pct >= 80 ? 'OK' : 'RE') : 'P';
     let scoreText = isComplete && data ? data.score + '/' + data.total + ' (' + data.pct + '%)' : 'N\u00e3o respondido';
     if (data && data.attempts && data.attempts > 1) scoreText += ' | Tentativas: ' + data.attempts;
     if (data && data.bestPct > 0 && (!isComplete || data.pct < data.bestPct)) {
       scoreText += ' | Melhor: ' + data.bestPct + '%';
     }
-    const scoreClass = isComplete ? (data.pct === 100 ? 'perfect' : (data.pct >= 60 ? 'good' : 'needs-work')) : '';
+    const scoreClass = isComplete ? (data.pct === 100 ? 'perfect' : (data.pct >= 80 ? 'good' : 'needs-work')) : '';
     quizHtml += '<div class="progress-quiz-item"><span class="pi-icon ' + iconClass + '">' + icon + '</span><div class="pi-info"><div class="pi-name">' + QUIZ_NAMES[id] + '</div><div class="pi-score ' + scoreClass + '">' + scoreText + '</div></div></div>';
   });
   if (quizListEl) quizListEl.innerHTML = quizHtml;
@@ -244,7 +246,7 @@ function updateProgressUI() {
     const isDone = progress.labs[id] === true;
     if (isDone) labCompleted++;
     const iconClass = isDone ? 'done' : 'pending';
-    const icon = isDone ? '\u2713' : '\u25cb';
+    const icon = isDone ? 'OK' : 'P';
     const statusText = isDone ? 'Conclu\u00eddo' : 'Pendente';
     const statusClass = isDone ? 'done' : '';
     labHtml += '<div class="progress-lab-item"><span class="pl-icon ' + iconClass + '">' + icon + '</span><div class="pl-info"><div class="pl-name">' + LAB_NAMES[id] + '</div><div class="pl-status ' + statusClass + '">' + statusText + '</div></div></div>';
@@ -277,117 +279,114 @@ function toggleChecklist(el) {
 
 // ===== LABS RENDER =====
 const labData = [
-  {num:"01",title:"Instalar K3s Server e Worker", diffClass:"beginner", diffLabel:"Iniciante",
-   meta:[{icon:"clock",text:"~30min"},{icon:"server",text:"2 VMs"}],
-   desc:"Monte um cluster K3s com um node server (control plane) e um worker. Ao final, voce tera um cluster funcional pronto para receber aplicações.",
-   objective:"Criar um cluster K3s com 2 nodes e validar que todos os componentes estao saudaveis.",
+  {num:'01', title:'WSL e preflight profissional', diffClass:'beginner', diffLabel:'Foundations', path:'labs/01-wsl-preflight',
+   meta:[{icon:'clock',text:'20 min'},{icon:'laptop',text:'WSL2'}],
+   desc:'Prepare e valide a estação de trabalho antes de criar qualquer cluster.',
+   objective:'Confirmar Linux, Git, container runtime, kubectl, kind, Helm 4 e recursos mínimos.',
    steps:[
-     {num:"1",content:"Preparar ambientes\natualizar sistema e configurar hostnames unicos em cada VM.\nsudo apt update && sudo apt upgrade -y"},
-     {num:"2",content:"Instalar K3s no server\ncom Traefik e ServiceLB desabilitados.\ncurl -sfL https://get.k3s.io | INSTALL_K3S_EXEC=\"server --disable traefik --disable servicelb\" sh -"},
-     {num:"3",content:"Obter o token do cluster.\nsudo cat /var/lib/rancher/k3s/server/node-token"},
-     {num:"4",content:"Configurar kubectl sem sudo no server.\nmkdir -p ~/.kube && sudo cp /etc/rancher/k3s/k3s.yaml ~/.kube/config && sudo chown $USER:$USER ~/.kube/config"},
-     {num:"5",content:"Instalar o worker\nusando o token e o IP do server.\ncurl -sfL https://get.k3s.io K3S_URL=https://IP_SERVER:6443 K3S_TOKEN=TOKEN INSTALL_K3S_EXEC=\"agent --node-name worker01\" sh -"}
-   ],
-   verify:"kubectl get nodes -o wide deve mostrar 2 nodes com STATUS Ready."},
-  {num:"02",title:"Helm e Repositorios", diffClass:"beginner", diffLabel:"Iniciante",
-   meta:[{icon:"clock",text:"~15min"},{icon:"package",text:"1 ferramenta"}],
-   desc:"Instale o Helm 3, adicione repositorios essenciais e aprenda a gerenciar chart repositories.",
-   objective:"Helm funcional com repositorios de Traefik, NGINX e Prometheus adicionados.",
+     {num:'1',content:'No PowerShell como administrador, instale o WSL.\nwsl --install'},
+     {num:'2',content:'No Ubuntu, acesse o laboratório.\ncd labs/01-wsl-preflight'},
+     {num:'3',content:'Execute a validação automatizada.\nbash scripts/preflight.sh'}
+   ], verify:'O script deve finalizar com a mensagem AMBIENTE APROVADO.'},
+  {num:'02', title:'Primeiro cluster local com kind', diffClass:'beginner', diffLabel:'Foundations', path:'labs/02-kind-first-cluster',
+   meta:[{icon:'clock',text:'25 min'},{icon:'boxes',text:'kind'}],
+   desc:'Crie um cluster Kubernetes descartável e compreenda contextos, nodes e namespaces.',
+   objective:'Cluster local Ready e namespace kubelab criado.',
    steps:[
-     {num:"1",content:"Instalar o Helm 3 via script oficial.\ncurl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash"},
-     {num:"2",content:"Adicionar repositorios de charts populares.\nhelm repo add traefik https://traefik.github.io/charts\nhelm repo add prometheus-community https://prometheus-community.github.io/helm-charts\nhelm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx"},
-     {num:"3",content:"Atualizar e listar repositorios.\nhelm repo update && helm search repo traefik"},
-     {num:"4",content:"Listar releases instaladas (deve estar vazio).\nhelm list -A"}
-   ],
-   verify:"helm version deve mostrar v3.x. helm repo list deve listar os 3 repositorios adicionados."},
-  {num:"03",title:"Traefik via Helm", diffClass:"intermediate", diffLabel:"Intermediario",
-   meta:[{icon:"clock",text:"~20min"},{icon:"shield",text:"Ingress"}],
-   desc:"Implante o Traefik como Ingress Controller no cluster K3s usando Helm.",
-   objective:"Traefik rodando, escutando nas portas 80/443 e pronto para rotear trafego.",
+     {num:'1',content:'Crie o cluster com a configuração versionada.\nkind create cluster --config kind-config.yaml'},
+     {num:'2',content:'Valide o contexto e os nodes.\nkubectl config current-context\nkubectl get nodes -o wide'},
+     {num:'3',content:'Execute os testes do laboratório.\nbash scripts/validate.sh'}
+   ], verify:'O cluster kubelab deve possuir um control plane Ready e o namespace kubelab.'},
+  {num:'03', title:'Workloads e configuração da aplicação', diffClass:'beginner', diffLabel:'Foundations', path:'labs/03-workloads-config',
+   meta:[{icon:'clock',text:'40 min'},{icon:'rocket',text:'Aplicação'}],
+   desc:'Implante a primeira versão da ECOMNIX Reference Platform com configuração, probes e rollout.',
+   objective:'Deployment disponível, Service funcional e configuração injetada por ConfigMap.',
    steps:[
-     {num:"1",content:"Criar namespace e instalar CRDs do Traefik.\nkubectl create namespace traefik\nkubectl apply -f https://raw.githubusercontent.com/traefik/traefik/v3.0/docs/content/reference/static/crds.yaml"},
-     {num:"2",content:"Preparar values.yaml.\ncat > values.yaml << 'EOF'\ningressClass:\n  enabled: true\n  name: traefik\nservice:\n  type: ClusterIP\nports:\n  web:\n    port: 80\n  websecure:\n    port: 443\nEOF"},
-     {num:"3",content:"Instalar Traefik via Helm.\nhelm repo add traefik https://traefik.github.io/charts\nhelm install traefik traefik/traefik -n traefik -f values.yaml"},
-     {num:"4",content:"Verificar instalacao.\nkubectl get pods -n traefik\nkubectl get svc -n traefik"}
-   ],
-   verify:"kubectl get pods -n traefik deve mostrar o pod do Traefik como Running."},
-  {num:"04",title:"Cloudflare Origin Certificate + TLSStore", diffClass:"intermediate", diffLabel:"Intermediario",
-   meta:[{icon:"clock",text:"~25min"},{icon:"lock",text:"TLS"}],
-   desc:"Configure certificados TLS da Cloudflare para que o Traefik sirva HTTPS com validacao completa.",
-   objective:"Traefik servindo HTTPS com certificado Cloudflare valido e redirect HTTP para HTTPS.",
+     {num:'1',content:'Aplique os arquivos iniciais.\nkubectl apply -k starter'},
+     {num:'2',content:'Acompanhe o rollout.\nkubectl rollout status deployment/ecomnix-web -n kubelab'},
+     {num:'3',content:'Valide disponibilidade e configuração.\nbash scripts/validate.sh'}
+   ], verify:'O Deployment deve estar Available e responder pelo Service ecomnix-web.'},
+  {num:'04', title:'Rede moderna com Gateway API', diffClass:'intermediate', diffLabel:'Operator', path:'labs/04-gateway-api',
+   meta:[{icon:'clock',text:'45 min'},{icon:'route',text:'Gateway API'}],
+   desc:'Publique a aplicação por HTTPRoute e investigue o caminho entre cliente, Gateway, Service e Pod.',
+   objective:'HTTPRoute aceita e vinculada ao Gateway, sem utilizar ingress-nginx.',
    steps:[
-     {num:"1",content:"Gerar certificado Origin CA no dashboard da Cloudflare.\nSSL/TLS > Origin Server > Create Certificate"},
-     {num:"2",content:"Criar Secret TLS no Kubernetes.\nkubectl create secret tls cloudflare-origin -n traefik --cert=origin-cert.pem --key=origin-key.pem"},
-     {num:"3",content:"Aplicar TLSStore.\ncat > tlsstore.yaml\nkubectl apply -f tlsstore.yaml"},
-     {num:"4",content:"Configurar modo Full (Strict) no Cloudflare.\nSSL/TLS > Overview > Full (Strict)"}
-   ],
-   verify:"curl -vk https://app.seu-dominio.com deve mostrar o certificado Cloudflare e status 200."},
-  {num:"05",title:"Deploy Frontend (Nginx)", diffClass:"intermediate", diffLabel:"Intermediario",
-   meta:[{icon:"clock",text:"~20min"},{icon:"globe",text:"Frontend"}],
-   desc:"Publique uma pagina estatica Nginx no cluster e acesse via Ingress.",
-   objective:"Pagina Nginx acessivel via Ingress (app.seu-dominio.com).",
+     {num:'1',content:'Instale as CRDs da Gateway API conforme o README versionado do laboratório.'},
+     {num:'2',content:'Aplique Gateway e HTTPRoute.\nkubectl apply -k starter'},
+     {num:'3',content:'Inspecione condições e execute a validação.\nkubectl get gateway,httproute -n kubelab\nbash scripts/validate.sh'}
+   ], verify:'As condições Accepted e ResolvedRefs devem estar verdadeiras.'},
+  {num:'05', title:'Storage e aplicações com estado', diffClass:'intermediate', diffLabel:'Operator', path:'labs/05-storage-statefulset',
+   meta:[{icon:'clock',text:'45 min'},{icon:'database',text:'StatefulSet'}],
+   desc:'Opere PostgreSQL com StatefulSet, Service headless e volume persistente.',
+   objective:'Persistir um registro mesmo após recriar o Pod do banco.',
    steps:[
-     {num:"1",content:"Criar namespace applications.\nkubectl create namespace applications"},
-     {num:"2",content:"Criar Deployment do Nginx.\nkubectl create deployment nginx --image=nginx:alpine -n applications\nkubectl scale deployment nginx --replicas=2 -n applications"},
-     {num:"3",content:"Criar Service do tipo ClusterIP.\nkubectl expose deployment nginx --port=80 -n applications"},
-     {num:"4",content:"Criar Ingress.\ncat > ingress-frontend.yaml\nkubectl apply -f ingress-frontend.yaml"}
-   ],
-   verify:"curl -H 'Host: app.seu-dominio.com' http://... deve retornar a pagina padrao do Nginx."},
-  {num:"06",title:"Deploy Backend (API)", diffClass:"intermediate", diffLabel:"Intermediario",
-   meta:[{icon:"clock",text:"~30min"},{icon:"terminal",text:"API"}],
-   desc:"Implante uma API com ConfigMap, Secret, probes de saude e Ingress com prefixo /api.",
-   objective:"API respondendo em /api com configurações injetadas via ConfigMap e Secret.",
+     {num:'1',content:'Implante a solução inicial.\nkubectl apply -k starter'},
+     {num:'2',content:'Aguarde StatefulSet e PVC.\nkubectl rollout status statefulset/postgres -n kubelab'},
+     {num:'3',content:'Execute o teste de persistência.\nbash scripts/validate.sh'}
+   ], verify:'PVC Bound, Pod Ready e dado de controle preservado após a recriação.'},
+  {num:'06', title:'RBAC, Pod Security e NetworkPolicy', diffClass:'intermediate', diffLabel:'Operator', path:'labs/06-security-policies',
+   meta:[{icon:'clock',text:'50 min'},{icon:'shield-check',text:'Segurança'}],
+   desc:'Implemente privilégio mínimo, contexto restrito e segmentação de rede.',
+   objective:'ServiceAccount limitada e comunicação permitida somente entre componentes autorizados.',
    steps:[
-     {num:"1",content:"Criar ConfigMap e Secret.\nkubectl create configmap api-config --from-literal=DB_HOST=postgres -n applications\nkubectl create secret generic db-secret --from-literal=DB_PASSWORD=supersecret -n applications"},
-     {num:"2",content:"Criar Deployment com probes.\nkubectl apply -f deployment-api.yaml -n applications"},
-     {num:"3",content:"Expor a API via Service e Ingress.\nkubectl expose deployment api --port=3000 -n applications"},
-     {num:"4",content:"Testar a API.\nkubectl exec -it deploy/nginx -n applications -- curl http://api:3000/api/health"}
-   ],
-   verify:"curl http://.../api/health deve retornar HTTP 200 com status da API."},
-  {num:"07",title:"PostgreSQL com StatefulSet", diffClass:"advanced", diffLabel:"Avancado",
-   meta:[{icon:"clock",text:"~35min"},{icon:"database",text:"Banco"}],
-   desc:"Implante um banco PostgreSQL com armazenamento persistente usando StatefulSet e PersistentVolumeClaim.",
-   objective:"PostgreSQL funcional com dados persistentes que sobrevivem a reinicios.",
+     {num:'1',content:'Aplique políticas e identidade.\nkubectl apply -k starter'},
+     {num:'2',content:'Verifique autorização.\nkubectl auth can-i get pods --as=system:serviceaccount:kubelab:ecomnix-reader -n kubelab'},
+     {num:'3',content:'Execute testes positivos e negativos.\nbash scripts/validate.sh'}
+   ], verify:'Leitura autorizada, escrita negada e tráfego não autorizado bloqueado.'},
+  {num:'07', title:'Observabilidade orientada a sinais', diffClass:'intermediate', diffLabel:'Operator', path:'labs/07-observability',
+   meta:[{icon:'clock',text:'50 min'},{icon:'activity',text:'Métricas'}],
+   desc:'Observe saúde por métricas, logs, eventos e probes antes de criar alertas.',
+   objective:'Dashboard operacional e regras de alerta para disponibilidade e saturação.',
    steps:[
-     {num:"1",content:"Criar PVC para dados do banco.\ncat > pvc-postgres.yaml\nkubectl apply -f pvc-postgres.yaml -n applications"},
-     {num:"2",content:"Criar StatefulSet do PostgreSQL.\nkubectl apply -f statefulset-postgres.yaml -n applications"},
-     {num:"3",content:"Criar Service headless para o StatefulSet.\nkubectl apply -f svc-postgres.yaml -n applications"},
-     {num:"4",content:"Testar conectividade do backend com o banco.\nkubectl exec -it deploy/api -n applications -- nslookup postgres-0.postgres"}
-   ],
-   verify:"kubectl get pods -n applications deve mostrar postgres-0 como Running. Os dados devem persistir apos reinicio do pod."},
-  {num:"08",title:"CI/CD com GitHub Actions", diffClass:"advanced", diffLabel:"Avancado",
-   meta:[{icon:"clock",text:"~40min"},{icon:"github",text:"Pipeline"}],
-   desc:"Configure um pipeline CI/CD automatizado com GitHub Actions para build, push de imagem e deploy no K3s.",
-   objective:"Pipeline automatizado para build de imagem Docker, push para GHCR e atualização do manifesto via SSH.",
+     {num:'1',content:'Instale o stack definido no laboratório com valores versionados.'},
+     {num:'2',content:'Aplique ServiceMonitor e PrometheusRule.\nkubectl apply -k starter'},
+     {num:'3',content:'Valide targets e regras.\nbash scripts/validate.sh'}
+   ], verify:'Target Up, regra carregada e métricas da aplicação consultáveis.'},
+  {num:'08', title:'Helm 4 e promoção por GitOps', diffClass:'intermediate', diffLabel:'Operator', path:'labs/08-helm-gitops',
+   meta:[{icon:'clock',text:'60 min'},{icon:'git-branch',text:'GitOps'}],
+   desc:'Empacote a aplicação, valide o chart e promova mudanças declarativamente.',
+   objective:'Chart Helm 4 validado e manifesto GitOps sem alteração imperativa no cluster.',
    steps:[
-     {num:"1",content:"Criar repositorio no GitHub e configurar secrets.\nSettings > Secrets and variables > Actions\nAdicionar: KUBE_CONFIG, GHCR_TOKEN, SSH_HOST, SSH_USER"},
-     {num:"2",content:"Criar workflow .github/workflows/deploy.yaml.\nname: Deploy\non: push:\n  branches: [main]\njobs:\n  deploy: \n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - name: Build & Push\n        run: |\n          echo \${{ secrets.GHCR_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin\n          docker build -t ghcr.io/\${{ github.repository }}/app:\${{ github.sha }} .\n          docker push ghcr.io/\${{ github.repository }}/app:\${{ github.sha }}"},
-     {num:"3",content:"Configurar SSH deploy.\n- name: SSH Deploy\n  uses: appleboy/ssh-action@v1.0.3\n  with: \n    host: \${{ secrets.SSH_HOST }}\n    username: \${{ secrets.SSH_USER }}\n    key: \${{ secrets.SSH_KEY }}\n    script: |\n      kubectl set image deployment/api api=ghcr.io/\${{ github.repository }}/app:\${{ github.sha }} -n applications\n      kubectl rollout status deployment/api -n applications"},
-     {num:"4",content:"Fazer push e verificar pipeline.\ngit add . && git commit -m 'feat: add pipeline'\ngit push origin main"}
-   ],
-   verify:"Apos o push, o GitHub Actions deve executar o workflow com sucesso. kubectl rollout history deployment/api -n applications deve mostrar a nova revisao."},
-  {num:"09",title:"Observabilidade com Prometheus + Grafana", diffClass:"advanced", diffLabel:"Avancado",
-   meta:[{icon:"clock",text:"~30min"},{icon:"bar-chart",text:"Monitoramento"}],
-   desc:"Instale o stack kube-prometheus-stack para monitorar o cluster com métricas, alertas e dashboards.",
-   objective:"Prometheus coletando métricas e Grafana com dashboards visuais de saude do cluster.",
+     {num:'1',content:'Valide o chart.\nhelm lint chart\nhelm template ecomnix chart -f environments/dev-values.yaml'},
+     {num:'2',content:'Instale ou atualize a release.\nhelm upgrade --install ecomnix chart -n kubelab --create-namespace'},
+     {num:'3',content:'Execute a validação.\nbash scripts/validate.sh'}
+   ], verify:'Release deployed, chart sem erros e estado desejado versionado.'},
+  {num:'09', title:'Cluster K3s multi-node em VMs', diffClass:'advanced', diffLabel:'Operations', path:'labs/09-k3s-vm',
+   meta:[{icon:'clock',text:'90 min'},{icon:'server',text:'3 VMs'}],
+   desc:'Construa um cluster K3s com um server e dois agents, usando versões fixadas e token protegido.',
+   objective:'Três nodes Ready, workloads distribuídos e procedimento de remoção documentado.',
    steps:[
-     {num:"1",content:"Criar namespace monitoring.\nkubectl create namespace monitoring"},
-     {num:"2",content:"Instalar kube-prometheus-stack via Helm.\nhelm repo add prometheus-community https://prometheus-community.github.io/helm-charts\nhelm install prometheus prometheus-community/kube-prometheus-stack -n monitoring"},
-     {num:"3",content:"Criar Ingress para o Grafana.\nkubectl apply -f ingress-grafana.yaml -n monitoring"},
-     {num:"4",content:"Acessar dashboards.\nkubectl get secret prometheus-grafana -n monitoring -o jsonpath='{.data.admin-password}' | base64 -d"},
-     {num:"5",content:"Verificar targets e métricas.\nkubectl port-forward svc/prometheus-kube-prometheus-prometheus 9090:9090 -n monitoring"}
-   ],
-   verify:"O Grafana deve estar acessivel via Ingress. Dashboards pre-configurados devem mostrar métricas dos nodes, pods e componentes do cluster."},
-  {num:"10",title:"Troubleshooting Completo", diffClass:"advanced", diffLabel:"Avancado",
-   meta:[{icon:"clock",text:"~45min"},{icon:"wrench",text:"Diagnostico"}],
-   desc:"Diagnostique e resolva problemas reais em um cluster Kubernetes usando ferramentas e metodologias SRE.",
-   objective:"Identificar e resolver 3 cenarios de falha: CrashLoopBackOff, ImagePullBackOff e Pod Pending.",
+     {num:'1',content:'Prepare as VMs com o inventário e o script do laboratório.'},
+     {num:'2',content:'Instale o server e una os agents seguindo o README, sem expor o token em logs.'},
+     {num:'3',content:'Execute a validação remota.\nbash scripts/validate.sh'}
+   ], verify:'Um server e dois agents Ready, DNS funcional e aplicação distribuída.'},
+  {num:'10', title:'Resposta a incidentes Kubernetes', diffClass:'advanced', diffLabel:'Operations', path:'labs/10-incident-response',
+   meta:[{icon:'clock',text:'60 min'},{icon:'wrench',text:'Game day'}],
+   desc:'Investigue falhas encadeadas sem receita pronta e registre evidências em um runbook.',
+   objective:'Restaurar o serviço dentro do objetivo de recuperação do cenário.',
    steps:[
-     {num:"1",content:"Cenario 1: CrashLoopBackOff.\nAnalisar logs e eventos do pod com falha.\nkubectl logs pod -n applications --previous\nkubectl describe pod -n applications"},
-     {num:"2",content:"Cenario 2: ImagePullBackOff.\nVerificar nome da imagem e secrets de registro.\nkubectl describe pod -n applications | grep -A 5 'Image:'"},
-     {num:"3",content:"Cenario 3: Pod Pending.\nVerificar recursos, volumes e scheduling.\nkubectl describe pod -n applications | grep -A 10 'Events:'"}
-   ],
-   verify:"Apos correcoes, kubectl get pods -n applications deve mostrar todos os pods como Running. A aplicacao deve responder em /api."}
+     {num:'1',content:'Injete os cenários controlados.\nbash scripts/inject-failure.sh'},
+     {num:'2',content:'Investigue eventos, logs, endpoints, recursos e políticas.'},
+     {num:'3',content:'Corrija as causas e valide.\nbash scripts/validate.sh'}
+   ], verify:'Aplicação disponível, causas documentadas e nenhuma política de segurança removida.'},
+  {num:'11', title:'Alta disponibilidade e disaster recovery', diffClass:'advanced', diffLabel:'Professional', path:'labs/11-ha-disaster-recovery',
+   meta:[{icon:'clock',text:'120 min'},{icon:'network',text:'HA'}],
+   desc:'Projete control plane redundante, backup de estado e procedimento de recuperação testado.',
+   objective:'Demonstrar recuperação documentada após falha controlada.',
+   steps:[
+     {num:'1',content:'Construa a topologia descrita no diagrama do laboratório.'},
+     {num:'2',content:'Execute backup e registre checksum e retenção.'},
+     {num:'3',content:'Simule a falha e execute o runbook de recuperação.'}
+   ], verify:'API disponível após falha prevista e recuperação dentro do RTO definido.'},
+  {num:'12', title:'SRE Capstone da plataforma ECOMNIX', diffClass:'advanced', diffLabel:'Professional', path:'labs/12-sre-capstone',
+   meta:[{icon:'clock',text:'180 min'},{icon:'gauge',text:'SLO'}],
+   desc:'Desafio final sem passo a passo: arquitetura, GitOps, segurança, observabilidade e incidente.',
+   objective:'Operar a plataforma dentro dos SLOs e justificar decisões técnicas.',
+   steps:[
+     {num:'1',content:'Leia requisitos, SLOs, restrições e orçamento do cenário.'},
+     {num:'2',content:'Implemente a solução utilizando os artefatos starter.'},
+     {num:'3',content:'Execute o game day e entregue evidências e post-mortem.'}
+   ], verify:'Todos os testes automatizados aprovados e revisão técnica concluída.'}
 ];
 
 function renderLabs() {
@@ -396,7 +395,7 @@ function renderLabs() {
   let h = "";
   labData.forEach(function(l) {
     h += '<div class="lab-card" id="lab-' + l.num + '">';
-    h += '<div class="lab-card-header" role="button" tabindex="0" aria-expanded="false" onclick="toggleLab(this.closest(\'[id^="lab-"]\').parentElement, event)">';
+    h += '<div class="lab-card-header" role="button" tabindex="0" aria-expanded="false" onclick="toggleLab(this.closest(\'.lab-card\'), event)">';
     h += '<span class="lab-num">' + l.num + '</span>';
     h += '<div class="lab-info"><h4>' + escHtml(l.title) + '</h4><div class="lab-meta">';
     h += '<span class="lab-tag ' + l.diffClass + '">' + escHtml(l.diffLabel) + '</span>';
@@ -405,8 +404,8 @@ function renderLabs() {
     });
     h += '</div></div>';
     h += '<label class="lab-check" onclick="event.stopPropagation()" id="check-lab-' + l.num + '">';
-    h += '<input type="checkbox" onchange="toggleLabComplete(\'lab-\' + l.num)" id="cb-lab-' + l.num + '">';
-    h += '<span class="check-label">Concluido</span></label>';
+    h += '<input type="checkbox" onchange="toggleLabComplete(\'lab-' + l.num + '\')" id="cb-lab-' + l.num + '">';
+    h += '<span class="check-label">Concluído</span></label>';
     h += '<span class="lab-arrow">&#9660;</span></div>';
     h += '<div class="lab-card-body"><div class="lab-card-body-inner">';
     h += '<p>' + escHtml(l.desc) + '</p>';
@@ -417,10 +416,19 @@ function renderLabs() {
       h += '<div class="lab-step"><span class="step-num">' + s.num + '</span><div class="step-content">' + fmtStep(s.content) + '</div></div>';
     });
     h += '</div>';
-    h += '<div class="lab-verify"><strong>✓ Verificacao:</strong> ' + escHtml(l.verify) + '</div>';
+    h += '<div class="lab-verify"><strong>Verificação:</strong> ' + escHtml(l.verify) + '</div>';
+    h += '<a class="lab-source" href="https://github.com/onecio/sre-k8s-labs/tree/master/' + escHtml(l.path) + '" target="_blank" rel="noopener">Abrir arquivos do laboratório</a>';
     h += '</div></div></div>';
   });
   c.innerHTML = h;
+  c.querySelectorAll('.lab-card-header').forEach(function(header) {
+    header.addEventListener('keydown', function(event) {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        toggleLab(header.closest('.lab-card'), event);
+      }
+    });
+  });
   if (typeof lucide !== "undefined" && lucide.createIcons) lucide.createIcons();
 }
 
@@ -471,27 +479,28 @@ function checkAchievements() {
   if (!progress.quizzes) progress.quizzes = {};
   if (!progress.labs) progress.labs = {};
 
-  const perfectQuizzes = QUIZ_IDS.filter(id => progress.quizzes[id] && progress.quizzes[id].pct === 100);
-  const allLabsDone = LAB_IDS.every(id => progress.labs[id] === true);
-  const allPerfect = perfectQuizzes.length === QUIZ_IDS.length;
-  const allDone = allLabsDone && allPerfect;
+  const approvedQuizzes = QUIZ_IDS.filter(id => progress.quizzes[id] && progress.quizzes[id].completed && progress.quizzes[id].pct >= 80);
+  const associateLabsDone = ASSOCIATE_LAB_IDS.filter(id => progress.labs[id] === true).length;
+  const professionalLabsDone = LAB_IDS.filter(id => progress.labs[id] === true).length;
+  const environmentReady = progress.labs['lab-01'] === true;
+  const foundationsReady = ['lab-01', 'lab-02', 'lab-03'].every(id => progress.labs[id] === true);
+  const associateReady = approvedQuizzes.length === QUIZ_IDS.length && associateLabsDone === ASSOCIATE_LAB_IDS.length;
+  const professionalReady = associateReady && professionalLabsDone === LAB_IDS.length;
 
   const badges = [];
-  if (allPerfect) {
-    badges.push('<div class="achievement-badge gold" onclick="openCert()"><span class="badge-icon">\ud83c\udfc6</span><div><div class="badge-label">Mestre Kubernetes</div><div class="badge-desc">100% em todos os 11 quizzes</div></div></div>');
-  } else if (perfectQuizzes.length > 0) {
-    badges.push('<div class="achievement-badge silver"><span class="badge-icon">\u2b50</span><div><div class="badge-label">Quizzes Perfeitos: ' + perfectQuizzes.length + '/11</div><div class="badge-desc">Continue para desbloquear o trof\u00e9u!</div></div></div>');
+  if (environmentReady) {
+    badges.push('<div class="achievement-badge silver"><span class="badge-icon">ER</span><div><div class="badge-label">Environment Ready</div><div class="badge-desc">WSL e ferramentas validados</div></div></div>');
   }
-  if (allLabsDone) {
-    badges.push('<div class="achievement-badge gold" onclick="openCert()"><span class="badge-icon">\ud83d\udee0\ufe0f</span><div><div class="badge-label">Operador Certificado</div><div class="badge-desc">Todos os 10 labs conclu\u00eddos</div></div></div>');
-  } else {
-    const labsDone = LAB_IDS.filter(id => progress.labs[id] === true).length;
-    if (labsDone > 0) {
-      badges.push('<div class="achievement-badge silver"><span class="badge-icon">\ud83d\udd27</span><div><div class="badge-label">Labs: ' + labsDone + '/10</div><div class="badge-desc">Complete todos para a conquista!</div></div></div>');
-    }
+  if (foundationsReady) {
+    badges.push('<div class="achievement-badge silver"><span class="badge-icon">KF</span><div><div class="badge-label">Kubernetes Foundations</div><div class="badge-desc">Fundamentos práticos concluídos</div></div></div>');
   }
-  if (allDone) {
-    badges.push('<div class="achievement-badge gold" onclick="openCert()"><span class="badge-icon">\ud83c\udfaf</span><div><div class="badge-label">Graduado em SRE/DevOps</div><div class="badge-desc">Todas as conquistas desbloqueadas!</div></div></div>');
+  if (associateReady) {
+    badges.push('<div class="achievement-badge gold" onclick="openCert()"><span class="badge-icon">KA</span><div><div class="badge-label">Kubernetes Essentials - Associate</div><div class="badge-desc">11 avaliações e 10 labs aprovados</div></div></div>');
+  } else if (associateLabsDone > 0 || approvedQuizzes.length > 0) {
+    badges.push('<div class="achievement-badge silver"><span class="badge-icon">PR</span><div><div class="badge-label">Progresso Associate</div><div class="badge-desc">' + approvedQuizzes.length + '/11 avaliações e ' + associateLabsDone + '/10 labs</div></div></div>');
+  }
+  if (professionalReady) {
+    badges.push('<div class="achievement-badge gold"><span class="badge-icon">SR</span><div><div class="badge-label">Operations and SRE</div><div class="badge-desc">Capstone e trilha profissional concluídos</div></div></div>');
   }
 
   const section = document.getElementById('achievementSection');
@@ -504,15 +513,20 @@ function openCert() {
   const progress = getProgress();
   if (!progress.quizzes) progress.quizzes = {};
   if (!progress.labs) progress.labs = {};
-  const perfectQuizzes = QUIZ_IDS.filter(id => progress.quizzes[id] && progress.quizzes[id].pct === 100);
-  const labsDone = LAB_IDS.filter(id => progress.labs[id] === true).length;
+  const approvedQuizzes = QUIZ_IDS.filter(id => progress.quizzes[id] && progress.quizzes[id].completed && progress.quizzes[id].pct >= 80);
+  const labsDone = ASSOCIATE_LAB_IDS.filter(id => progress.labs[id] === true).length;
+  if (approvedQuizzes.length !== QUIZ_IDS.length || labsDone !== ASSOCIATE_LAB_IDS.length) {
+    alert('Certificado ainda bloqueado. Aprove as 11 avaliações com pelo menos 80% e valide os 10 laboratórios essenciais.');
+    return;
+  }
   const savedName = localStorage.getItem('k8s-cert-name') || '';
   document.getElementById('certDate').textContent = new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
-  document.getElementById('certQuizCount').textContent = perfectQuizzes.length + '/11 quizzes com 100%';
-  document.getElementById('certLabCount').textContent = labsDone + '/10 labs conclu\u00eddos';
+  document.getElementById('certQuizCount').textContent = approvedQuizzes.length + '/11 avaliações com 80% ou mais';
+  document.getElementById('certLabCount').textContent = labsDone + '/10 laboratórios essenciais';
+  document.getElementById('certCredentialId').textContent = buildCredentialId(savedName);
   document.getElementById('certName').value = savedName;
   let gridHtml = '';
-  perfectQuizzes.forEach(id => { gridHtml += '<div class="cert-quiz-item"><span class="cqi-icon">\u2705</span> ' + QUIZ_NAMES[id] + '</div>'; });
+  approvedQuizzes.forEach(id => { gridHtml += '<div class="cert-quiz-item"><span class="cqi-icon">OK</span> ' + QUIZ_NAMES[id] + '</div>'; });
   document.getElementById('certQuizGrid').innerHTML = gridHtml;
   document.getElementById('certOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -524,24 +538,35 @@ function closeCert() {
   document.getElementById('certOverlay').classList.remove('open');
   document.body.style.overflow = '';
 }
-function updateCertName() { localStorage.setItem('k8s-cert-name', document.getElementById('certName').value); }
+function buildCredentialId(name) {
+  const source = (name || 'estudante') + '|' + new Date().toISOString().slice(0, 10);
+  let hash = 0;
+  for (let i = 0; i < source.length; i++) hash = ((hash << 5) - hash + source.charCodeAt(i)) >>> 0;
+  return 'KLE-K8S-A-' + hash.toString(16).toUpperCase().padStart(8, '0');
+}
+function updateCertName() {
+  const name = document.getElementById('certName').value;
+  localStorage.setItem('k8s-cert-name', name);
+  const credential = document.getElementById('certCredentialId');
+  if (credential) credential.textContent = buildCredentialId(name);
+}
 function copyCertLink() {
   const name = document.getElementById('certName').value || 'Estudante K8s';
   const progress = getProgress();
-  const perfectQuizzes = QUIZ_IDS.filter(id => progress.quizzes[id] && progress.quizzes[id].pct === 100);
-  const labsDone = LAB_IDS.filter(id => progress.labs[id] === true).length;
-  const text = '\ud83c\udfc6 Conquista Desbloqueada!\n\n' + name + ' completou o Manual Kubernetes para SRE/DevOps!\n\n\u2705 ' + perfectQuizzes.length + '/11 quizzes com 100%\n\ud83d\udee0\ufe0f ' + labsDone + '/10 labs conclu\u00eddos\n\n\ud83d\udd17 ' + window.location.origin + window.location.pathname;
+  const approvedQuizzes = QUIZ_IDS.filter(id => progress.quizzes[id] && progress.quizzes[id].completed && progress.quizzes[id].pct >= 80);
+  const labsDone = ASSOCIATE_LAB_IDS.filter(id => progress.labs[id] === true).length;
+  const text = 'Credencial KubeLab ECOMNIX\n\n' + name + ' concluiu Kubernetes Essentials - Associate.\n\n' + approvedQuizzes.length + '/11 avaliações aprovadas\n' + labsDone + '/10 laboratórios validados\nID: ' + buildCredentialId(name) + '\n\n' + window.location.origin + window.location.pathname;
   navigator.clipboard.writeText(text).then(function() {
     const btn = document.querySelector('.cert-btn.primary');
-    const orig = btn.innerHTML; btn.innerHTML = '\u2705 Copiado!';
+    const orig = btn.innerHTML; btn.innerHTML = 'Comprovação copiada';
     setTimeout(function() { btn.innerHTML = orig; }, 2000);
   });
 }
 function downloadCert() {
   const name = document.getElementById('certName').value || 'Estudante K8s';
   const progress = getProgress();
-  const perfectQuizzes = QUIZ_IDS.filter(id => progress.quizzes[id] && progress.quizzes[id].pct === 100);
-  const labsDone = LAB_IDS.filter(id => progress.labs[id] === true).length;
+  const approvedQuizzes = QUIZ_IDS.filter(id => progress.quizzes[id] && progress.quizzes[id].completed && progress.quizzes[id].pct >= 80);
+  const labsDone = ASSOCIATE_LAB_IDS.filter(id => progress.labs[id] === true).length;
   const canvas = document.createElement('canvas');
   canvas.width = 1200; canvas.height = 800;
   const ctx = canvas.getContext('2d');
@@ -550,17 +575,18 @@ function downloadCert() {
   ctx.fillStyle = grad; ctx.fillRect(0, 0, 1200, 800);
   ctx.strokeStyle = '#e3b341'; ctx.lineWidth = 4; ctx.strokeRect(30, 30, 1140, 740); ctx.strokeRect(36, 36, 1128, 728);
   ctx.font = 'bold 42px Segoe UI, sans-serif'; ctx.textAlign = 'center'; ctx.fillStyle = '#e3b341';
-  ctx.fillText('CERTIFICADO DE CONQUISTA', 600, 140);
+  ctx.fillText('KUBERNETES ESSENTIALS - ASSOCIATE', 600, 140);
   ctx.fillStyle = '#8b949e'; ctx.font = '20px Segoe UI, sans-serif';
-  ctx.fillText('Manual Kubernetes para SRE/DevOps', 600, 200);
+  ctx.fillText('Emitido por KubeLab ECOMNIX', 600, 200);
   ctx.fillStyle = '#e6edf3'; ctx.font = 'bold 36px Segoe UI, sans-serif';
   ctx.fillText(name, 600, 300);
   ctx.strokeStyle = '#e3b341'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(300, 320); ctx.lineTo(900, 320); ctx.stroke();
   ctx.fillStyle = '#8b949e'; ctx.font = '18px Segoe UI, sans-serif';
-  ctx.fillText('[OK] ' + perfectQuizzes.length + '/11 quizzes com 100% de acerto', 600, 380);
-  ctx.fillText('[LAB] ' + labsDone + '/10 laboratorios concluidos', 600, 420);
+  ctx.fillText('[OK] ' + approvedQuizzes.length + '/11 avaliacoes com 80% ou mais', 600, 380);
+  ctx.fillText('[LAB] ' + labsDone + '/10 laboratorios essenciais', 600, 420);
   const dateStr = new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
   ctx.fillText(dateStr, 600, 480);
+  ctx.fillText('ID: ' + buildCredentialId(name) + ' | Curriculo v3.0', 600, 520);
   ctx.fillStyle = '#58a6ff'; ctx.font = '14px Consolas, monospace';
   ctx.fillText(window.location.origin + window.location.pathname, 600, 760);
   const link = document.createElement('a');
@@ -631,7 +657,7 @@ function exportProgress() {
   URL.revokeObjectURL(url);
   // Visual feedback
   const btn = document.querySelector('.progress-export');
-  if (btn) { const orig = btn.innerHTML; btn.innerHTML = '\u2705 Exportado!'; setTimeout(function() { btn.innerHTML = orig; }, 2000); }
+  if (btn) { const orig = btn.innerHTML; btn.innerHTML = 'Exportado'; setTimeout(function() { btn.innerHTML = orig; }, 2000); }
 }
 
 function importProgress() {
@@ -687,7 +713,7 @@ function handleImportFile(input) {
       checkAchievements();
       // Visual feedback
       const btn = document.querySelector('.progress-import');
-      if (btn) { const orig = btn.innerHTML; btn.innerHTML = '\u2705 Importado!'; setTimeout(function() { btn.innerHTML = orig; }, 2000); }
+      if (btn) { const orig = btn.innerHTML; btn.innerHTML = 'Importado'; setTimeout(function() { btn.innerHTML = orig; }, 2000); }
     } catch(err) {
       alert('Erro ao ler o arquivo: ' + err.message);
     }
@@ -735,15 +761,15 @@ function restoreState() {
         if (data.pct === 100) {
           scoreEl.style.background = 'var(--green-subtle)'; scoreEl.style.color = 'var(--green)';
           scoreEl.style.borderColor = 'rgba(63,185,80,0.3)';
-          scoreEl.textContent = '\ud83c\udf89 Perfeito! ' + data.score + '/' + data.total + ' \u2014 Voc\u00ea dominou este m\u00f3dulo!';
-        } else if (data.pct >= 60) {
+          scoreEl.textContent = 'Perfeito: ' + data.score + '/' + data.total + ' - você dominou este módulo.';
+        } else if (data.pct >= 80) {
           scoreEl.style.background = 'var(--accent-subtle)'; scoreEl.style.color = 'var(--accent)';
           scoreEl.style.borderColor = 'rgba(88,166,255,0.3)';
-          scoreEl.textContent = '\ud83d\udc4d Bom! ' + data.score + '/' + data.total + ' (' + data.pct + '%)';
+          scoreEl.textContent = 'Aprovado: ' + data.score + '/' + data.total + ' (' + data.pct + '%)';
         } else {
           scoreEl.style.background = 'var(--red-subtle)'; scoreEl.style.color = 'var(--red)';
           scoreEl.style.borderColor = 'rgba(248,81,73,0.3)';
-          scoreEl.textContent = '\ud83d\udcda Continue estudando! ' + data.score + '/' + data.total + ' (' + data.pct + '%)';
+          scoreEl.textContent = 'Continue estudando: ' + data.score + '/' + data.total + ' (' + data.pct + '%)';
         }
       }
       showRetryButton(id);
@@ -781,9 +807,9 @@ function shareQuizBadge(quizId) {
   _badgeTotal = data.total;
   _badgePct = data.pct;
 
-  const title = _badgePct === 100 ? 'Mestre em ' + _badgeQuizName : _badgePct + '% em ' + _badgeQuizName;
+  const title = _badgePct === 100 ? 'Domínio completo em ' + _badgeQuizName : _badgePct + '% em ' + _badgeQuizName;
   document.getElementById('badgeTitle').textContent = title;
-  document.getElementById('badgeSubtitle').textContent = 'Manual Kubernetes para SRE/DevOps';
+  document.getElementById('badgeSubtitle').textContent = 'KubeLab ECOMNIX';
 
   renderBadge();
   document.getElementById('badgeOverlay').classList.add('open');
@@ -818,14 +844,14 @@ function renderBadge() {
   roundRect(ctx, 14, 14, w - 28, h - 28, 8);
   ctx.stroke();
 
-  ctx.font = '48px serif';
+  ctx.font = 'bold 28px Segoe UI, sans-serif';
   ctx.textAlign = 'center';
-  ctx.fillText(_badgePct === 100 ? '\ud83c\udfc6' : '\u2b50', 80, 100);
+  ctx.fillText(_badgePct >= 80 ? 'OK' : 'RE', 80, 100);
 
   ctx.fillStyle = _badgePct === 100 ? '#3fb950' : '#e3b341';
   ctx.font = 'bold 28px Segoe UI, sans-serif';
   ctx.textAlign = 'left';
-  const titleText = _badgePct === 100 ? 'PERFEITO!' : (_badgePct >= 60 ? 'APROVADO' : 'EM PROGRESSO');
+  const titleText = _badgePct === 100 ? 'PERFEITO' : (_badgePct >= 80 ? 'APROVADO' : 'EM PROGRESSO');
   ctx.fillText(titleText, 140, 85);
 
   ctx.fillStyle = '#e6edf3';
@@ -846,7 +872,7 @@ function renderBadge() {
   ctx.fillStyle = '#8b949e';
   ctx.font = '14px Segoe UI, sans-serif';
   ctx.textAlign = 'center';
-  ctx.fillText('Manual Kubernetes para SRE/DevOps', w / 2, 210);
+  ctx.fillText('KubeLab ECOMNIX', w / 2, 210);
 
   const barX = 80, barY = 235, barW = w - 160, barH = 16;
   ctx.fillStyle = '#21262d';
@@ -856,7 +882,7 @@ function renderBadge() {
   if (_badgePct === 100) {
     barGrad.addColorStop(0, '#238636');
     barGrad.addColorStop(1, '#3fb950');
-  } else if (_badgePct >= 60) {
+  } else if (_badgePct >= 80) {
     barGrad.addColorStop(0, '#1f6feb');
     barGrad.addColorStop(1, '#58a6ff');
   } else {
@@ -907,14 +933,12 @@ function downloadBadge() {
 
 function copyBadgeText() {
   const name = localStorage.getItem('k8s-cert-name') || 'Estudante K8s';
-  const emoji = _badgePct === 100 ? '\ud83c\udfc6' : (_badgePct >= 60 ? '\u2705' : '\ud83d\udcda');
-  const text = emoji + ' ' + (_badgePct === 100 ? 'Mestre' : 'Aprovado') + ' em ' + _badgeQuizName + '!\n' +
+  const text = (_badgePct === 100 ? 'Domínio completo' : (_badgePct >= 80 ? 'Aprovado' : 'Em progresso')) + ' em ' + _badgeQuizName + '\n' +
     _badgeScore + '/' + _badgeTotal + ' (' + _badgePct + '%) de acerto\n\n' +
-    '\ud83d\udcaa Manual Kubernetes para SRE/DevOps\n' +
-    '\ud83d\udd17 ' + window.location.origin + window.location.pathname;
+    'KubeLab ECOMNIX\n' + window.location.origin + window.location.pathname;
   navigator.clipboard.writeText(text).then(function() {
     const btn = document.querySelector('#badgeOverlay .cert-btn.secondary');
-    if (btn) { const orig = btn.innerHTML; btn.innerHTML = '\u2705 Copiado!'; setTimeout(function() { btn.innerHTML = orig; }, 2000); }
+    if (btn) { const orig = btn.innerHTML; btn.innerHTML = 'Copiado'; setTimeout(function() { btn.innerHTML = orig; }, 2000); }
   });
 }
 
@@ -926,11 +950,11 @@ function copyCode(btn, e) {
   if (!pre) return;
   const orig = btn.innerHTML;
   navigator.clipboard.writeText(pre.textContent).then(function() {
-    btn.innerHTML = '✅ Copiado!';
+    btn.innerHTML = 'Copiado';
     btn.classList.add('copied');
     setTimeout(function() { btn.innerHTML = orig; btn.classList.remove('copied'); }, 2000);
   }).catch(function() {
-    btn.innerHTML = '❌ Erro';
+    btn.innerHTML = 'Erro ao copiar';
     setTimeout(function() { btn.innerHTML = orig; }, 2000);
   });
 }
@@ -1546,11 +1570,11 @@ function initRolloutSim() { resetRollout(); }
 /* ===== INIT ON DOM READY ===== */
 document.addEventListener('DOMContentLoaded', function() {
   if (typeof lucide !== 'undefined' && lucide.createIcons) lucide.createIcons();
+  if (typeof renderLabs === 'function') renderLabs();
   if (typeof restoreState === 'function') restoreState();
   if (typeof updateProgressUI === 'function') updateProgressUI();
   if (typeof checkAchievements === 'function') checkAchievements();
   if (typeof restoreChecklists === 'function') restoreChecklists();
-  if (typeof renderLabs === 'function') renderLabs();
   if (typeof initTerminal === 'function') initTerminal();
   if (typeof initFlashcards === 'function') initFlashcards();
   if (typeof initRolloutSim === 'function') initRolloutSim();

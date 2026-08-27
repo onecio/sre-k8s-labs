@@ -1,12 +1,12 @@
-/* ===== K8s Manual — Service Worker ===== */
-var CACHE_NAME = 'k8s-manual-v5';
+/* ===== KubeLab ECOMNIX - Service Worker ===== */
+var CACHE_NAME = 'kubelab-ecomnix-v6';
 
 var PRECACHE_URLS = [
   './',
   './index.html',
   './offline.html',
   './manifest.json',
-  './icon.svg', './style.css', './script.js'
+  './icon.svg', './og.png', './style.css', './script.js'
 ];
 
 /* --- Install: precache core assets individually (resilient to single failures) --- */

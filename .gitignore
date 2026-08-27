@@ -1,5 +1,7 @@
 node_modules/
+dist/
 .DS_Store
+Thumbs.db
 *.pyc
 __pycache__/
 
@@ -7,4 +9,3 @@ labs_insert.py
 index - Copia.html
 manual_kubernetes_sre_devops_iniciantes.md
 proximos.txt
-

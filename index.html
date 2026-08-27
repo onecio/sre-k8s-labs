@@ -3,17 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Manual Kubernetes para SRE/DevOps — Do absoluto zero à implantação, operação, diagnóstico e automação de aplicações em Kubernetes.">
-<meta name="keywords" content="Kubernetes, SRE, DevOps, K3s, Traefik, Cloudflare, CI/CD, Helm, GitOps, Troubleshooting">
-<title>Manual Kubernetes para SRE/DevOps — Do Zero ao Operacional</title>
+<meta name="description" content="KubeLab ECOMNIX - Formação prática e sequencial em Kubernetes, do primeiro cluster à operação SRE.">
+<meta name="keywords" content="Kubernetes, SRE, DevOps, KubeLab ECOMNIX, WSL, kind, K3s, Gateway API, Helm, GitOps, Troubleshooting">
+<title>KubeLab ECOMNIX - Kubernetes do Zero ao SRE</title>
+<meta property="og:type" content="website">
+<meta property="og:title" content="KubeLab ECOMNIX - Kubernetes do Zero ao SRE">
+<meta property="og:description" content="Formação prática e sequencial em Kubernetes, do primeiro cluster à operação SRE.">
+<meta property="og:image" content="https://onecio.github.io/sre-k8s-labs/og.png">
+<meta property="og:url" content="https://onecio.github.io/sre-k8s-labs/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="KubeLab ECOMNIX - Kubernetes do Zero ao SRE">
+<meta name="twitter:description" content="Formação prática e sequencial em Kubernetes, do primeiro cluster à operação SRE.">
+<meta name="twitter:image" content="https://onecio.github.io/sre-k8s-labs/og.png">
 <link rel="icon" type="image/svg+xml" href="icon.svg">
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#161b22">
 <meta name="color-scheme" content="dark light">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="K8s Manual">
+<meta name="apple-mobile-web-app-title" content="KubeLab ECOMNIX">
 <link rel="apple-touch-icon" href="icon.svg">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css?v=3.0.0">
 
 <!-- Lucide Icons -->
 <script src="https://unpkg.com/lucide@0.468.0" defer></script>
@@ -36,7 +45,7 @@
     </button>
     <div class="header-brand">
       <span class="k8s-icon"><i data-lucide="hexagon" class="icon-svg hero-icon" style="color:#fff"></i></span>
-      <span>K8s Manual</span>
+      <span>KubeLab ECOMNIX</span>
     </div>
   </div>
   <div class="header-right">
@@ -61,9 +70,11 @@
     <a class="sidebar-link" href="#hero"><span class="icon"><i data-lucide="home" class="icon-svg"></i></span> Apresentação</a>
     <a class="sidebar-link" href="#journey"><span class="icon"><i data-lucide="map" class="icon-svg"></i></span> Mapa da Jornada</a>
     <a class="sidebar-link" href="#progress-tracker"><span class="icon"><i data-lucide="trophy" class="icon-svg"></i></span> Meu Progresso</a>
+    <a class="sidebar-link" href="#credentials"><span class="icon"><i data-lucide="badge-check" class="icon-svg"></i></span> Badges e Certificação</a>
   </div>
   <div class="sidebar-section">
-    <div class="sidebar-section-title">Fundamentos</div>
+    <div class="sidebar-section-title">Nível 1 - Foundations</div>
+    <a class="sidebar-link" href="#primeiros-passos"><span class="icon"><i data-lucide="laptop" class="icon-svg"></i></span> WSL e primeiro ambiente</a>
     <a class="sidebar-link" href="#fundamentos"><span class="icon"><i data-lucide="box" class="icon-svg"></i></span> Containers e Imagens</a>
     <a class="sidebar-link" href="#o-que-e-k8s"><span class="icon"><i data-lucide="hexagon" class="icon-svg"></i></span> O que é Kubernetes</a>
     <a class="sidebar-link" href="#arquitetura"><span class="icon"><i data-lucide="building-2" class="icon-svg"></i></span> Arquitetura do Cluster</a>
@@ -72,11 +83,11 @@
     <a class="sidebar-link" href="#kubectl"><span class="icon"><i data-lucide="terminal" class="icon-svg"></i></span> kubectl e Operação</a>
   </div>
   <div class="sidebar-section">
-    <div class="sidebar-section-title">Rede e Exposição</div>
+    <div class="sidebar-section-title">Nível 2 - Operator</div>
     <a class="sidebar-link" href="#services"><span class="icon"><i data-lucide="globe" class="icon-svg"></i></span> Services e Portas</a>
     <a class="sidebar-link" href="#kube-proxy"><span class="icon"><i data-lucide="link" class="icon-svg"></i></span> kube-proxy e CNI</a>
-    <a class="sidebar-link" href="#ingress"><span class="icon"><i data-lucide="door-open" class="icon-svg"></i></span> Ingress Controllers</a>
-    <a class="sidebar-link" href="#proxy-comparacao"><span class="icon"><i data-lucide="scale" class="icon-svg"></i></span> Traefik, NGINX, HAProxy</a>
+    <a class="sidebar-link" href="#ingress"><span class="icon"><i data-lucide="door-open" class="icon-svg"></i></span> Gateway API e Ingress</a>
+    <a class="sidebar-link" href="#proxy-comparacao"><span class="icon"><i data-lucide="scale" class="icon-svg"></i></span> Controladores modernos</a>
   </div>
   <div class="sidebar-section">
     <div class="sidebar-section-title">Storage e Dados</div>
@@ -85,30 +96,32 @@
     <a class="sidebar-link" href="#manifestos"><span class="icon"><i data-lucide="file-text" class="icon-svg"></i></span> Manifestos Profissionais</a>
   </div>
   <div class="sidebar-section">
-    <div class="sidebar-section-title">Implementação</div>
+    <div class="sidebar-section-title">Ambientes e aplicações</div>
     <a class="sidebar-link" href="#instalacao-k3s"><span class="icon"><i data-lucide="monitor" class="icon-svg"></i></span> Instalação K3s</a>
     <a class="sidebar-link" href="#traefik-helm"><span class="icon"><i data-lucide="target" class="icon-svg"></i></span> Traefik via Helm</a>
     <a class="sidebar-link" href="#fullstack"><span class="icon"><i data-lucide="rocket" class="icon-svg"></i></span> App Fullstack</a>
     <a class="sidebar-link" href="#seguranca"><span class="icon"><i data-lucide="lock" class="icon-svg"></i></span> Segurança</a>
   </div>
   <div class="sidebar-section">
-    <div class="sidebar-section-title">Automação</div>
+    <div class="sidebar-section-title">Nível 3 - Operations e SRE</div>
     <a class="sidebar-link" href="#cicd"><span class="icon"><i data-lucide="refresh-cw" class="icon-svg"></i></span> CI/CD e GitOps</a>
     <a class="sidebar-link" href="#observabilidade"><span class="icon"><i data-lucide="bar-chart-3" class="icon-svg"></i></span> Observabilidade</a>
   </div>
   <div class="sidebar-section">
     <div class="sidebar-section-title">Laboratórios Práticos</div>
     <a class="sidebar-link" href="#labs"><span class="icon"><i data-lucide="flask-conical" class="icon-svg"></i></span> Visão Geral dos Labs</a>
-    <a class="sidebar-link" href="#lab-01"><span class="icon"><i data-lucide="terminal" class="icon-svg"></i></span> Lab 01: K3s Server + Worker</a>
-    <a class="sidebar-link" href="#lab-02"><span class="icon"><i data-lucide="package" class="icon-svg"></i></span> Lab 02: Helm e Repositórios</a>
-    <a class="sidebar-link" href="#lab-03"><span class="icon"><i data-lucide="target" class="icon-svg"></i></span> Lab 03: Traefik via Helm</a>
-    <a class="sidebar-link" href="#lab-04"><span class="icon"><i data-lucide="shield" class="icon-svg"></i></span> Lab 04: Cloudflare TLS</a>
-    <a class="sidebar-link" href="#lab-05"><span class="icon"><i data-lucide="layout" class="icon-svg"></i></span> Lab 05: App Frontend</a>
-    <a class="sidebar-link" href="#lab-06"><span class="icon"><i data-lucide="server" class="icon-svg"></i></span> Lab 06: App Backend</a>
-    <a class="sidebar-link" href="#lab-07"><span class="icon"><i data-lucide="database" class="icon-svg"></i></span> Lab 07: PostgreSQL</a>
-    <a class="sidebar-link" href="#lab-08"><span class="icon"><i data-lucide="refresh-cw" class="icon-svg"></i></span> Lab 08: CI/CD GitHub Actions</a>
-    <a class="sidebar-link" href="#lab-09"><span class="icon"><i data-lucide="bar-chart-3" class="icon-svg"></i></span> Lab 09: Observabilidade</a>
-    <a class="sidebar-link" href="#lab-10"><span class="icon"><i data-lucide="wrench" class="icon-svg"></i></span> Lab 10: Troubleshooting</a>
+    <a class="sidebar-link" href="#lab-01"><span class="icon"><i data-lucide="laptop" class="icon-svg"></i></span> Lab 01: WSL e preflight</a>
+    <a class="sidebar-link" href="#lab-02"><span class="icon"><i data-lucide="boxes" class="icon-svg"></i></span> Lab 02: Primeiro cluster kind</a>
+    <a class="sidebar-link" href="#lab-03"><span class="icon"><i data-lucide="rocket" class="icon-svg"></i></span> Lab 03: Workloads</a>
+    <a class="sidebar-link" href="#lab-04"><span class="icon"><i data-lucide="route" class="icon-svg"></i></span> Lab 04: Gateway API</a>
+    <a class="sidebar-link" href="#lab-05"><span class="icon"><i data-lucide="database" class="icon-svg"></i></span> Lab 05: Storage</a>
+    <a class="sidebar-link" href="#lab-06"><span class="icon"><i data-lucide="shield-check" class="icon-svg"></i></span> Lab 06: Segurança</a>
+    <a class="sidebar-link" href="#lab-07"><span class="icon"><i data-lucide="activity" class="icon-svg"></i></span> Lab 07: Observabilidade</a>
+    <a class="sidebar-link" href="#lab-08"><span class="icon"><i data-lucide="git-branch" class="icon-svg"></i></span> Lab 08: Helm 4 e GitOps</a>
+    <a class="sidebar-link" href="#lab-09"><span class="icon"><i data-lucide="server" class="icon-svg"></i></span> Lab 09: K3s em VMs</a>
+    <a class="sidebar-link" href="#lab-10"><span class="icon"><i data-lucide="wrench" class="icon-svg"></i></span> Lab 10: Incidentes</a>
+    <a class="sidebar-link" href="#lab-11"><span class="icon"><i data-lucide="network" class="icon-svg"></i></span> Lab 11: Alta disponibilidade</a>
+    <a class="sidebar-link" href="#lab-12"><span class="icon"><i data-lucide="gauge" class="icon-svg"></i></span> Lab 12: SRE Capstone</a>
   </div>
   <div class="sidebar-section">
     <div class="sidebar-section-title">Operação</div>
@@ -140,20 +153,19 @@
 
 <!-- ==================== HERO ==================== -->
 <section class="hero" id="hero">
-  <div class="hero-badge"><i data-lucide="hexagon" class="icon-svg lg"></i> Versão 2.0 — Manual Didático e Operacional</div>
-  <h1>Manual Kubernetes para SRE/DevOps</h1>
-  <p class="subtitle">Do absoluto zero à implantação, operação, diagnóstico e automação de aplicações em Kubernetes.</p>
-  <p class="desc">Aprenda Kubernetes, K3s, Traefik, Cloudflare, volumes, CI/CD, observabilidade e troubleshooting com uma abordagem prática, visual e progressiva.</p>
+  <div class="hero-badge"><i data-lucide="hexagon" class="icon-svg lg"></i> Formação prática por competências</div>
+  <h1>KubeLab ECOMNIX</h1>
+  <p class="subtitle">Da primeira linha de comando à operação confiável de Kubernetes.</p>
+  <p class="desc">Aprenda em uma sequência clara: linguagem humanizada no início, prática orientada no nível intermediário e cenários integralmente técnicos no nível avançado.</p>
   <div class="hero-actions">
-    <a href="#fundamentos" class="hero-btn primary"><i data-lucide="rocket" class="icon-svg"></i> Começar do Zero</a>
-    <a href="#arquitetura" class="hero-btn secondary"><i data-lucide="building-2" class="icon-svg"></i> Ver Arquitetura</a>
-    <a href="#labs" class="hero-btn secondary"><i data-lucide="flask-conical" class="icon-svg"></i> Laboratórios</a>
-    <a href="#troubleshooting" class="hero-btn secondary"><i data-lucide="wrench" class="icon-svg"></i> Troubleshooting</a>
+    <a href="#journey" class="hero-btn primary"><i data-lucide="route" class="icon-svg"></i> Iniciar jornada</a>
+    <a href="#labs" class="hero-btn secondary"><i data-lucide="flask-conical" class="icon-svg"></i> Laboratórios funcionais</a>
+    <a href="#credentials" class="hero-btn secondary"><i data-lucide="badge-check" class="icon-svg"></i> Credenciais</a>
   </div>
   <div class="hero-meta">
-    <div class="hero-meta-item"><span class="dot blue"></span> Nível: Iniciante → Intermediário</div>
-    <div class="hero-meta-item"><span class="dot green"></span> Foco: Prática Operacional</div>
-    <div class="hero-meta-item"><span class="dot purple"></span> K8s · K3s · Traefik · Helm · CI/CD</div>
+    <div class="hero-meta-item"><span class="dot blue"></span> Inicial, intermediário e avançado</div>
+    <div class="hero-meta-item"><span class="dot green"></span> Evidência prática e validação automática</div>
+    <div class="hero-meta-item"><span class="dot purple"></span> WSL, kind, K3s, Gateway API, Helm 4 e GitOps</div>
   </div>
 </section>
 
@@ -171,8 +183,8 @@
       <canvas id="badgeCanvas" width="600" height="315"></canvas>
     </div>
     <div class="badge-actions">
-      <button class="cert-btn primary" onclick="downloadBadge()">💾 Baixar PNG</button>
-      <button class="cert-btn secondary" onclick="copyBadgeText()">📋 Copiar Texto</button>
+      <button class="cert-btn primary" onclick="downloadBadge()">Baixar PNG</button>
+      <button class="cert-btn secondary" onclick="copyBadgeText()">Copiar texto</button>
     </div>
   </div>
 </div>
@@ -181,11 +193,12 @@
 <!-- Certificate Modal -->
 <div class="cert-overlay" id="certOverlay" role="dialog" aria-modal="true" aria-label="Certificado de conquista" onclick="if(event.target===this)closeCert()">
   <div class="cert-card">
-    <button class="cert-close" onclick="closeCert()">✕</button>
+    <button class="cert-close" onclick="closeCert()" aria-label="Fechar certificado">X</button>
     <div class="cert-header">
-      <span class="cert-trophy">🏆</span>
-      <h3>Certificado de Conquista</h3>
-      <p class="cert-subtitle">Manual Kubernetes para SRE/DevOps</p>
+      <span class="cert-trophy" aria-hidden="true">KLE</span>
+      <span class="cert-issuer">Emitido por KubeLab ECOMNIX</span>
+      <h3>Kubernetes Essentials - Associate</h3>
+      <p class="cert-subtitle">Certificado de conclusão e competência prática</p>
     </div>
     <div class="cert-body">
       <div class="cert-field">
@@ -197,18 +210,22 @@
         <span class="cf-value" id="certDate"></span>
       </div>
       <div class="cert-field">
-        <span class="cf-label">Quizzes com 100%</span>
+        <span class="cf-label">Avaliações aprovadas</span>
         <span class="cf-value" id="certQuizCount"></span>
       </div>
       <div class="cert-field">
-        <span class="cf-label">Labs concluídos</span>
+        <span class="cf-label">Laboratórios validados</span>
         <span class="cf-value" id="certLabCount"></span>
+      </div>
+      <div class="cert-field">
+        <span class="cf-label">ID da credencial</span>
+        <span class="cf-value" id="certCredentialId"></span>
       </div>
       <div class="cert-quiz-grid" id="certQuizGrid"></div>
     </div>
     <div class="cert-actions">
-      <button class="cert-btn primary" onclick="copyCertLink()">📋 Copiar Link</button>
-      <button class="cert-btn secondary" onclick="downloadCert()">💾 Salvar Imagem</button>
+      <button class="cert-btn primary" onclick="copyCertLink()">Copiar comprovação</button>
+      <button class="cert-btn secondary" onclick="downloadCert()">Salvar certificado</button>
     </div>
   </div>
 </div>
@@ -230,9 +247,9 @@
     <div class="progress-lab-list" id="progressLabList"></div>
     <div class="achievement-section" id="achievementSection"></div>
         <div class="progress-actions">
-      <button class="progress-export" onclick="exportProgress()">📤 Exportar progresso</button>
-      <button class="progress-import" onclick="importProgress()">📥 Importar progresso</button>
-      <button class="progress-reset" onclick="resetProgress()">🗑️ Limpar progresso</button>
+      <button class="progress-export" onclick="exportProgress()">Exportar progresso</button>
+      <button class="progress-import" onclick="importProgress()">Importar progresso</button>
+      <button class="progress-reset" onclick="resetProgress()">Limpar progresso</button>
     </div>
     <input type="file" id="progressFileInput" accept=".json" style="display:none" aria-label="Selecionar arquivo de progresso" onchange="handleImportFile(this)">
   </div>
@@ -240,93 +257,174 @@
 
 <!-- ==================== JOURNEY MAP ==================== -->
 <section class="section journey" id="journey">
-  <h2>🗺️ Mapa da Jornada</h2>
-  <p style="color:var(--text-secondary); margin-bottom: 20px;">Siga esta trilha progressiva do zero ao operacional. Cada etapa constrói sobre a anterior.</p>
+  <h2><i data-lucide="map" class="icon-svg lg"></i> Jornada de aprendizagem</h2>
+  <p class="journey-intro">Uma formação sequencial em que cada etapa libera a próxima após conhecimento, prática e diagnóstico.</p>
+  <div class="learning-levels">
+    <article class="learning-level foundation">
+      <div class="level-kicker">Nível 1</div>
+      <h3>Foundations</h3>
+      <p>Conteúdo humanizado, visual e palatável. O aluno entende por que cada conceito existe antes de utilizar comandos.</p>
+      <ul><li>WSL e Linux</li><li>Containers</li><li>Primeiro cluster kind</li><li>kubectl e objetos essenciais</li></ul>
+      <a href="#fundamentos">Começar pelos fundamentos</a>
+    </article>
+    <article class="learning-level operator">
+      <div class="level-kicker">Nível 2</div>
+      <h3>Kubernetes Operator</h3>
+      <p>Abordagem técnica orientada à aplicação, operação, segurança, observabilidade e troubleshooting.</p>
+      <ul><li>Workloads e scheduling</li><li>Gateway API e redes</li><li>Storage e RBAC</li><li>Helm 4 e GitOps</li></ul>
+      <a href="#labs">Executar laboratórios</a>
+    </article>
+    <article class="learning-level professional">
+      <div class="level-kicker">Nível 3</div>
+      <h3>Operations and SRE</h3>
+      <p>Cenários integralmente técnicos com requisitos, incidentes, restrições e decisões arquiteturais.</p>
+      <ul><li>Alta disponibilidade</li><li>SLO e incidentes</li><li>Disaster recovery</li><li>Cloud e multi-cluster</li></ul>
+      <a href="#troubleshooting">Conhecer os desafios</a>
+    </article>
+  </div>
+  <h3 class="journey-sequence-title">Sequência de competências</h3>
   <div class="journey-grid">
     <a class="journey-card" href="#fundamentos">
       <span class="step-num">1</span>
       <h3>Fundamentos</h3>
       <p>Containers, imagens, registries e o básico de Kubernetes.</p>
-      <span class="time">⏱ ~2h</span>
+      <span class="time">2 horas estimadas</span>
     </a>
     <a class="journey-card" href="#arquitetura">
       <span class="step-num">2</span>
       <h3>Arquitetura</h3>
       <p>Control plane, workers, ciclo de vida de um Pod.</p>
-      <span class="time">⏱ ~2h</span>
+      <span class="time">2 horas estimadas</span>
     </a>
     <a class="journey-card" href="#kubectl">
       <span class="step-num">3</span>
       <h3>kubectl e Operação</h3>
       <p>Comandos essenciais de inventário, diagnóstico e rollout.</p>
-      <span class="time">⏱ ~1.5h</span>
+      <span class="time">1,5 hora estimada</span>
     </a>
     <a class="journey-card" href="#services">
       <span class="step-num">4</span>
       <h3>Rede e Services</h3>
       <p>ClusterIP, NodePort, LoadBalancer, HostPort e kube-proxy.</p>
-      <span class="time">⏱ ~2h</span>
+      <span class="time">2 horas estimadas</span>
     </a>
     <a class="journey-card" href="#ingress">
       <span class="step-num">5</span>
       <h3>Ingress e Proxies</h3>
       <p>Traefik, NGINX, HAProxy, Cloudflare e exposição HTTP.</p>
-      <span class="time">⏱ ~2h</span>
+      <span class="time">2 horas estimadas</span>
     </a>
     <a class="journey-card" href="#storage">
       <span class="step-num">6</span>
       <h3>Storage e Volumes</h3>
       <p>PVC, StorageClass, Longhorn, NFS, Ceph e CSI.</p>
-      <span class="time">⏱ ~2h</span>
+      <span class="time">2 horas estimadas</span>
     </a>
     <a class="journey-card" href="#seguranca">
       <span class="step-num">7</span>
       <h3>Segurança e Secrets</h3>
       <p>Secrets, ConfigMaps, RBAC e NetworkPolicy.</p>
-      <span class="time">⏱ ~1.5h</span>
+      <span class="time">1,5 hora estimada</span>
     </a>
     <a class="journey-card" href="#instalacao-k3s">
       <span class="step-num">8</span>
       <h3>Instalação K3s</h3>
       <p>Montar um cluster com servidor e worker.</p>
-      <span class="time">⏱ ~1h</span>
+      <span class="time">1 hora estimada</span>
     </a>
     <a class="journey-card" href="#traefik-helm">
       <span class="step-num">9</span>
       <h3>Traefik via Helm</h3>
       <p>Instalar e configurar o Ingress Controller.</p>
-      <span class="time">⏱ ~1h</span>
+      <span class="time">1 hora estimada</span>
     </a>
     <a class="journey-card" href="#fullstack">
       <span class="step-num">10</span>
       <h3>App Fullstack</h3>
       <p>Frontend + Backend + Banco + Volumes + Secrets.</p>
-      <span class="time">⏱ ~3h</span>
+      <span class="time">3 horas estimadas</span>
     </a>
     <a class="journey-card" href="#cicd">
       <span class="step-num">11</span>
       <h3>CI/CD e GitOps</h3>
       <p>GitHub Actions, Helm, Argo CD e automação.</p>
-      <span class="time">⏱ ~2h</span>
+      <span class="time">2 horas estimadas</span>
     </a>
     <a class="journey-card" href="#observabilidade">
       <span class="step-num">12</span>
       <h3>Observabilidade</h3>
       <p>Logs, métricas, tracing e health checks.</p>
-      <span class="time">⏱ ~1.5h</span>
+      <span class="time">1,5 hora estimada</span>
     </a>
     <a class="journey-card" href="#troubleshooting">
       <span class="step-num">13</span>
       <h3>Troubleshooting</h3>
       <p>Diagnóstico SRE: Pods, Services, TLS, Cloudflare.</p>
-      <span class="time">⏱ ~2h</span>
+      <span class="time">2 horas estimadas</span>
     </a>
     <a class="journey-card" href="#plano-estudos">
       <span class="step-num">14</span>
       <h3>Caminho para Produção</h3>
       <p>Plano de estudo de 30 dias e próximos passos.</p>
-      <span class="time">⏱ ~30min</span>
+      <span class="time">30 minutos estimados</span>
     </a>
+  </div>
+</section>
+
+<!-- ==================== CREDENTIALS ==================== -->
+<section class="section" id="credentials">
+  <h2><span class="sec-icon" style="background:var(--yellow-subtle);color:var(--yellow);"><i data-lucide="badge-check" class="icon-svg"></i></span> Badges e certificação KubeLab ECOMNIX</h2>
+  <p class="section-lead">As credenciais representam competências demonstradas. A leitura de conteúdo isoladamente não libera badges ou certificados.</p>
+  <div class="credential-grid">
+    <article class="credential-card foundation">
+      <span class="credential-level">Microcredencial</span>
+      <h3>Environment Ready</h3>
+      <p>Comprova que WSL, Linux, container runtime, kubectl e kind estão preparados.</p>
+      <strong>Evidência: preflight aprovado</strong>
+    </article>
+    <article class="credential-card associate">
+      <span class="credential-level">Certificação Associate</span>
+      <h3>Kubernetes Essentials</h3>
+      <p>Reconhece domínio dos conceitos essenciais, conclusão dos laboratórios e capacidade de troubleshooting inicial.</p>
+      <strong>Evidência: avaliações e labs validados</strong>
+    </article>
+    <article class="credential-card professional">
+      <span class="credential-level">Certificação Professional</span>
+      <h3>Operations and SRE</h3>
+      <p>Reconhece operação avançada, resiliência, segurança, observabilidade, incidentes e arquitetura.</p>
+      <strong>Evidência: capstone técnico</strong>
+    </article>
+  </div>
+  <div class="cert-standard">
+    <i data-lucide="shield-check" class="icon-svg lg"></i>
+    <div><strong>Critério Associate</strong><p>Mínimo de 80% nas avaliações, 100% dos laboratórios essenciais e desafio prático aprovado. A credencial informa emissor, versão do currículo, data e evidências.</p></div>
+  </div>
+</section>
+
+<!-- ==================== PRIMEIROS PASSOS ==================== -->
+<section class="section" id="primeiros-passos">
+  <h2><span class="sec-icon" style="background:var(--green-subtle);color:var(--green);"><i data-lucide="laptop" class="icon-svg"></i></span> 0. Primeiros passos no WSL</h2>
+  <p class="section-lead">Antes de falar sobre Kubernetes, vamos preparar uma estação de trabalho confiável e entender o papel de cada ferramenta.</p>
+  <div class="concept-card">
+    <div class="concept-title"><i data-lucide="layers" class="icon-svg lg"></i> A pilha de aprendizagem</div>
+    <div class="concept-layer simple">
+      <div class="layer-label"><i data-lucide="message-circle" class="icon-svg"></i> Em linguagem simples</div>
+      <p>O Windows hospeda o WSL. O WSL oferece um ambiente Linux. O container runtime executa containers. O kind utiliza esses containers para criar um cluster Kubernetes local.</p>
+    </div>
+    <div class="concept-layer technical">
+      <div class="layer-label"><i data-lucide="terminal" class="icon-svg"></i> Em linguagem técnica</div>
+      <p>O ambiente inicial utiliza WSL2, distribuição Ubuntu, Docker ou Podman compatível, kubectl, kind, Helm 4 e Git. O script de preflight valida arquitetura, memória, binários e conectividade antes da criação do cluster.</p>
+    </div>
+  </div>
+  <h3>Preparação no Windows</h3>
+  <pre><code>wsl --install
+wsl --list --verbose</code></pre>
+  <h3>Diagnóstico no WSL</h3>
+  <pre><code>cd labs/01-wsl-preflight
+bash scripts/preflight.sh</code></pre>
+  <div class="alert success">
+    <span class="alert-icon"><i data-lucide="check-circle" class="icon-svg"></i></span>
+    <div class="alert-content"><strong>Critério de saída:</strong> prossiga somente quando o preflight confirmar shell, Git, runtime, kubectl, kind, Helm e recursos mínimos.</div>
   </div>
 </section>
 
@@ -345,7 +443,7 @@
       <p>Um container usa namespaces e cgroups do Linux para isolar processos, rede e recursos. Ele compartilha o kernel do host mas tem seu próprio filesystem, rede e espaço de processos.</p>
     </div>
     <div class="concept-layer practical">
-      <div class="layer-label">🛠️ Analogia Prática</div>
+      <div class="layer-label">Analogia prática</div>
       <p>Pense em uma marmita lacrada. Ela já contém tudo que você precisa para aquela refeição. A <strong>imagem</strong> do container é a receita pronta; o <strong>container</strong> em execução é a marmita sendo consumida.</p>
     </div>
   </div>
@@ -354,14 +452,14 @@
     <div class="concept-title"><i data-lucide="file-text" class="icon-svg lg"></i> O que é uma Imagem</div>
     <div class="concept-layer simple">
       <div class="layer-label"><i data-lucide="lightbulb" class="icon-svg"></i> Explicação Simples</div>
-      <p>Imagem é o pacote imutável a partir do qual containers são criados. Kubernetes não compila sua aplicação — ele baixa uma imagem de um registry e executa essa imagem em um Pod.</p>
+      <p>Imagem é o pacote imutável a partir do qual containers são criados. Kubernetes não compila sua aplicação - ele baixa uma imagem de um registry e executa essa imagem em um Pod.</p>
     </div>
     <div class="concept-layer practical">
       <div class="layer-label"><i data-lucide="wrench" class="icon-svg"></i> Exemplo</div>
     </div>
   </div>
   <div class="code-block">
-    <div class="code-header"><span class="code-lang">YAML</span><button class="copy-btn" onclick="copyCode(this, event)">📋 Copiar</button></div>
+    <div class="code-header"><span class="code-lang">YAML</span><button class="copy-btn" onclick="copyCode(this, event)">Copiar</button></div>
     <pre><code>containers:
   - name: backend
     image: ghcr.io/minha-org/backend:v1.0.0</code></pre>
@@ -413,7 +511,7 @@
     </div>
   </div>
 
-  <h3>📝 Glossário Rápido</h3>
+  <h3>Glossário rápido</h3>
   <div class="table-wrapper">
     <table>
       <thead><tr><th>Termo</th><th>Significado</th><th>Explicação Simples</th></tr></thead>
@@ -435,7 +533,7 @@
 </section>
 <!-- Quiz: Fundamentos -->
 <div class="quiz-box" id="quiz-fundamentos">
-  <h4><i data-lucide="brain" class="icon-svg lg"></i> Quiz — Fundamentos</h4>
+  <h4><i data-lucide="brain" class="icon-svg lg"></i> Quiz - Fundamentos</h4>
   <div class="quiz-subtitle">Teste seus conhecimentos sobre containers, imagens e Kubernetes</div>
 
   <div class="quiz-question" data-correct="1">
@@ -586,7 +684,7 @@
 
   <h3>Ciclo de Vida de um Pod</h3>
   <div class="code-block">
-    <div class="code-header"><span class="code-lang">Fluxo</span><button class="copy-btn" onclick="copyCode(this, event)">📋 Copiar</button></div>
+    <div class="code-header"><span class="code-lang">Fluxo</span><button class="copy-btn" onclick="copyCode(this, event)">Copiar</button></div>
     <pre><code>kubectl apply -f app.yaml
   → kube-apiserver recebe
   → etcd armazena
@@ -616,7 +714,7 @@
 
 <!-- Quiz: Arquitetura -->
 <div class="quiz-box" id="quiz-arquitetura">
-  <h4><i data-lucide="brain" class="icon-svg lg"></i> Quiz — Arquitetura e Componentes</h4>
+  <h4><i data-lucide="brain" class="icon-svg lg"></i> Quiz - Arquitetura e Componentes</h4>
   <div class="quiz-subtitle">Control plane, workers e ciclo de vida dos Pods</div>
 
   <div class="quiz-question" data-correct="1">
@@ -663,7 +761,7 @@
     </div>
     <div class="service-card">
       <h4><i data-lucide="refresh-cw" class="icon-svg lg"></i> ReplicaSet</h4>
-      <p>Garante que exista um número desejado de Pods. Você raramente cria diretamente — o Deployment cria e gerencia para você.</p>
+      <p>Garante que exista um número desejado de Pods. Você raramente cria diretamente - o Deployment cria e gerencia para você.</p>
       <span class="tag internal">Gerenciado</span>
     </div>
     <div class="service-card">
@@ -685,7 +783,7 @@
 
   <h3>Exemplo de Deployment</h3>
   <div class="code-block">
-    <div class="code-header"><span class="code-lang">YAML</span><button class="copy-btn" onclick="copyCode(this, event)">📋 Copiar</button></div>
+    <div class="code-header"><span class="code-lang">YAML</span><button class="copy-btn" onclick="copyCode(this, event)">Copiar</button></div>
     <pre><code>apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -711,12 +809,12 @@ spec:
 
 <!-- ==================== KUBECTL ==================== -->
 <section class="section" id="kubectl">
-  <h2><span class="sec-icon" style="background:var(--accent-subtle);color:var(--accent);"><i data-lucide="terminal" class="icon-svg"></i></span> 4. kubectl — Operação Diária</h2>
+  <h2><span class="sec-icon" style="background:var(--accent-subtle);color:var(--accent);"><i data-lucide="terminal" class="icon-svg"></i></span> 4. kubectl - Operação Diária</h2>
   <p><code>kubectl</code> é a ferramenta de linha de comando para conversar com o cluster. Ela usa um arquivo <code>kubeconfig</code> para saber qual cluster acessar e com quais credenciais.</p>
 
   <h3>Comandos de Inventário</h3>
   <div class="code-block">
-    <div class="code-header"><span class="code-lang">Bash</span><button class="copy-btn" onclick="copyCode(this, event)">📋 Copiar</button></div>
+    <div class="code-header"><span class="code-lang">Bash</span><button class="copy-btn" onclick="copyCode(this, event)">Copiar</button></div>
     <pre><code>kubectl get nodes -o wide
 kubectl get pods -A -o wide
 kubectl get svc -A
@@ -727,7 +825,7 @@ kubectl get events -A --sort-by=.lastTimestamp</code></pre>
 
   <h3>Comandos de Diagnóstico</h3>
   <div class="code-block">
-    <div class="code-header"><span class="code-lang">Bash</span><button class="copy-btn" onclick="copyCode(this, event)">📋 Copiar</button></div>
+    <div class="code-header"><span class="code-lang">Bash</span><button class="copy-btn" onclick="copyCode(this, event)">Copiar</button></div>
     <pre><code>kubectl describe pod NOME -n NAMESPACE
 kubectl logs NOME -n NAMESPACE
 kubectl logs deploy/NOME -n NAMESPACE
@@ -738,7 +836,7 @@ kubectl get ingress NOME -n NAMESPACE -o yaml</code></pre>
 
   <h3>Comandos de Rollout</h3>
   <div class="code-block">
-    <div class="code-header"><span class="code-lang">Bash</span><button class="copy-btn" onclick="copyCode(this, event)">📋 Copiar</button></div>
+    <div class="code-header"><span class="code-lang">Bash</span><button class="copy-btn" onclick="copyCode(this, event)">Copiar</button></div>
     <pre><code>kubectl rollout status deployment/NOME -n NAMESPACE
 kubectl rollout restart deployment/NOME -n NAMESPACE
 kubectl rollout history deployment/NOME -n NAMESPACE
@@ -747,7 +845,7 @@ kubectl rollout undo deployment/NOME -n NAMESPACE</code></pre>
 
   <h3>Comandos Declarativos</h3>
   <div class="code-block">
-    <div class="code-header"><span class="code-lang">Bash</span><button class="copy-btn" onclick="copyCode(this, event)">📋 Copiar</button></div>
+    <div class="code-header"><span class="code-lang">Bash</span><button class="copy-btn" onclick="copyCode(this, event)">Copiar</button></div>
     <pre><code>kubectl apply -f arquivo.yaml
 kubectl diff -f arquivo.yaml
 kubectl delete -f arquivo.yaml</code></pre>
@@ -759,7 +857,7 @@ kubectl delete -f arquivo.yaml</code></pre>
 </section>
 <!-- Quiz: kubectl -->
 <div class="quiz-box" id="quiz-kubectl">
-  <h4><i data-lucide="brain" class="icon-svg lg"></i> Quiz — kubectl e Operação</h4>
+  <h4><i data-lucide="brain" class="icon-svg lg"></i> Quiz - kubectl e Operação</h4>
   <div class="quiz-subtitle">Comandos essenciais de diagnóstico e rollout</div>
 
   <div class="quiz-question" data-correct="1">
@@ -860,7 +958,7 @@ kubectl delete -f arquivo.yaml</code></pre>
     <div class="collapsible-header"><i data-lucide="circle" class="icon-svg lg" style="color:var(--accent)"></i> ClusterIP <span class="collapsible-arrow">▼</span></div>
     <div class="collapsible-body"><div class="collapsible-body-inner">
       <div class="code-block">
-        <div class="code-header"><span class="code-lang">YAML</span><button class="copy-btn" onclick="copyCode(this);event.stopPropagation()">📋 Copiar</button></div>
+        <div class="code-header"><span class="code-lang">YAML</span><button class="copy-btn" onclick="copyCode(this);event.stopPropagation()">Copiar</button></div>
         <pre><code>apiVersion: v1
 kind: Service
 metadata:
@@ -880,7 +978,7 @@ spec:
     <div class="collapsible-header"><i data-lucide="circle" class="icon-svg lg" style="color:var(--orange)"></i> NodePort <span class="collapsible-arrow">▼</span></div>
     <div class="collapsible-body"><div class="collapsible-body-inner">
       <div class="code-block">
-        <div class="code-header"><span class="code-lang">YAML</span><button class="copy-btn" onclick="copyCode(this);event.stopPropagation()">📋 Copiar</button></div>
+        <div class="code-header"><span class="code-lang">YAML</span><button class="copy-btn" onclick="copyCode(this);event.stopPropagation()">Copiar</button></div>
         <pre><code>apiVersion: v1
 kind: Service
 metadata:
@@ -901,7 +999,7 @@ spec:
     <div class="collapsible-header"><i data-lucide="circle" class="icon-svg lg" style="color:var(--green)"></i> LoadBalancer <span class="collapsible-arrow">▼</span></div>
     <div class="collapsible-body"><div class="collapsible-body-inner">
       <div class="code-block">
-        <div class="code-header"><span class="code-lang">YAML</span><button class="copy-btn" onclick="copyCode(this);event.stopPropagation()">📋 Copiar</button></div>
+        <div class="code-header"><span class="code-lang">YAML</span><button class="copy-btn" onclick="copyCode(this);event.stopPropagation()">Copiar</button></div>
         <pre><code>apiVersion: v1
 kind: Service
 metadata:
@@ -923,7 +1021,7 @@ spec:
 
 <!-- Quiz: Services -->
 <div class="quiz-box" id="quiz-services">
-  <h4><i data-lucide="brain" class="icon-svg lg"></i> Quiz — Services e Portas</h4>
+  <h4><i data-lucide="brain" class="icon-svg lg"></i> Quiz - Services e Portas</h4>
   <div class="quiz-subtitle">Tipos de Service, portas e roteamento</div>
 
   <div class="quiz-question" data-correct="1">
@@ -983,7 +1081,7 @@ spec:
     </div>
   </div>
 
-  <h3>CNI — Container Network Interface</h3>
+  <h3>CNI - Container Network Interface</h3>
   <p>CNI é a camada que permite que Pods tenham IP e conversem entre si.</p>
   <div class="table-wrapper">
     <table>
@@ -1015,7 +1113,7 @@ spec:
   </div>
 
   <div class="code-block">
-    <div class="code-header"><span class="code-lang">YAML</span><button class="copy-btn" onclick="copyCode(this, event)">📋 Copiar</button></div>
+    <div class="code-header"><span class="code-lang">YAML</span><button class="copy-btn" onclick="copyCode(this, event)">Copiar</button></div>
     <pre><code>apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -1089,7 +1187,7 @@ spec:
 
 <!-- Quiz: Ingress -->
 <div class="quiz-box" id="quiz-ingress">
-  <h4><i data-lucide="brain" class="icon-svg lg"></i> Quiz — Ingress e Proxies</h4>
+  <h4><i data-lucide="brain" class="icon-svg lg"></i> Quiz - Ingress e Proxies</h4>
   <div class="quiz-subtitle">Traefik, NGINX, HAProxy e Cloudflare</div>
 
   <div class="quiz-question" data-correct="1">
@@ -1165,7 +1263,7 @@ spec:
 
   <h3>Exemplo de PVC</h3>
   <div class="code-block">
-    <div class="code-header"><span class="code-lang">YAML</span><button class="copy-btn" onclick="copyCode(this, event)">📋 Copiar</button></div>
+    <div class="code-header"><span class="code-lang">YAML</span><button class="copy-btn" onclick="copyCode(this, event)">Copiar</button></div>
     <pre><code>apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -1194,14 +1292,14 @@ spec:
 </section>
 <!-- Quiz: Storage -->
 <div class="quiz-box" id="quiz-storage">
-  <h4><i data-lucide="brain" class="icon-svg lg"></i> Quiz — Storage e Volumes</h4>
+  <h4><i data-lucide="brain" class="icon-svg lg"></i> Quiz - Storage e Volumes</h4>
   <div class="quiz-subtitle">Volumes, PVCs, StorageClasses e Longhorn</div>
 
   <div class="quiz-question" data-correct="2">
     <div class="q-text">1. Por que containers precisam de volumes persistentes?</div>
     <label class="quiz-option"><input type="radio" name="q-s1" value="0" onchange="checkQuiz(this)"> Para aumentar a performance</label>
     <label class="quiz-option"><input type="radio" name="q-s1" value="1" onchange="checkQuiz(this)"> Para fazer cache de imagens</label>
-    <label class="quiz-option"><input type="radio" name="q-s1" value="2" onchange="checkQuiz(this)"> Containers são efêmeros — dados dentro dele são perdidos no restart</label>
+    <label class="quiz-option"><input type="radio" name="q-s1" value="2" onchange="checkQuiz(this)"> Containers são efêmeros - dados dentro dele são perdidos no restart</label>
     <div class="quiz-feedback"></div>
   </div>
 
@@ -1273,7 +1371,7 @@ spec:
 
   <h3>5.1 Preparação da VM</h3>
   <div class="code-block">
-    <div class="code-header"><span class="code-lang">Bash</span><button class="copy-btn" onclick="copyCode(this, event)">📋 Copiar</button></div>
+    <div class="code-header"><span class="code-lang">Bash</span><button class="copy-btn" onclick="copyCode(this, event)">Copiar</button></div>
     <pre><code>sudo apt update
 sudo apt upgrade -y
 sudo apt install -y curl vim nano htop net-tools ca-certificates</code></pre>
@@ -1282,7 +1380,7 @@ sudo apt install -y curl vim nano htop net-tools ca-certificates</code></pre>
 
   <h3>5.2 Hostname Único</h3>
   <div class="code-block">
-    <div class="code-header"><span class="code-lang">Bash</span><button class="copy-btn" onclick="copyCode(this, event)">📋 Copiar</button></div>
+    <div class="code-header"><span class="code-lang">Bash</span><button class="copy-btn" onclick="copyCode(this, event)">Copiar</button></div>
     <pre><code>hostnamectl
 sudo hostnamectl set-hostname worker0</code></pre>
   </div>
@@ -1293,7 +1391,7 @@ sudo hostnamectl set-hostname worker0</code></pre>
 
   <h3>5.3 Instalar K3s como Servidor</h3>
   <div class="code-block">
-    <div class="code-header"><span class="code-lang">Bash</span><button class="copy-btn" onclick="copyCode(this, event)">📋 Copiar</button></div>
+    <div class="code-header"><span class="code-lang">Bash</span><button class="copy-btn" onclick="copyCode(this, event)">Copiar</button></div>
     <pre><code>curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="server --disable traefik --disable servicelb" sh -</code></pre>
   </div>
   <div class="table-wrapper">
@@ -1309,7 +1407,7 @@ sudo hostnamectl set-hostname worker0</code></pre>
 
   <h3>5.4 Configurar kubectl sem sudo</h3>
   <div class="code-block">
-    <div class="code-header"><span class="code-lang">Bash</span><button class="copy-btn" onclick="copyCode(this, event)">📋 Copiar</button></div>
+    <div class="code-header"><span class="code-lang">Bash</span><button class="copy-btn" onclick="copyCode(this, event)">Copiar</button></div>
     <pre><code>mkdir -p ~/.kube
 sudo cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
 sudo chown $USER:$USER ~/.kube/config
@@ -1320,13 +1418,13 @@ export KUBECONFIG=$HOME/.kube/config</code></pre>
 
   <h3>5.5 Obter Token do Cluster</h3>
   <div class="code-block">
-    <div class="code-header"><span class="code-lang">Bash</span><button class="copy-btn" onclick="copyCode(this, event)">📋 Copiar</button></div>
+    <div class="code-header"><span class="code-lang">Bash</span><button class="copy-btn" onclick="copyCode(this, event)">Copiar</button></div>
     <pre><code>sudo cat /var/lib/rancher/k3s/server/node-token</code></pre>
   </div>
 
   <h3>5.6 Adicionar Worker</h3>
   <div class="code-block">
-    <div class="code-header"><span class="code-lang">Bash</span><button class="copy-btn" onclick="copyCode(this, event)">📋 Copiar</button></div>
+    <div class="code-header"><span class="code-lang">Bash</span><button class="copy-btn" onclick="copyCode(this, event)">Copiar</button></div>
     <pre><code>curl -sfL https://get.k3s.io \
   K3S_URL=https://IP_PRIVADO_DO_SERVER:6443 \
   K3S_TOKEN=TOKEN_DO_CLUSTER \
@@ -1335,7 +1433,7 @@ export KUBECONFIG=$HOME/.kube/config</code></pre>
 
   <h3>5.7 Validação</h3>
   <div class="code-block">
-    <div class="code-header"><span class="code-lang">Bash</span><button class="copy-btn" onclick="copyCode(this, event)">📋 Copiar</button></div>
+    <div class="code-header"><span class="code-lang">Bash</span><button class="copy-btn" onclick="copyCode(this, event)">Copiar</button></div>
     <pre><code>kubectl get nodes -o wide
 kubectl get pods -A -o wide</code></pre>
   </div>
@@ -1347,14 +1445,14 @@ kubectl get pods -A -o wide</code></pre>
 
   <h3>Instalar Helm</h3>
   <div class="code-block">
-    <div class="code-header"><span class="code-lang">Bash</span><button class="copy-btn" onclick="copyCode(this, event)">📋 Copiar</button></div>
+    <div class="code-header"><span class="code-lang">Bash</span><button class="copy-btn" onclick="copyCode(this, event)">Copiar</button></div>
     <pre><code>curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 helm version</code></pre>
   </div>
 
   <h3>Adicionar Repositório Traefik</h3>
   <div class="code-block">
-    <div class="code-header"><span class="code-lang">Bash</span><button class="copy-btn" onclick="copyCode(this, event)">📋 Copiar</button></div>
+    <div class="code-header"><span class="code-lang">Bash</span><button class="copy-btn" onclick="copyCode(this, event)">Copiar</button></div>
     <pre><code>helm repo add traefik https://traefik.github.io/charts
 helm repo update
 helm search repo traefik</code></pre>
@@ -1362,7 +1460,7 @@ helm search repo traefik</code></pre>
 
   <h3>Namespace e CRDs</h3>
   <div class="code-block">
-    <div class="code-header"><span class="code-lang">Bash</span><button class="copy-btn" onclick="copyCode(this, event)">📋 Copiar</button></div>
+    <div class="code-header"><span class="code-lang">Bash</span><button class="copy-btn" onclick="copyCode(this, event)">Copiar</button></div>
     <pre><code>kubectl create namespace traefik
 helm template traefik-crds traefik/traefik-crds \
   --namespace traefik | kubectl apply -f -</code></pre>
@@ -1370,7 +1468,7 @@ helm template traefik-crds traefik/traefik-crds \
 
   <h3>Secret TLS da Cloudflare Origin</h3>
   <div class="code-block">
-    <div class="code-header"><span class="code-lang">Bash</span><button class="copy-btn" onclick="copyCode(this, event)">📋 Copiar</button></div>
+    <div class="code-header"><span class="code-lang">Bash</span><button class="copy-btn" onclick="copyCode(this, event)">Copiar</button></div>
     <pre><code>kubectl create secret tls cloudflare-origin-tls \
   --cert=/home/ubuntu/cloudflare.crt \
   --key=/home/ubuntu/cloudflare.key \
@@ -1379,7 +1477,7 @@ helm template traefik-crds traefik/traefik-crds \
 
   <h3>TLSStore</h3>
   <div class="code-block">
-    <div class="code-header"><span class="code-lang">YAML</span><button class="copy-btn" onclick="copyCode(this, event)">📋 Copiar</button></div>
+    <div class="code-header"><span class="code-lang">YAML</span><button class="copy-btn" onclick="copyCode(this, event)">Copiar</button></div>
     <pre><code>apiVersion: traefik.io/v1alpha1
 kind: TLSStore
 metadata:
@@ -1392,7 +1490,7 @@ spec:
 
   <h3>values.yaml com HostPort</h3>
   <div class="code-block">
-    <div class="code-header"><span class="code-lang">YAML</span><button class="copy-btn" onclick="copyCode(this, event)">📋 Copiar</button></div>
+    <div class="code-header"><span class="code-lang">YAML</span><button class="copy-btn" onclick="copyCode(this, event)">Copiar</button></div>
     <pre><code>deployment:
   replicas: 1
 
@@ -1449,7 +1547,7 @@ accessLog:
 
   <h3>Instalar</h3>
   <div class="code-block">
-    <div class="code-header"><span class="code-lang">Bash</span><button class="copy-btn" onclick="copyCode(this, event)">📋 Copiar</button></div>
+    <div class="code-header"><span class="code-lang">Bash</span><button class="copy-btn" onclick="copyCode(this, event)">Copiar</button></div>
     <pre><code>helm install traefik traefik/traefik \
   --namespace traefik \
   -f ~/k8s/traefik/values.yaml \
@@ -1458,7 +1556,7 @@ accessLog:
 
   <h3>Validar</h3>
   <div class="code-block">
-    <div class="code-header"><span class="code-lang">Bash</span><button class="copy-btn" onclick="copyCode(this, event)">📋 Copiar</button></div>
+    <div class="code-header"><span class="code-lang">Bash</span><button class="copy-btn" onclick="copyCode(this, event)">Copiar</button></div>
     <pre><code>kubectl get pods -n traefik -o wide
 kubectl describe deployment traefik -n traefik
 sudo ss -tulpn | grep -E ':(80|443)\b'
@@ -1472,7 +1570,7 @@ curl -vk https://IP_PUBLICO -H "Host: app.seu-dominio.com.br"</code></pre>
 
   <h3>Estrutura Recomendada de Diretórios</h3>
   <div class="code-block">
-    <div class="code-header"><span class="code-lang">Estrutura</span><button class="copy-btn" onclick="copyCode(this, event)">📋 Copiar</button></div>
+    <div class="code-header"><span class="code-lang">Estrutura</span><button class="copy-btn" onclick="copyCode(this, event)">Copiar</button></div>
     <pre><code>k8s/
   apps/
     minha-aplicacao/
@@ -1492,7 +1590,7 @@ curl -vk https://IP_PUBLICO -H "Host: app.seu-dominio.com.br"</code></pre>
 
   <h3>Anatomia de um Deployment Profissional</h3>
   <div class="code-block">
-    <div class="code-header"><span class="code-lang">YAML</span><button class="copy-btn" onclick="copyCode(this, event)">📋 Copiar</button></div>
+    <div class="code-header"><span class="code-lang">YAML</span><button class="copy-btn" onclick="copyCode(this, event)">Copiar</button></div>
     <pre><code>apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -1579,7 +1677,7 @@ spec:
 
 <!-- Quiz: Segurança -->
 <div class="quiz-box" id="quiz-seguranca">
-  <h4><i data-lucide="brain" class="icon-svg lg"></i> Quiz — Segurança</h4>
+  <h4><i data-lucide="brain" class="icon-svg lg"></i> Quiz - Segurança</h4>
   <div class="quiz-subtitle">Secrets, Pod Security e NetworkPolicy</div>
 
   <div class="quiz-question" data-correct="2">
@@ -1642,7 +1740,7 @@ spec:
 
   <h3>NetworkPolicy</h3>
   <div class="code-block">
-    <div class="code-header"><span class="code-lang">YAML</span><button class="copy-btn" onclick="copyCode(this, event)">📋 Copiar</button></div>
+    <div class="code-header"><span class="code-lang">YAML</span><button class="copy-btn" onclick="copyCode(this, event)">Copiar</button></div>
     <pre><code>apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
@@ -1667,7 +1765,7 @@ spec:
 
 <!-- Quiz: Fullstack -->
 <div class="quiz-box" id="quiz-fullstack">
-  <h4><i data-lucide="brain" class="icon-svg lg"></i> Quiz — Aplicação Fullstack</h4>
+  <h4><i data-lucide="brain" class="icon-svg lg"></i> Quiz - Aplicação Fullstack</h4>
   <div class="quiz-subtitle">Frontend + Backend + Banco + Volumes + Secrets</div>
 
   <div class="quiz-question" data-correct="1">
@@ -1718,7 +1816,7 @@ spec:
 
   <h3>ConfigMap</h3>
   <div class="code-block">
-    <div class="code-header"><span class="code-lang">YAML</span><button class="copy-btn" onclick="copyCode(this, event)">📋 Copiar</button></div>
+    <div class="code-header"><span class="code-lang">YAML</span><button class="copy-btn" onclick="copyCode(this, event)">Copiar</button></div>
     <pre><code>apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -1734,7 +1832,7 @@ data:
 
   <h3>Secret</h3>
   <div class="code-block">
-    <div class="code-header"><span class="code-lang">YAML</span><button class="copy-btn" onclick="copyCode(this, event)">📋 Copiar</button></div>
+    <div class="code-header"><span class="code-lang">YAML</span><button class="copy-btn" onclick="copyCode(this, event)">Copiar</button></div>
     <pre><code>apiVersion: v1
 kind: Secret
 metadata:
@@ -1749,7 +1847,7 @@ stringData:
 
   <h3>PostgreSQL com StatefulSet</h3>
   <div class="code-block">
-    <div class="code-header"><span class="code-lang">YAML</span><button class="copy-btn" onclick="copyCode(this, event)">📋 Copiar</button></div>
+    <div class="code-header"><span class="code-lang">YAML</span><button class="copy-btn" onclick="copyCode(this, event)">Copiar</button></div>
     <pre><code>apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -1800,7 +1898,7 @@ spec:
 
   <h3>Ingress Fullstack</h3>
   <div class="code-block">
-    <div class="code-header"><span class="code-lang">YAML</span><button class="copy-btn" onclick="copyCode(this, event)">📋 Copiar</button></div>
+    <div class="code-header"><span class="code-lang">YAML</span><button class="copy-btn" onclick="copyCode(this, event)">Copiar</button></div>
     <pre><code>apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -1853,7 +1951,7 @@ spec:
 
   <h3>GitHub Actions</h3>
   <div class="code-block">
-    <div class="code-header"><span class="code-lang">YAML</span><button class="copy-btn" onclick="copyCode(this, event)">📋 Copiar</button></div>
+    <div class="code-header"><span class="code-lang">YAML</span><button class="copy-btn" onclick="copyCode(this, event)">Copiar</button></div>
     <pre><code>name: Build and Push
 
 on:
@@ -1904,7 +2002,7 @@ jobs:
 </section>
 <!-- Quiz: CI/CD -->
 <div class="quiz-box" id="quiz-cicd">
-  <h4><i data-lucide="brain" class="icon-svg lg"></i> Quiz — CI/CD e GitOps</h4>
+  <h4><i data-lucide="brain" class="icon-svg lg"></i> Quiz - CI/CD e GitOps</h4>
   <div class="quiz-subtitle">Pipelines, GitHub Actions e deploy contínuo</div>
 
   <div class="quiz-question" data-correct="1">
@@ -1932,7 +2030,7 @@ jobs:
 
 <!-- Quiz: Observabilidade -->
 <div class="quiz-box" id="quiz-observabilidade">
-  <h4><i data-lucide="brain" class="icon-svg lg"></i> Quiz — Observabilidade</h4>
+  <h4><i data-lucide="brain" class="icon-svg lg"></i> Quiz - Observabilidade</h4>
   <div class="quiz-subtitle">Métricas, logs, tracing e health checks</div>
 
   <div class="quiz-question" data-correct="0">
@@ -1987,7 +2085,7 @@ jobs:
 
   <h3>Comandos Básicos</h3>
   <div class="code-block">
-    <div class="code-header"><span class="code-lang">Bash</span><button class="copy-btn" onclick="copyCode(this, event)">📋 Copiar</button></div>
+    <div class="code-header"><span class="code-lang">Bash</span><button class="copy-btn" onclick="copyCode(this, event)">Copiar</button></div>
     <pre><code>kubectl top nodes
 kubectl top pods -A
 kubectl logs deploy/backend -n applications
@@ -2009,7 +2107,7 @@ kubectl get events -A --sort-by=.lastTimestamp</code></pre>
 
 <!-- ==================== TROUBLESHOOTING ==================== -->
 <section class="section" id="troubleshooting">
-  <h2><span class="sec-icon" style="background:var(--red-subtle);color:var(--red);"><i data-lucide="wrench" class="icon-svg"></i></span> 15. Troubleshooting — Metodologia SRE</h2>
+  <h2><span class="sec-icon" style="background:var(--red-subtle);color:var(--red);"><i data-lucide="wrench" class="icon-svg"></i></span> 15. Troubleshooting - Metodologia SRE</h2>
 
   <h3>Cadeia de Diagnóstico</h3>
   <div class="arch-diagram">
@@ -2043,7 +2141,7 @@ kubectl get events -A --sort-by=.lastTimestamp</code></pre>
     <h4><i data-lucide="alert-octagon" class="icon-svg lg"></i> CrashLoopBackOff</h4>
     <p class="cause">Causa provável: aplicação inicia e cai repetidamente.</p>
     <div class="code-block">
-      <div class="code-header"><span class="code-lang">Diagnóstico</span><button class="copy-btn" onclick="copyCode(this, event)">📋 Copiar</button></div>
+      <div class="code-header"><span class="code-lang">Diagnóstico</span><button class="copy-btn" onclick="copyCode(this, event)">Copiar</button></div>
       <pre><code>kubectl logs POD -n applications
 kubectl logs POD -n applications --previous
 kubectl describe pod POD -n applications</code></pre>
@@ -2054,7 +2152,7 @@ kubectl describe pod POD -n applications</code></pre>
     <h4><i data-lucide="alert-octagon" class="icon-svg lg"></i> ImagePullBackOff</h4>
     <p class="cause">Causa provável: imagem errada ou registry privado sem credenciais.</p>
     <div class="code-block">
-      <div class="code-header"><span class="code-lang">Diagnóstico</span><button class="copy-btn" onclick="copyCode(this, event)">📋 Copiar</button></div>
+      <div class="code-header"><span class="code-lang">Diagnóstico</span><button class="copy-btn" onclick="copyCode(this, event)">Copiar</button></div>
       <pre><code>kubectl describe pod POD -n applications
 # Verificar: nome da imagem, tag, imagePullSecrets</code></pre>
     </div>
@@ -2077,20 +2175,20 @@ kubectl describe pod POD -n applications</code></pre>
   </div>
 
   <div class="trouble-card">
-    <h4><i data-lucide="alert-octagon" class="icon-svg lg"></i> Cloudflare 521 — Origin Inacessível</h4>
+    <h4><i data-lucide="alert-octagon" class="icon-svg lg"></i> Cloudflare 521 - Origin Inacessível</h4>
     <p class="cause">Cloudflare não conseguiu conectar ao origin. Verifique se 80/443 estão abertos.</p>
     <div class="code-block">
-      <div class="code-header"><span class="code-lang">Diagnóstico</span><button class="copy-btn" onclick="copyCode(this, event)">📋 Copiar</button></div>
+      <div class="code-header"><span class="code-lang">Diagnóstico</span><button class="copy-btn" onclick="copyCode(this, event)">Copiar</button></div>
       <pre><code>sudo ss -tulpn | grep -E ':(80|443)\b'
 curl -vk https://IP_PUBLICO -H "Host: app.seu-dominio.com.br"</code></pre>
     </div>
   </div>
 
   <div class="trouble-card">
-    <h4><i data-lucide="alert-octagon" class="icon-svg lg"></i> Cloudflare 526 — Certificado Inválido</h4>
+    <h4><i data-lucide="alert-octagon" class="icon-svg lg"></i> Cloudflare 526 - Certificado Inválido</h4>
     <p class="cause">Certificado inválido no origin em modo Full Strict.</p>
     <div class="code-block">
-      <div class="code-header"><span class="code-lang">Diagnóstico</span><button class="copy-btn" onclick="copyCode(this, event)">📋 Copiar</button></div>
+      <div class="code-header"><span class="code-lang">Diagnóstico</span><button class="copy-btn" onclick="copyCode(this, event)">Copiar</button></div>
       <pre><code>kubectl get secret -n traefik
 kubectl get tlsstore -n traefik
 openssl x509 -in cloudflare.crt -text -noout</code></pre>
@@ -2098,7 +2196,7 @@ openssl x509 -in cloudflare.crt -text -noout</code></pre>
   </div>
 
   <div class="trouble-card">
-    <h4><i data-lucide="alert-octagon" class="icon-svg lg"></i> Erro 502 — Bad Gateway</h4>
+    <h4><i data-lucide="alert-octagon" class="icon-svg lg"></i> Erro 502 - Bad Gateway</h4>
     <p class="cause">Service existe, mas endpoints estão vazios ou Pod não responde na porta esperada.</p>
   </div>
 
@@ -2123,7 +2221,7 @@ openssl x509 -in cloudflare.crt -text -noout</code></pre>
 
 <!-- Quiz: Troubleshooting -->
 <div class="quiz-box" id="quiz-troubleshooting">
-  <h4><i data-lucide="brain" class="icon-svg lg"></i> Quiz — Troubleshooting</h4>
+  <h4><i data-lucide="brain" class="icon-svg lg"></i> Quiz - Troubleshooting</h4>
   <div class="quiz-subtitle">Metodologia SRE e diagnóstico de problemas</div>
 
   <div class="quiz-question" data-correct="1">
@@ -2219,7 +2317,7 @@ openssl x509 -in cloudflare.crt -text -noout</code></pre>
   <h2><span class="sec-icon" style="background:var(--orange-subtle);color:var(--orange);"><i data-lucide="dumbbell" class="icon-svg"></i></span> 18. Exercícios de Aprendizagem</h2>
 
   <div class="collapsible" role="button" tabindex="0" aria-expanded="false" onclick="toggleCollapsible(this, event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleCollapsible(this,event)}">
-    <div class="collapsible-header"><i data-lucide="circle" class="icon-svg" style="color:var(--green)"></i> Nível 1 — Publicar Página Estática <span class="collapsible-arrow">▼</span></div>
+    <div class="collapsible-header"><i data-lucide="circle" class="icon-svg" style="color:var(--green)"></i> Nível 1 - Publicar Página Estática <span class="collapsible-arrow">▼</span></div>
     <div class="collapsible-body"><div class="collapsible-body-inner">
       <ol>
         <li>Criar namespace <code>applications</code></li>
@@ -2233,7 +2331,7 @@ openssl x509 -in cloudflare.crt -text -noout</code></pre>
   </div>
 
   <div class="collapsible" role="button" tabindex="0" aria-expanded="false" onclick="toggleCollapsible(this, event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleCollapsible(this,event)}">
-    <div class="collapsible-header"><i data-lucide="circle" class="icon-svg" style="color:var(--accent)"></i> Nível 2 — Publicar API <span class="collapsible-arrow">▼</span></div>
+    <div class="collapsible-header"><i data-lucide="circle" class="icon-svg" style="color:var(--accent)"></i> Nível 2 - Publicar API <span class="collapsible-arrow">▼</span></div>
     <div class="collapsible-body"><div class="collapsible-body-inner">
       <ol>
         <li>Criar imagem Docker de uma API simples</li>
@@ -2246,7 +2344,7 @@ openssl x509 -in cloudflare.crt -text -noout</code></pre>
   </div>
 
   <div class="collapsible" role="button" tabindex="0" aria-expanded="false" onclick="toggleCollapsible(this, event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleCollapsible(this,event)}">
-    <div class="collapsible-header"><i data-lucide="circle" class="icon-svg" style="color:var(--orange)"></i> Nível 3 — Banco com Volume <span class="collapsible-arrow">▼</span></div>
+    <div class="collapsible-header"><i data-lucide="circle" class="icon-svg" style="color:var(--orange)"></i> Nível 3 - Banco com Volume <span class="collapsible-arrow">▼</span></div>
     <div class="collapsible-body"><div class="collapsible-body-inner">
       <ol>
         <li>Criar Secret com usuário/senha</li>
@@ -2259,7 +2357,7 @@ openssl x509 -in cloudflare.crt -text -noout</code></pre>
   </div>
 
   <div class="collapsible" role="button" tabindex="0" aria-expanded="false" onclick="toggleCollapsible(this, event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleCollapsible(this,event)}">
-    <div class="collapsible-header"><i data-lucide="circle" class="icon-svg" style="color:var(--red)"></i> Nível 4 — CI/CD <span class="collapsible-arrow">▼</span></div>
+    <div class="collapsible-header"><i data-lucide="circle" class="icon-svg" style="color:var(--red)"></i> Nível 4 - CI/CD <span class="collapsible-arrow">▼</span></div>
     <div class="collapsible-body"><div class="collapsible-body-inner">
       <ol>
         <li>Criar pipeline que faz build da imagem</li>
@@ -2295,15 +2393,15 @@ openssl x509 -in cloudflare.crt -text -noout</code></pre>
 <!-- ==================== GLOSSÁRIO ==================== -->
 <section class="section" id="glossario">
   <h2><span class="sec-icon" style="background:var(--purple-subtle);color:var(--purple);"><i data-lucide="book-open" class="icon-svg"></i></span> 20. Glossário</h2>
-  <input type="text" class="glossary-search" id="glossarySearch" placeholder="🔍 Buscar termo no glossário..." autocomplete="off">
+  <input type="text" class="glossary-search" id="glossarySearch" placeholder="Buscar termo no glossário..." autocomplete="off">
   <div class="glossary-grid" id="glossaryGrid">
-    <div class="glossary-item" data-term="api-server"><h4>kube-apiserver</h4><div class="def-simple">API central do cluster — a "portaria" que recebe todas as requisições.</div><div class="def-tech">Endpoint RESTful que valida e processa objetos Kubernetes.</div></div>
+    <div class="glossary-item" data-term="api-server"><h4>kube-apiserver</h4><div class="def-simple">API central do cluster - a "portaria" que recebe todas as requisições.</div><div class="def-tech">Endpoint RESTful que valida e processa objetos Kubernetes.</div></div>
     <div class="glossary-item" data-term="etcd"><h4>etcd</h4><div class="def-simple">Banco de dados chave-valor que guarda todo o estado do cluster.</div><div class="def-tech">Store distribuído, consistente e tolerante a falhas (RAFT).</div></div>
     <div class="glossary-item" data-term="scheduler"><h4>kube-scheduler</h4><div class="def-simple">Escolhe em qual node cada Pod vai rodar.</div><div class="def-tech">Algoritmo de agendamento considera recursos, taints, afinidade e affinidade.</div></div>
     <div class="glossary-item" data-term="controller"><h4>kube-controller-manager</h4><div class="def-simple">Supervisor que verifica se o estado real bate com o desejado.</div><div class="def-tech">Executa loops de reconciliação para Deployment, ReplicaSet, Node, etc.</div></div>
     <div class="glossary-item" data-term="kubelet"><h4>kubelet</h4><div class="def-simple">Agente que roda em cada node e cuida dos Pods.</div><div class="def-tech">Garante que os containers descritos nos Pods estejam rodando e saudáveis.</div></div>
     <div class="glossary-item" data-term="kube-proxy"><h4>kube-proxy</h4><div class="def-simple">Cria regras de rede para encaminhar tráfego dos Services aos Pods.</div><div class="def-tech">Usa iptables ou IPVS para implementar Service networking.</div></div>
-    <div class="glossary-item" data-term="cni"><h4>CNI</h4><div class="def-simple">A "placa de rede" dos Pods — dá IP e conectividade.</div><div class="def-tech">Container Network Interface: plugin que configura a rede dos Pods (Flannel, Calico, Cilium).</div></div>
+    <div class="glossary-item" data-term="cni"><h4>CNI</h4><div class="def-simple">A "placa de rede" dos Pods - dá IP e conectividade.</div><div class="def-tech">Container Network Interface: plugin que configura a rede dos Pods (Flannel, Calico, Cilium).</div></div>
     <div class="glossary-item" data-term="cri"><h4>CRI</h4><div class="def-simple">Interface que permite ao Kubernetes usar diferentes runtimes de container (containerd, CRI-O).</div><div class="def-tech">Container Runtime Interface: padrao que substituiu a integracao direta com Docker.</div></div>
     <div class="glossary-item" data-term="csi"><h4>CSI</h4><div class="def-simple">Interface para conectar Kubernetes a soluções de armazenamento.</div><div class="def-tech">Container Storage Interface: permite drivers de storage como Longhorn, NFS, etc.</div></div>
     <div class="glossary-item" data-term="pod"><h4>Pod</h4><div class="def-simple">A menor unidade que Kubernetes consegue gerenciar.</div><div class="def-tech">Agrupa 1+ containers com rede e volumes compartilhados.</div></div>
@@ -2317,7 +2415,7 @@ openssl x509 -in cloudflare.crt -text -noout</code></pre>
     <div class="glossary-item" data-term="pvc"><h4>PVC (PersistentVolumeClaim)</h4><div class="def-simple">Um "pedido" de armazenamento que a aplicação faz ao cluster.</div><div class="def-tech">Solicita volume com determinada capacidade e access mode.</div></div>
     <div class="glossary-item" data-term="pv"><h4>PV (PersistentVolume)</h4><div class="def-simple">O volume de armazenamento real provisionado no cluster.</div><div class="def-tech">Recurso cluster-wide que representa um pedaço de storage.</div></div>
     <div class="glossary-item" data-term="storageclass"><h4>StorageClass</h4><div class="def-simple">Define "como" provisionar volumes (local, NFS, Longhorn, etc.).</div><div class="def-tech">Classe com provisionador CSI, parâmetros e política de reclamation.</div></div>
-    <div class="glossary-item" data-term="helm"><h4>Helm</h4><div class="def-simple">Gerenciador de pacotes do Kubernetes — o "apt-get" do K8s.</div><div class="def-tech">Templates parametrizados (Charts) que empacotam manifests complexos.</div></div>
+    <div class="glossary-item" data-term="helm"><h4>Helm</h4><div class="def-simple">Gerenciador de pacotes do Kubernetes - o "apt-get" do K8s.</div><div class="def-tech">Templates parametrizados (Charts) que empacotam manifests complexos.</div></div>
     <div class="glossary-item" data-term="chart"><h4>Chart</h4><div class="def-simple">O pacote do Helm: um conjunto de templates + valores.</div><div class="def-tech">Diretório com templates YAML, Chart.yaml e values.yaml.</div></div>
     <div class="glossary-item" data-term="release"><h4>Release</h4><div class="def-simple">Uma instalação de um Chart com configurações específicas.</div><div class="def-tech">Instância nomeada de um Chart aplicado ao cluster.</div></div>
     <div class="glossary-item" data-term="gitops"><h4>GitOps</h4><div class="def-simple">Usar o Git como "fonte da verdade" para toda a infraestrutura.</div><div class="def-tech">Fluxo onde o cluster observa o Git e aplica automaticamente mudanças.</div></div>
@@ -2333,7 +2431,7 @@ openssl x509 -in cloudflare.crt -text -noout</code></pre>
     <div class="glossary-item" data-term="cloudflare"><h4>Cloudflare</h4><div class="def-simple">CDN/WAF/DNS que protege e acelera sua aplicação na borda.</div><div class="def-tech">Proxy reverso com TLS, cache, DDoS protection e rate limiting.</div></div>
     <div class="glossary-item" data-term="loadbalancer"><h4>LoadBalancer</h4><div class="def-simple">Tipo de Service que pede um IP externo ao provedor.</div><div class="def-tech">Service que expõe tráfego via balanceador externo (cloud ou MetalLB).</div></div>
     <div class="glossary-item" data-term="nodeport"><h4>NodePort</h4><div class="def-simple">Tipo de Service que abre uma porta fixa em cada node.</div><div class="def-tech">Range 30000-32767, acessível pelo IP de qualquer node.</div></div>
-    <div class="glossary-item" data-term="clusterip"><h4>ClusterIP</h4><div class="def-simple">Tipo de Service interno — só acessível dentro do cluster.</div><div class="def-tech">IP virtual que distribui tráfego entre os Pods endpoints.</div></div>
+    <div class="glossary-item" data-term="clusterip"><h4>ClusterIP</h4><div class="def-simple">Tipo de Service interno - só acessível dentro do cluster.</div><div class="def-tech">IP virtual que distribui tráfego entre os Pods endpoints.</div></div>
     <div class="glossary-item" data-term="hostport"><h4>HostPort</h4><div class="def-simple">Mapeia uma porta do node diretamente para o Pod.</div><div class="def-tech">Porta do host exposta externamente sem Service.</div></div>
   </div>
 </section>
@@ -2380,11 +2478,11 @@ openssl x509 -in cloudflare.crt -text -noout</code></pre>
 <section class="section" id="referencias">
   <h2><span class="sec-icon" style="background:var(--accent-subtle);color:var(--accent);"><i data-lucide="external-link" class="icon-svg"></i></span> 22. Referências Oficiais</h2>
   <ul>
-    <li><a href="https://kubernetes.io/docs/concepts/overview/components/" target="_blank">Kubernetes — Components</a></li>
-    <li><a href="https://kubernetes.io/docs/concepts/services-networking/service/" target="_blank">Kubernetes — Services</a></li>
-    <li><a href="https://kubernetes.io/docs/concepts/services-networking/ingress/" target="_blank">Kubernetes — Ingress</a></li>
-    <li><a href="https://kubernetes.io/docs/concepts/storage/volumes/" target="_blank">Kubernetes — Volumes</a></li>
-    <li><a href="https://kubernetes.io/docs/concepts/storage/storage-classes/" target="_blank">Kubernetes — StorageClasses</a></li>
+    <li><a href="https://kubernetes.io/docs/concepts/overview/components/" target="_blank">Kubernetes - Components</a></li>
+    <li><a href="https://kubernetes.io/docs/concepts/services-networking/service/" target="_blank">Kubernetes - Services</a></li>
+    <li><a href="https://kubernetes.io/docs/concepts/services-networking/ingress/" target="_blank">Kubernetes - Ingress</a></li>
+    <li><a href="https://kubernetes.io/docs/concepts/storage/volumes/" target="_blank">Kubernetes - Volumes</a></li>
+    <li><a href="https://kubernetes.io/docs/concepts/storage/storage-classes/" target="_blank">Kubernetes - StorageClasses</a></li>
     <li><a href="https://docs.k3s.io/quick-start" target="_blank">K3s Quick Start</a></li>
     <li><a href="https://helm.sh/docs/topics/charts/" target="_blank">Helm Charts</a></li>
     <li><a href="https://doc.traefik.io/traefik/providers/kubernetes-ingress/" target="_blank">Traefik Kubernetes</a></li>
@@ -2408,11 +2506,11 @@ openssl x509 -in cloudflare.crt -text -noout</code></pre>
 <!-- ==================== LABORATÓRIOS PRÁTICOS ==================== -->
 <section class="section" id="labs">
   <h2><span class="sec-icon" style="background:var(--accent-subtle);color:var(--accent);"><i data-lucide="flask-conical" class="icon-svg"></i></span> 23. Laboratórios Práticos</h2>
-  <p>10 labs guiados para colocar a mão no teclado. Cada lab tem objetivo claro, passo a passo e verificação ao final. Siga na ordem ou pule direto ao que precisa.</p>
+  <p>12 laboratórios funcionais, organizados do ambiente local ao cenário de operação em escala. Cada laboratório possui objetivo, artefatos versionados, critérios de validação e evidências esperadas.</p>
 
   <div class="alert info">
     <span class="alert-icon"><i data-lucide="info" class="icon-svg"></i></span>
-    <div class="alert-content"><strong>Pré-requisitos:</strong> Uma VM Ubuntu 22.04+ com pelo menos 2GB RAM e 2 vCPUs. Acesso SSH configurado. Conhecimentos básicos de Linux e terminal.</div>
+    <div class="alert-content"><strong>Pré-requisitos:</strong> WSL 2 ou Linux com 4 vCPUs, 8 GB de RAM e 20 GB livres para os laboratórios locais. Os cenários K3s e de alta disponibilidade informam requisitos adicionais nos respectivos diretórios.</div>
   </div>
 
   <!-- Lab 01 -->
@@ -2423,9 +2521,6 @@ openssl x509 -in cloudflare.crt -text -noout</code></pre>
 
 <!-- ==================== LABORATÓRIOS PRÁTICOS ==================== -->
 
-</div><!-- /content -->
-</main>
-
 <!-- Back to Top -->
 <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
@@ -2433,7 +2528,7 @@ openssl x509 -in cloudflare.crt -text -noout</code></pre>
 <div class="search-modal" id="searchModal" role="dialog" aria-modal="true" aria-label="Busca">
   <div class="search-dialog">
     <div class="search-input-wrap">
-      <span class="icon">🔍</span>
+      <span class="icon" aria-hidden="true"><i data-lucide="search" class="icon-svg"></i></span>
       <input type="text" class="search-input" id="searchInput" placeholder="Buscar no manual..." autocomplete="off">
     </div>
     <div class="search-results" id="searchResults">
@@ -2451,7 +2546,7 @@ openssl x509 -in cloudflare.crt -text -noout</code></pre>
       <span class="terminal-dot red"></span>
       <span class="terminal-dot yellow"></span>
       <span class="terminal-dot green"></span>
-      <span class="terminal-title">kubectl-terminal — bash</span>
+      <span class="terminal-title">kubectl-terminal - bash</span>
     </div>
     <div class="terminal-output" id="terminalOutput" aria-live="polite" role="log">
       <div class="terminal-line info-line">Bem-vindo ao Terminal Simulado de Kubernetes!</div>
@@ -2542,7 +2637,7 @@ openssl x509 -in cloudflare.crt -text -noout</code></pre>
   <h2><span class="sec-icon" style="background:var(--orange-subtle);color:var(--orange);"><i data-lucide="play-circle" class="icon-svg"></i></span> Simulador de Rollout</h2>
   <p>Visualize como funciona um rolling update no Kubernetes. Execute um deploy da versao 1 para a versao 2 e observe o ciclo de vida dos Pods em tempo real.</p>
   <div class="rollout-sim" id="rolloutSim">
-    <h4><i data-lucide="play-circle" class="icon-svg"></i> Rolling Update — Deploy v1 para v2</h4>
+    <h4><i data-lucide="play-circle" class="icon-svg"></i> Rolling Update - Deploy v1 para v2</h4>
     <div class="rollout-status-bar">
       <div><span class="rs-label">Status:</span> <span class="rs-value pending" id="rolloutStatus">Pronto</span></div>
       <div><span class="rs-label">Versao:</span> <span class="rs-value" id="rolloutVersion">v1 (estavel)</span></div>
@@ -2565,13 +2660,16 @@ openssl x509 -in cloudflare.crt -text -noout</code></pre>
   </div>
 </section>
 
+</div><!-- /content -->
+</main>
 
-<script src="script.js" defer></script>
+
+<script src="script.js?v=3.0.0" defer></script>
 
 <script>
 /* PWA: register service worker early */
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('./service-worker.js').then(function(reg) {
+  navigator.serviceWorker.register('./service-worker.js?v=3.0.0').then(function(reg) {
     console.debug('[SW] Registered successfully:', reg.scope);
   }).catch(function(err) {
     console.warn('[SW] Failed to register:', err);
