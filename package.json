@@ -1,6 +1,6 @@
 {
   "name": "kubelab-ecomnix",
-  "version": "3.0.3",
+  "version": "3.0.4",
   "private": true,
   "description": "Formação prática de Kubernetes para DevOps e SRE",
   "scripts": {

@@ -1,5 +1,5 @@
 /* ===== KubeLab ECOMNIX - Service Worker ===== */
-var CACHE_NAME = 'kubelab-ecomnix-v9';
+var CACHE_NAME = 'kubelab-ecomnix-v10';
 
 var PRECACHE_URLS = [
   './',

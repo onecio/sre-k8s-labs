@@ -9,7 +9,7 @@ try {
     Object.keys(_p.quizzes).forEach(function(qid) {
       let q = _p.quizzes[qid];
       Object.keys(q).forEach(function(k) {
-        if (typeof q[k] === 'boolean') delete q[k];
+        if (/^q\d+$/.test(k) && typeof q[k] === 'boolean') delete q[k];
       });
     });
     localStorage.setItem('k8s-progress', JSON.stringify(_p));
