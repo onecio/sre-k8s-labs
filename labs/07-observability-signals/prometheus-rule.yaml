@@ -1,0 +1,16 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: kubelab-slo
+  namespace: monitoring
+  labels: { release: monitoring }
+spec:
+  groups:
+    - name: kubelab.rules
+      rules:
+        - alert: KubeLabHighPodRestartRate
+          expr: increase(kube_pod_container_status_restarts_total[10m]) > 3
+          for: 5m
+          labels: { severity: warning }
+          annotations:
+            summary: Taxa elevada de reinícios de container
