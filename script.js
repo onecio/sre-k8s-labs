@@ -557,7 +557,7 @@ function copyCertLink() {
   const labsDone = ASSOCIATE_LAB_IDS.filter(id => progress.labs[id] === true).length;
   const text = 'Credencial KubeLab ECOMNIX\n\n' + name + ' concluiu Kubernetes Essentials - Associate.\n\n' + approvedQuizzes.length + '/11 avaliações aprovadas\n' + labsDone + '/10 laboratórios validados\nID: ' + buildCredentialId(name) + '\n\n' + window.location.origin + window.location.pathname;
   navigator.clipboard.writeText(text).then(function() {
-    const btn = document.querySelector('.cert-btn.primary');
+    const btn = document.querySelector('#certOverlay .cert-btn.primary');
     const orig = btn.innerHTML; btn.innerHTML = 'Comprovação copiada';
     setTimeout(function() { btn.innerHTML = orig; }, 2000);
   });
