@@ -62,6 +62,14 @@ const renderedLabs = [...script.matchAll(/\{num:'(\d{2})', title:/g)].map(match 
 if (renderedLabs.length !== 12 || new Set(renderedLabs).size !== 12) {
   failures.push(`Catálogo interativo inválido: esperados 12 laboratórios, encontrados ${renderedLabs.length}.`);
 }
+const renderedLabPaths = [...script.matchAll(/\{num:'\d{2}', title:[\s\S]*?path:'([^']+)'/g)].map(match => match[1]);
+if (renderedLabPaths.length !== 12 || new Set(renderedLabPaths).size !== 12) {
+  failures.push(`Catálogo de diretórios inválido: esperados 12 caminhos únicos, encontrados ${renderedLabPaths.length}.`);
+}
+for (const labPath of renderedLabPaths) {
+  try { await access(resolve(root, labPath, 'README.md')); }
+  catch { failures.push(`Caminho do catálogo não existe: ${labPath}`); }
+}
 
 if (failures.length) {
   console.error(failures.join('\n'));

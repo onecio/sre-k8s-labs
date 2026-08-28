@@ -333,7 +333,7 @@ const labData = [
      {num:'2',content:'Verifique autorização.\nkubectl auth can-i get pods --as=system:serviceaccount:kubelab:ecomnix-reader -n kubelab'},
      {num:'3',content:'Execute testes positivos e negativos.\nbash scripts/validate.sh'}
    ], verify:'Leitura autorizada, escrita negada e tráfego não autorizado bloqueado.'},
-  {num:'07', title:'Observabilidade orientada a sinais', diffClass:'intermediate', diffLabel:'Operator', path:'labs/07-observability',
+  {num:'07', title:'Observabilidade orientada a sinais', diffClass:'intermediate', diffLabel:'Operator', path:'labs/07-observability-signals',
    meta:[{icon:'clock',text:'50 min'},{icon:'activity',text:'Métricas'}],
    desc:'Observe saúde por métricas, logs, eventos e probes antes de criar alertas.',
    objective:'Dashboard operacional e regras de alerta para disponibilidade e saturação.',
@@ -351,7 +351,7 @@ const labData = [
      {num:'2',content:'Instale ou atualize a release.\nhelm upgrade --install ecomnix chart -n kubelab --create-namespace'},
      {num:'3',content:'Execute a validação.\nbash scripts/validate.sh'}
    ], verify:'Release deployed, chart sem erros e estado desejado versionado.'},
-  {num:'09', title:'Cluster K3s multi-node em VMs', diffClass:'advanced', diffLabel:'Operations', path:'labs/09-k3s-vm',
+  {num:'09', title:'Cluster K3s multi-node em VMs', diffClass:'advanced', diffLabel:'Operations', path:'labs/09-k3s-multi-vm',
    meta:[{icon:'clock',text:'90 min'},{icon:'server',text:'3 VMs'}],
    desc:'Construa um cluster K3s com um server e dois agents, usando versões fixadas e token protegido.',
    objective:'Três nodes Ready, workloads distribuídos e procedimento de remoção documentado.',
