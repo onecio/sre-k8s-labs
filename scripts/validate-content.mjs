@@ -2,13 +2,15 @@ import { access, readFile, readdir } from 'node:fs/promises';
 import { extname, resolve } from 'node:path';
 
 const root = resolve(import.meta.dirname, '..');
-const required = ['index.html', 'style.css', 'script.js', 'manifest.json', 'service-worker.js', 'og.png'];
+const required = ['index.html', 'style.css', 'script.js', 'manifest.json', 'service-worker.js', 'og.png', 'CNAME'];
 const textExtensions = new Set(['.html', '.css', '.js', '.mjs', '.json', '.md', '.yml', '.yaml', '.sh']);
 const failures = [];
 
 for (const file of required) {
   try { await access(resolve(root, file)); } catch { failures.push(`Arquivo obrigatório ausente: ${file}`); }
 }
+const customDomain = (await readFile(resolve(root, 'CNAME'), 'utf8')).trim();
+if (customDomain !== 'sre.ecomnix.com.br') failures.push(`Domínio qualificado inválido em CNAME: ${customDomain}`);
 
 const labEntries = await readdir(resolve(root, 'labs'), { withFileTypes: true });
 for (let number = 1; number <= 12; number += 1) {
