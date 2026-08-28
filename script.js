@@ -773,6 +773,7 @@ function restoreState() {
         }
       }
       showRetryButton(id);
+      showShareButton(id);
     }
   });
   LAB_IDS.forEach(function(id) {
